@@ -1,0 +1,610 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>SongScribe Security Posture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F6F6F8;--surface:#FFFFFF;--sunk:#EFF0F4;--ink:#16171B;--muted:#5E626E;--rule:#DDDFE6;
+  --accent:#D22F3F;--accent-ink:#B4222F;--accent-soft:#FCE9EB;--code-bg:#ECEDF1;
+  --crit:#7A1020;--crit-bg:#F7DDE2;--crit-ink:#7A1020;
+  --high:#B3261E;--high-bg:#FBE4E2;
+  --med:#8A5A00;--med-bg:#FAF0D8;
+  --low:#2B5BB7;--low-bg:#E4ECFA;
+  --ok:#1F7A4D;--ok-bg:#E3F3EA;
+  --display:"Bricolage Grotesque","IBM Plex Sans",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0F1013;--surface:#15161B;--sunk:#1A1C22;--ink:#E9EAEE;--muted:#9A9EAA;--rule:#272930;
+  --accent:#F25B68;--accent-ink:#FF7A85;--accent-soft:#2B171A;--code-bg:#1B1D23;
+  --crit:#FF8A96;--crit-bg:#3A1218;--crit-ink:#FF8A96;
+  --high:#F27C74;--high-bg:#2E1614;
+  --med:#E0B44C;--med-bg:#2A2312;
+  --low:#7FA6EE;--low-bg:#151E31;
+  --ok:#5CC48E;--ok-bg:#14281D;
+}}
+:root[data-theme="dark"]{
+  --paper:#0F1013;--surface:#15161B;--sunk:#1A1C22;--ink:#E9EAEE;--muted:#9A9EAA;--rule:#272930;
+  --accent:#F25B68;--accent-ink:#FF7A85;--accent-soft:#2B171A;--code-bg:#1B1D23;
+  --crit:#FF8A96;--crit-bg:#3A1218;--crit-ink:#FF8A96;
+  --high:#F27C74;--high-bg:#2E1614;
+  --med:#E0B44C;--med-bg:#2A2312;
+  --low:#7FA6EE;--low-bg:#151E31;
+  --ok:#5CC48E;--ok-bg:#14281D;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent-ink);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+a:hover{border-bottom-color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+code{font-family:var(--mono);font-size:.85em;background:var(--code-bg);padding:.1em .38em;border-radius:4px;color:var(--ink)}
+pre{font-family:var(--mono);font-size:.82rem;line-height:1.55;background:var(--code-bg);border:1px solid var(--rule);border-radius:8px;padding:13px 15px;overflow-x:auto;margin:12px 0}
+pre code{background:none;padding:0;font-size:inherit}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.14;margin:0}
+h1{font-size:clamp(32px,4.6vw,50px);font-weight:700;letter-spacing:-.022em}
+h2{font-size:29px;font-weight:700;letter-spacing:-.015em;margin-top:68px;padding-top:26px;border-top:1px solid var(--rule)}
+h3{font-size:20px;font-weight:700;margin-top:38px}
+h4{font-family:var(--body);font-size:16.5px;font-weight:600;margin:26px 0 0}
+p{margin:12px 0;max-width:72ch}
+ul,ol{max-width:72ch;padding-left:1.25em}
+li{margin:5px 0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.wrap{display:grid;grid-template-columns:1fr}
+@media(min-width:1140px){.wrap{grid-template-columns:258px minmax(0,1fr)}}
+.toc{display:none}
+@media(min-width:1140px){
+  .toc{display:block;position:sticky;top:0;height:100vh;overflow-y:auto;padding:36px 18px 40px 28px;border-right:1px solid var(--rule);font-size:13px}
+  .toc ol{list-style:none;padding:0;margin:0}
+  .toc li{margin:0}
+  .toc a{display:block;padding:5px 0 5px 10px;color:var(--muted);border:0;border-left:2px solid transparent;margin-left:-12px}
+  .toc a:hover{color:var(--ink)}
+  .toc a.active{color:var(--ink);border-left-color:var(--accent)}
+  .toc .sub a{padding-left:22px;font-size:12px}
+}
+main{padding:40px 22px 120px;max-width:940px}
+@media(min-width:1140px){main{padding:54px 54px 140px}}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px 26px;margin:26px 0 6px;padding:17px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font-size:13.5px}
+.meta b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:3px}
+.lede{font-size:18.5px;line-height:1.5;max-width:66ch}
+.lede em{font-style:normal;color:var(--accent-ink)}
+
+/* severity chips */
+.sev{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2.5px 8px;border-radius:4px;vertical-align:2px;white-space:nowrap}
+.s-crit{background:var(--crit-bg);color:var(--crit)}
+.s-high{background:var(--high-bg);color:var(--high)}
+.s-med{background:var(--med-bg);color:var(--med)}
+.s-low{background:var(--low-bg);color:var(--low)}
+.s-ok{background:var(--ok-bg);color:var(--ok)}
+
+/* finding card: severity stripe encodes rank */
+.f{position:relative;border:1px solid var(--rule);border-left-width:4px;border-radius:0 10px 10px 0;background:var(--surface);padding:15px 18px;margin:16px 0;max-width:76ch}
+.f.crit{border-left-color:var(--crit)}
+.f.high{border-left-color:var(--high)}
+.f.med{border-left-color:var(--med)}
+.f.low{border-left-color:var(--low)}
+.f-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:9px;margin-bottom:6px}
+.f-id{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--muted)}
+.f h4{margin:0;font-size:16.5px;font-weight:600;flex:1 1 320px;line-height:1.3}
+.f p{margin:7px 0;max-width:none;font-size:15px}
+.f ul{max-width:none;font-size:15px;margin:7px 0}
+.where{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:9px;word-break:break-word;display:block;padding-top:8px;border-top:1px dashed var(--rule)}
+.where b{color:var(--ink);font-weight:600}
+.fix{background:var(--sunk);border-radius:7px;padding:9px 12px;margin-top:10px;font-size:14.5px}
+.fix b{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px;font-weight:600}
+
+/* tables */
+.tw{overflow-x:auto;margin:16px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;white-space:nowrap}
+tbody tr:hover{background:var(--surface)}
+td code{white-space:nowrap}
+.num{font-variant-numeric:tabular-nums;text-align:right}
+
+/* tally strip */
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin:22px 0}
+.tally div{background:var(--surface);padding:13px 14px}
+.tally .n{font-family:var(--display);font-size:27px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.tally .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.tally .crit .n{color:var(--crit)}.tally .high .n{color:var(--high)}.tally .med .n{color:var(--med)}.tally .low .n{color:var(--low)}
+
+.callout{border:1px solid var(--rule);background:var(--surface);border-radius:10px;padding:15px 18px;margin:18px 0;max-width:74ch}
+.callout p:first-child{margin-top:0}.callout p:last-child{margin-bottom:0}
+.note{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:18px 0;max-width:74ch}
+.note p{margin:6px 0}
+.note p:first-child{margin-top:0}.note p:last-child{margin-bottom:0}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:7px 18px;font-size:14.5px;max-width:74ch;margin:12px 0}
+.kv b{font-family:var(--mono);font-size:12.5px;color:var(--accent-ink);white-space:nowrap;font-weight:600}
+.two{display:grid;grid-template-columns:1fr;gap:16px;max-width:920px;margin:18px 0}
+@media(min-width:780px){.two{grid-template-columns:1fr 1fr}}
+.small{font-size:13.5px;color:var(--muted)}
+ol.steps{counter-reset:s;list-style:none;padding:0;max-width:76ch}
+ol.steps>li{counter-increment:s;position:relative;padding:10px 0 10px 44px;border-bottom:1px solid var(--rule)}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:11px;width:27px;height:27px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);font-family:var(--mono);font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:600}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <div class="eyebrow" style="margin-bottom:13px">Contents</div>
+  <ol>
+    <li><a href="#summary">1. Executive summary</a></li>
+    <li><a href="#threat">2. Threat model</a></li>
+    <li><a href="#findings">3. Technical findings</a>
+      <ol class="sub">
+        <li><a href="#f-crit">Critical</a></li>
+        <li><a href="#f-high">High</a></li>
+        <li><a href="#f-med">Medium</a></li>
+        <li><a href="#f-low">Low and hygiene</a></li>
+      </ol>
+    </li>
+    <li><a href="#good">4. What is already strong</a></li>
+    <li><a href="#compliance">5. Compliance</a>
+      <ol class="sub">
+        <li><a href="#c-ndpa">Nigeria NDPA</a></li>
+        <li><a href="#c-gdpr">GDPR and UK GDPR</a></li>
+        <li><a href="#c-voice">Voice and biometrics</a></li>
+        <li><a href="#c-aiact">EU AI Act Article 50</a></li>
+        <li><a href="#c-pci">PCI DSS</a></li>
+        <li><a href="#c-ip">Copyright and licensing</a></li>
+      </ol>
+    </li>
+    <li><a href="#acq">6. Acquisition readiness</a>
+      <ol class="sub">
+        <li><a href="#a-killers">Deal killers</a></li>
+        <li><a href="#a-room">The data room</a></li>
+        <li><a href="#a-clocks">Long clocks</a></li>
+      </ol>
+    </li>
+    <li><a href="#plan">7. Remediation plan</a></li>
+    <li><a href="#method">8. Method and limits</a></li>
+  </ol>
+</nav>
+
+<main>
+<header>
+  <div class="eyebrow">Internal · security assessment · 22 Sep 2026</div>
+  <h1 style="margin-top:10px">SongScribe Security Posture</h1>
+  <p class="lede" style="margin-top:18px">A review of the <em>kuuza-ai/songscribe</em> codebase at the line level, the regulatory obligations it already carries, and the gap between where it is today and what a technical due-diligence team would expect to find.</p>
+  <div class="meta">
+    <div><b>Scope</b>Branch <code>dev</code> @ <code>206f916</code>, full repository</div>
+    <div><b>Method</b>Source review, SCA, secret scan, licence audit</div>
+    <div><b>Findings</b>2 critical · 8 high · 9 medium · 7 low</div>
+    <div><b>Not done</b>No pen test, no live environment, no cloud config review</div>
+  </div>
+</header>
+
+<h2 id="summary">1. Executive summary</h2>
+
+<p>SongScribe's application security is <b>better than typical for a seven-month-old product built by one engineer</b>, and materially worse than what any acquirer, enterprise customer or regulator will expect. Those two statements are both true and they explain the shape of this report.</p>
+
+<p>The good part is deliberate, not accidental. Row-level security is on for every table. Money movements are idempotent with dedupe keys and database-level advisory locks. Webhooks verify signatures. Secrets are compared in constant time. Audio sits in a private bucket behind signed URLs. The retention cron fails closed. Several migrations exist for no purpose other than revoking dangerous grants that Supabase hands out by default, and two of the four end-to-end tests were written after real security incidents, which tells you the team learns from its mistakes.</p>
+
+<p>The bad part is structural. There is <b>no Content-Security-Policy, no HSTS, no error tracking, no alerting, no audit log, no admin interface, no dependency update process and no security contact</b>. The framework is running two unauthenticated remote-code-execution advisories. Thirty-four of the fifty-nine privileged database functions omit the one line that prevents search-path hijacking. And the entire product depends on an unofficial reseller of an API that its upstream vendor does not publish, which is simultaneously the biggest security, legal and commercial risk in the business.</p>
+
+<div class="tally">
+  <div class="crit"><div class="n">2</div><div class="l">Critical</div></div>
+  <div class="high"><div class="n">8</div><div class="l">High</div></div>
+  <div class="med"><div class="n">9</div><div class="l">Medium</div></div>
+  <div class="low"><div class="n">7</div><div class="l">Low</div></div>
+  <div><div class="n">6</div><div class="l">Compliance regimes</div></div>
+  <div><div class="n">0</div><div class="l">Secrets leaked</div></div>
+</div>
+
+<p>On compliance, three obligations are <b>live today and unmet</b>: Nigerian data-controller registration, EU AI Act Article 50 content marking (in force since 2 August 2026), and the PCI DSS script-integrity requirements that a hosted Stripe checkout does not outsource. A fourth, the treatment of voice conversations as biometric-adjacent personal data, is a question the privacy policy does not currently answer at all.</p>
+
+<p>On acquisition, the single most valuable thing you can do this quarter has nothing to do with code: <b>confirm in writing that the company owns the copyright in the code its sole author wrote</b>. Everything else on the diligence list is fixable in weeks. A missing IP assignment is fixable only with the cooperation of a person whose leverage grows the moment a term sheet exists.</p>
+
+<h2 id="threat">2. Threat model</h2>
+
+<p>Before the findings, it is worth being explicit about who would attack this product and what they would want, because it changes which findings matter.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Actor</th><th>Goal</th><th>Realistic path today</th><th>Worst case</th></tr></thead>
+<tbody>
+<tr><td><b>Opportunistic scanner</b></td><td>Any foothold on any host</td><td>Mass-scan for the Next.js image-optimisation RCE; hit the public GitHub mirror for structure</td><td>Server compromise, service-role key exfiltration, total data loss</td></tr>
+<tr><td><b>Freeloader</b></td><td>Free song generation</td><td>Race the demo quota check; rotate IPs; script the anonymous demo</td><td>Provider bill grows without revenue; no data exposure</td></tr>
+<tr><td><b>Fraudster</b></td><td>Credits without paying</td><td>Replay or forge a payment webhook; exploit the Flutterwave email-matching fallback</td><td>Free credits, chargebacks, reconciliation mess</td></tr>
+<tr><td><b>Nosy user</b></td><td>Another person's songs and briefs</td><td>Enumerate ids on proxy routes; reuse a producer session id; guess a share token</td><td>Disclosure of names, occasions, lyrics — intimate personal content</td></tr>
+<tr><td><b>Competitor</b></td><td>Copy the product</td><td>Read the public mirror, including the architecture guide</td><td>Feature parity in weeks; no technical moat left</td></tr>
+<tr><td><b>Regulator</b></td><td>Enforcement</td><td>Complaint from a user; sweep of AI music services post-Article 50</td><td>₦10m or 2% of turnover (NDPC); €15m or 3% (AI Act)</td></tr>
+<tr><td><b>Upstream vendor</b></td><td>Protect its terms</td><td>Suno terminates the reseller's access</td><td>Product stops working the same afternoon</td></tr>
+</tbody></table></div>
+
+<p>Two things follow. First, <b>the sensitive asset here is not payment data</b> — Stripe and Flutterwave hold that — it is the briefs. A birthday song for a named child, a proposal song naming a partner, a memorial song naming the deceased. That is intimate personal data under any privacy regime, and it is what a breach would actually expose. Second, <b>the highest-probability incident is not an attack at all</b>, it is the upstream provider disappearing.</p>
+
+<h2 id="findings">3. Technical findings</h2>
+
+<p>Each finding names the file so you can open it. Severity is my judgement of likelihood multiplied by impact for this product at this stage, not a CVSS score.</p>
+
+<h3 id="f-crit">Critical</h3>
+
+<div class="f crit">
+<div class="f-head"><span class="f-id">SEC-01</span><span class="sev s-crit">Critical</span><h4>Two unauthenticated remote-code-execution advisories in the installed Next.js</h4></div>
+<p><code>package.json</code> pins Next.js 16.0.0. That version is inside the affected range for two advisories that require no authentication: a remote code execution on Windows-hosted servers, and a remote code execution in the image optimisation endpoint when AVIF files are processed. The app uses <code>next/image</code> heavily, with remote patterns allowing Supabase storage, the R2 samples bucket and provider CDNs, so the image pipeline is reachable and actively used.</p>
+<p>Vercel's managed runtime is Linux, which removes the Windows vector for production, but not for any self-hosted or preview environment, and not for the image path at all.</p>
+<div class="fix"><b>Fix</b>Upgrade to Next.js 16.3.5 or later. It is outside the currently declared range, so it needs a version bump and a regression pass over the App Router surfaces, not just <code>npm audit fix</code>. Do this before anything else in this document.</div>
+<span class="where"><b>Where:</b> package.json · confirmed by <code>npm audit --omit=dev</code> on 22 Sep 2026 · GHSA-p293-qw3h-jr36, GHSA-2xp9-vwfh-vxw4</span>
+</div>
+
+<div class="f crit">
+<div class="f-head"><span class="f-id">SEC-02</span><span class="sev s-crit">Critical</span><h4>The full source, including the internal architecture guide, is on a public GitHub repository</h4></div>
+<p>The mirror at <code>github.com/neo1415/songscribe</code> was public when the branches were pushed on 14 September. It carries every branch, and with them <code>claude.md</code> — a 912-line document describing the architecture, the flows, the known gotchas and where the security controls live. No secrets are in the repository, which is the one saving grace, but this is a complete map for an attacker and a complete blueprint for a competitor.</p>
+<p>It also complicates the acquisition story. A buyer asking "has the source ever been publicly disclosed" now has a yes, with a date range, and will want to know for how long and who cloned it.</p>
+<div class="fix"><b>Fix</b>Make the repository private today. Then assume disclosure: rotate every credential referenced anywhere in the repo's history or documentation, even placeholders, and record the exposure window in the incident log you are about to start keeping.</div>
+<span class="where"><b>Where:</b> github.com/neo1415/songscribe · verified public 14 Sep 2026 · status today unconfirmed</span>
+</div>
+
+<h3 id="f-high">High</h3>
+
+<div class="f high">
+<div class="f-head"><span class="f-id">SEC-03</span><span class="sev s-high">High</span><h4>No Content-Security-Policy anywhere</h4></div>
+<p><code>buildSecurityHeaders()</code> sets <code>X-Frame-Options</code>, <code>X-Content-Type-Options</code>, <code>Referrer-Policy</code>, <code>X-DNS-Prefetch-Control</code> and <code>Permissions-Policy</code>. There is no <code>Content-Security-Policy</code> and no <code>Strict-Transport-Security</code>.</p>
+<p>That matters more here than on an average site because the pages load Google Tag Manager and a Meta pixel, both of which inject further scripts at runtime. Any cross-site scripting flaw — in a song title, a shared-page title, a lyric rendered as markup, a third-party tag that gets compromised — has no second line of defence. It is also the control that PCI DSS 4.0.1 requirements 6.4.3 and 11.6.1 are effectively asking you to demonstrate, and those two requirements are <i>not</i> outsourced by using Stripe's hosted checkout.</p>
+<div class="fix"><b>Fix</b>Add a CSP in report-only mode first, tune it against real traffic for a week, then enforce. Add HSTS with a long max-age once you are certain every subdomain is HTTPS. Both go in <code>src/lib/security-headers.ts</code>, which already has the right shape for per-route overrides.</div>
+<span class="where"><b>Where:</b> src/lib/security-headers.ts · next.config.ts · src/app/layout.tsx (GTM-KP63F74M, Meta pixel 750371207831007 are hardcoded literals)</span>
+</div>
+
+<div class="f high">
+<div class="f-head"><span class="f-id">SEC-04</span><span class="sev s-high">High</span><h4>34 of 59 privileged database functions do not pin their search path</h4></div>
+<p>The schema defines 59 <code>SECURITY DEFINER</code> functions — functions that run with the definer's privileges rather than the caller's — and only 25 include <code>SET search_path</code>. A definer function without a pinned search path is the classic PostgreSQL privilege-escalation primitive: a caller who can create objects in a schema that appears earlier on the search path can shadow a table or function name the definer body references, and have their own code run with elevated privileges.</p>
+<p>On Supabase the practical exposure is narrower than on a self-managed cluster, because <code>authenticated</code> cannot normally create objects in <code>public</code>. It is still the single most repeated hardening miss in the schema, it is what every database security scanner will flag first, and the newer migrations show the author already knows the pattern — the credits functions written in August all pin it, the February ones do not.</p>
+<div class="fix"><b>Fix</b>One migration adding <code>SET search_path = public, pg_temp</code> to every definer function that lacks it. Mechanical, low risk, and it closes an entire finding class in a single review.</div>
+<span class="where"><b>Where:</b> supabase/migrations — 59 <code>security definer</code> declarations, 25 <code>set search_path</code>. Worst concentrated in 001_initial_schema.sql and the Feb 2026 files.</span>
+</div>
+
+<div class="f high">
+<div class="f-head"><span class="f-id">SEC-05</span><span class="sev s-high">High</span><h4>The Flutterwave webhook binds a payment to an account by email address</h4></div>
+<p>The primary path is sound: verify the <code>verif-hash</code> header, re-verify the transaction against Flutterwave's API, check status and amount, dedupe on <code>flw_&lt;id&gt;</code>. Then, if no pending order matches, the handler looks the user up by the customer email Flutterwave reported and can create an active order for them.</p>
+<p>Email is not an identity in this system. A customer who pays from a different email than their account gets nothing; two accounts sharing a billing email get each other's entitlements; and anyone who can cause a payment to carry a chosen email influences which account is credited. It is an authorisation decision made on an attacker-influenceable, non-unique attribute.</p>
+<div class="fix"><b>Fix</b>Bind strictly on <code>tx_ref</code>. When there is no match, record the payment in a reconciliation queue, alert, and stop. Never create an order from a fallback lookup.</div>
+<span class="where"><b>Where:</b> src/app/api/webhooks/flutterwave/route.ts — <code>.eq('email', customerEmail)</code> at ~line 133, order insert at ~line 201</span>
+</div>
+
+<div class="f high">
+<div class="f-head"><span class="f-id">SEC-06</span><span class="sev s-high">High</span><h4>Flutterwave's <code>verif-hash</code> is a static shared secret, and the amount comparison is not currency-aware</h4></div>
+<p>Two issues in one place. First, <code>verifyWebhookSignature</code> compares the <code>verif-hash</code> header against a configured secret in constant time, which is exactly what Flutterwave's own documentation asks for — but that header is a fixed value, identical on every webhook, not an HMAC over the request body. It is a bearer token, so anyone who observes one legitimate webhook can replay arbitrary bodies. The code largely defuses this by re-verifying every transaction against the Flutterwave API before acting, which is the right defence and deserves credit. The residual risk is that any future branch which trusts the payload without that round trip silently becomes forgeable.</p>
+<p>Second, the order path stores <code>amount_cents: Math.round(amount * 100)</code>. The codebase has a currency-aware <code>toMinorUnits</code> helper and imports it in the same file, but this branch does not use it. Today Flutterwave means naira, which happens to have two decimal places, so the number is right by luck rather than by construction.</p>
+<div class="fix"><b>Fix</b>Keep the verify-then-settle discipline and write it down as a rule for future branches. Replace both <code>Math.round(amount * 100)</code> call sites with <code>toMinorUnits(amount, currency)</code>.</div>
+<span class="where"><b>Where:</b> src/lib/flutterwave.ts:104 · src/app/api/webhooks/flutterwave/route.ts:185, :207</span>
+</div>
+
+<div class="f high">
+<div class="f-head"><span class="f-id">SEC-07</span><span class="sev s-high">High</span><h4>The music provider callback is authenticated by a secret in the query string</h4></div>
+<p><code>buildCallbackUrl</code> appends <code>?secret=…</code> to the webhook URL, and <code>verifyCallback</code> compares it in constant time. Query strings are the worst place to carry a credential: they land in access logs, proxy logs, referrer headers and error reports at every hop between the provider and Vercel. The provider's own dashboard will display it.</p>
+<p>The design is not naive — when verification fails, the handler does not reject outright, it polls the provider for the task's real status over an authenticated channel and only then acts, which means a forged callback cannot fabricate a completed song. That is genuinely good. But it also means a missing or rotated secret degrades to the slow path silently, with nothing but a <code>console.info</code> to say so.</p>
+<div class="fix"><b>Fix</b>Move the secret to a request header if the provider supports one, and alert on any unverified callback rather than only logging it. The polling fallback should be the exception you get paged about, not the quiet default.</div>
+<span class="where"><b>Where:</b> src/lib/music/callback-url.ts:20 · src/lib/music/providers/musicapi.ts:182 · src/lib/music/callback-handler.ts:155</span>
+</div>
+
+<div class="f high">
+<div class="f-head"><span class="f-id">SEC-08</span><span class="sev s-high">High</span><h4>Rate-limit identity trusts the first hop of <code>x-forwarded-for</code></h4></div>
+<p><code>getIdentifier()</code> falls back for anonymous callers to <code>headers.get('x-forwarded-for')?.split(',')[0]</code>. The left-most entry of that header is the value the client sent, not the value the edge observed. On Vercel this is normally rewritten, but the code does not depend on that being true, and the moment anything else sits in front of the app — a WAF, Cloudflare, a self-hosted deployment — an attacker sets the header and gets a fresh quota bucket per request.</p>
+<p>Every anonymous control in the product keys off this: the demo generation limit, the lyrics limit, the audio streaming limit, the contact form.</p>
+<div class="fix"><b>Fix</b>Prefer <code>x-vercel-forwarded-for</code> (or the right-most non-proxy entry) and treat a missing trustworthy value as unidentified rather than as <code>127.0.0.1</code>, which currently pools every such caller into one shared bucket.</div>
+<span class="where"><b>Where:</b> src/lib/rate-limit.ts — <code>getIdentifier()</code></span>
+</div>
+
+<div class="f high">
+<div class="f-head"><span class="f-id">SEC-09</span><span class="sev s-high">High</span><h4>Redis failure behaviour is inconsistent across the three systems that depend on it</h4></div>
+<p>I checked each one rather than assuming, and they disagree:</p>
+<ul>
+<li><b>Rate limiting</b> has no error handling at all. An Upstash outage makes <code>limiter.limit()</code> throw, which surfaces as a 500 from every protected route. That is fail-closed, which is safe, but it means Redis is a hard dependency for the whole API.</li>
+<li><b>Music dispatch capacity</b> catches and returns <code>true</code> — fail-open. During an outage there is no in-flight ceiling on provider spend.</li>
+<li><b>Producer admission</b> catches and returns <code>{ok:false, reason:'unavailable'}</code> — fail-closed.</li>
+</ul>
+<p>Three behaviours for one dependency is a decision that was never made. Worth noting this corrects my own earlier handover note, which described the whole system as failing open.</p>
+<div class="fix"><b>Fix</b>Decide deliberately per control, document it in one place, and alert on the degraded path. My recommendation: fail closed for anything that spends money, fail open for anything that only affects experience.</div>
+<span class="where"><b>Where:</b> src/lib/rate-limit.ts (no catch) · src/lib/music/budget.ts:141 (<code>return true</code>) · src/lib/producer/session-budget.ts:225 (<code>return {ok:false}</code>)</span>
+</div>
+
+<div class="f high">
+<div class="f-head"><span class="f-id">SEC-10</span><span class="sev s-high">High</span><h4>No error tracking, no alerting, no audit trail</h4></div>
+<p>Observability is <code>console.log</code> with structured prefixes, read through Vercel's log viewer. There is no error tracker, no metric, and nothing that pages a human. Concretely, nobody would learn that a webhook signature started failing, that the music provider is being struck out for health, that credit spends are erroring, or that someone is walking ids across the audio proxy.</p>
+<p>Separately, there is no audit log for privileged actions. Tier grants, announcements and credit backfills all run as the service role from a laptop, and the only record is the row they changed. For an incident review, and for any future SOC 2 attempt, that is not enough.</p>
+<div class="fix"><b>Fix</b>Add a Sentry-class tracker and three alerts to start: webhook verification failures, provider health strikes, and errors from the credits RPCs. Add an <code>audit_log</code> table that every service-role script and future admin action writes to.</div>
+<span class="where"><b>Where:</b> whole codebase · no error-reporting dependency in package.json</span>
+</div>
+
+<h3 id="f-med">Medium</h3>
+
+<div class="f med">
+<div class="f-head"><span class="f-id">SEC-11</span><span class="sev s-med">Medium</span><h4>The image proxy performs no authorisation at all</h4></div>
+<p><code>/api/images</code> takes a <code>path</code> parameter, checks only that it begins with <code>covers/</code>, mints a one-hour signed URL with the service role and redirects. There is no session check, no ownership check and no rate limit. Anyone who learns or guesses a path can read any cover image in the bucket, and the one-hour signed URL can then be shared onwards freely.</p>
+<p>Impact is bounded because cover art is generated artwork rather than intimate content, and paths embed UUIDs so they are not enumerable. It is still an unauthenticated read against private storage, and it is the kind of finding a diligence reviewer circles immediately.</p>
+<div class="fix"><b>Fix</b>Resolve the path back to a song, then apply the same three-way ownership check the audio route already implements (owner, valid share token, or matching demo session). Shorten the signed URL life and add the <code>stream</code> rate limiter.</div>
+<span class="where"><b>Where:</b> src/app/api/images/route.ts — compare with src/app/api/audio/stream/route.ts, which does this correctly</span>
+</div>
+
+<div class="f med">
+<div class="f-head"><span class="f-id">SEC-12</span><span class="sev s-med">Medium</span><h4>Personal data is written to application logs</h4></div>
+<p>The audio proxy logs user ids, owner ids and demo session ids on every unauthorised attempt. The Flutterwave webhook logs the customer's email address when a lookup fails. Producer routes log session ids. None of this is unusual engineering practice, and all of it is personal data flowing into a third-party log store with no stated retention period, no access control of its own, and no mention in the privacy policy.</p>
+<div class="fix"><b>Fix</b>Redact or hash identifiers in logs, set a retention period on the log platform, and name log processing in the privacy policy. Under both NDPA and GDPR, logs are processing like any other.</div>
+<span class="where"><b>Where:</b> src/app/api/audio/stream/route.ts (several) · src/app/api/webhooks/flutterwave/route.ts:137</span>
+</div>
+
+<div class="f med">
+<div class="f-head"><span class="f-id">SEC-13</span><span class="sev s-med">Medium</span><h4>The service-role key is used on developer laptops</h4></div>
+<p><code>scripts/announce.mjs</code> and <code>scripts/backfill-credits.mjs</code> both require <code>SUPABASE_SECRET_KEY</code> — the credential that bypasses every RLS policy in the schema. The announce script's own header comment identifies this as the most dangerous credential in the system and proposes moving it into a manual CI job. That has not happened.</p>
+<p>Both scripts are unusually well guarded against the <i>accident</i> case: production requires an explicit <code>--confirm-production</code> flag, dry runs are the default, and the backfill aborts rather than trimming an implausible grant. Neither guards against the <i>laptop</i> case.</p>
+<div class="fix"><b>Fix</b>Move both to manual CI jobs so the key lives in CI secrets and every run has an actor and a timestamp. Rotate the key afterwards.</div>
+<span class="where"><b>Where:</b> scripts/announce.mjs · scripts/backfill-credits.mjs</span>
+</div>
+
+<div class="f med">
+<div class="f-head"><span class="f-id">SEC-14</span><span class="sev s-med">Medium</span><h4>Demo quota is a check-then-update race</h4></div>
+<p>Carried over from the handover review and repeated here because it has a cost line. The route reads <code>demo_usage</code>, decides, then updates. Parallel requests from one IP all pass the read. The comment in the file acknowledges it as acceptable for a soft cap. It is a soft cap on a hard cost: every extra generation is a real payment to the music provider for an anonymous user.</p>
+<div class="fix"><b>Fix</b>One SQL function that increments and refuses atomically, in the pattern <code>check_style_boost_quota</code> already uses.</div>
+<span class="where"><b>Where:</b> src/app/api/generate/route.ts:112</span>
+</div>
+
+<div class="f med">
+<div class="f-head"><span class="f-id">SEC-15</span><span class="sev s-med">Medium</span><h4>No dependency update process, and three more advisories waiting</h4></div>
+<p>Beyond the Next.js criticals, the audit reports a high in <code>sharp</code> (libheif), a high in <code>nanoid</code>, a high in <code>brace-expansion</code>, plus development-only advisories in <code>vitest</code> and <code>js-yaml</code>. Nothing in the repository updates dependencies on a schedule: no Dependabot config, no Renovate, and GitLab's dependency-scanning template is not among the two security templates the pipeline includes.</p>
+<div class="fix"><b>Fix</b>Add GitLab Dependency Scanning to <code>.gitlab-ci.yml</code> alongside the SAST and secret-detection templates already there, and turn on automated update merge requests.</div>
+<span class="where"><b>Where:</b> .gitlab-ci.yml · package-lock.json · 8 advisories total on 22 Sep 2026</span>
+</div>
+
+<div class="f med">
+<div class="f-head"><span class="f-id">SEC-16</span><span class="sev s-med">Medium</span><h4>The CSRF defence depends on one environment variable being exactly right</h4></div>
+<p><code>proxy.ts</code> rejects any mutating <code>/api/*</code> request whose <code>Origin</code> or <code>Referer</code> does not match <code>NEXT_PUBLIC_APP_URL</code>, defaulting to <code>http://localhost:3000</code>. The logic is correct and the webhook paths are properly exempt. The fragility is operational: if that variable is unset or wrong in an environment, every write silently 403s, and if it were ever set to something permissive the protection quietly disappears. There is no startup assertion.</p>
+<p>Note also that accepting <code>Referer</code> as a fallback is weaker than <code>Origin</code> alone, since referrer policies vary by browser and can be suppressed.</p>
+<div class="fix"><b>Fix</b>Assert the variable at boot and fail to start without it in production. Prefer <code>Origin</code>; treat a missing <code>Origin</code> on a same-site fetch as a rejection rather than reaching for <code>Referer</code>.</div>
+<span class="where"><b>Where:</b> src/proxy.ts — CSRF block at the top of <code>proxy()</code></span>
+</div>
+
+<div class="f med">
+<div class="f-head"><span class="f-id">SEC-17</span><span class="sev s-med">Medium</span><h4>The admin gate exists, is unused, and is enforced in the wrong layer</h4></div>
+<p><code>proxy.ts</code> redirects anyone without <code>profiles.role = 'admin'</code> away from <code>/admin</code>. No <code>/admin</code> route exists yet, so nothing is protected today. The concern is what happens when someone builds one: middleware-level authorisation is a routing convenience, not a security boundary, and it does nothing for <code>/api/admin/*</code> handlers, which are not covered by that check at all.</p>
+<p>Relatedly, <code>is_admin()</code> is deliberately left executable by <code>anon</code> — a choice the migration comments explain and which is defensible, since it reads <code>auth.uid()</code> and returns a boolean about the caller themselves.</p>
+<div class="fix"><b>Fix</b>When the admin surface lands, check the role inside every handler and enforce it again in RLS policies. Treat the middleware redirect as user experience only.</div>
+<span class="where"><b>Where:</b> src/proxy.ts:93-106 · supabase/migrations/20260130200000_fix_profiles_rls_recursion.sql</span>
+</div>
+
+<div class="f med">
+<div class="f-head"><span class="f-id">SEC-18</span><span class="sev s-med">Medium</span><h4>Prompt injection is structurally contained, but not defended in the prompt</h4></div>
+<p>I looked for this specifically because the AI Producer hands user text to a model that can call tools. The architecture is genuinely good: the six tools only ever <i>propose</i>, spending requires a one-time nonce bound to a hash of the brief, the nonce expires in 120 seconds, the tool loop is capped at three iterations, and <code>prompt-builder.ts</code> runs user fields through a <code>sanitize()</code> helper. A user who injects instructions can make the agent say odd things; they cannot make it spend money without the human pressing the confirm card.</p>
+<p>What is missing is any instruction in the 229-line system prompt telling the model that user content is data rather than instruction, and any output handling for the case where a model returns attacker-chosen text that is then rendered. The containment is entirely structural, with no depth behind it.</p>
+<div class="fix"><b>Fix</b>Add an explicit boundary statement to the system prompt, and keep the structural guarantees as the real defence — they are the part that works.</div>
+<span class="where"><b>Where:</b> src/lib/producer/system-prompt.ts · src/lib/producer/tool-runtime.ts · src/lib/prompt-builder.ts</span>
+</div>
+
+<div class="f med">
+<div class="f-head"><span class="f-id">SEC-19</span><span class="sev s-med">Medium</span><h4>No documented backup, restore or incident process</h4></div>
+<p>Supabase takes automated backups on paid plans, but nothing in the repository states the retention, whether a restore has ever been tested, who declares an incident, or how a breach notification would be issued inside the 72 hours that GDPR requires. For an audio product, the storage bucket matters as much as the database, and bucket contents are not covered by a Postgres backup.</p>
+<div class="fix"><b>Fix</b>Write a one-page runbook: backup scope and retention, a tested restore, key rotation steps, and an incident path with named roles and regulator deadlines. Test the restore once and date it.</div>
+<span class="where"><b>Where:</b> no runbook, no SECURITY.md, no incident policy in the repository</span>
+</div>
+
+<h3 id="f-low">Low and hygiene</h3>
+
+<div class="tw"><table>
+<thead><tr><th>ID</th><th>Finding</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>SEC-20</td><td>No <code>SECURITY.md</code> and no vulnerability disclosure contact</td><td>A researcher who finds something has no way to tell you. One file, fifteen minutes.</td></tr>
+<tr><td>SEC-21</td><td>No <code>LICENSE</code> file; <code>package.json</code> declares no licence, so tooling reports the project as <code>UNLICENSED</code></td><td>Correct for proprietary code, but a buyer's SCA scan flags it. Declare it explicitly as proprietary and add a copyright header policy.</td></tr>
+<tr><td>SEC-22</td><td><code>record_song_play</code> is executable by <code>anon</code></td><td>Deliberate and documented — anonymous listeners on shared links must register plays. Bounded: it takes a song UUID and adds one row. Fine as designed.</td></tr>
+<tr><td>SEC-23</td><td>Analytics identifiers hardcoded in the root layout</td><td>Every local session and preview deployment reports into production analytics, which is a data-quality and minimisation issue rather than a breach.</td></tr>
+<tr><td>SEC-24</td><td>Storage buckets are private; share tokens are 128-bit random</td><td>Verified correct. <code>randomBytes(16).toString('base64url')</code> with a unique index. No action.</td></tr>
+<tr><td>SEC-25</td><td>Demo session cookie is <code>httpOnly</code>, <code>secure</code> in production, <code>sameSite=lax</code>, 24h</td><td>Verified correct. No action.</td></tr>
+<tr><td>SEC-26</td><td>Open-source licences are clean</td><td>267 production dependencies: 211 MIT, 20 Apache-2.0, 13 BSD-3, 9 ISC, and one MPL-2.0 (<code>@vercel/analytics</code>, file-level copyleft, safe when unmodified). <code>jszip</code> is MIT-or-GPL, so elect MIT in writing. No strong copyleft anywhere.</td></tr>
+<tr><td>SEC-27</td><td>No secrets in git history</td><td>Searched the full history for Stripe, Flutterwave, Supabase JWT, Google and Resend key patterns. Only <code>.env.local.example</code> placeholders. Clean, and worth saying so in diligence.</td></tr>
+</tbody></table></div>
+
+<h2 id="good">4. What is already strong</h2>
+
+<p>A security report that lists only problems gives a false picture, and in diligence you will be asked what the controls <i>are</i>. These are real and defensible.</p>
+
+<div class="kv">
+  <b>RLS everywhere</b><span>Every table has row-level security enabled, with a documented fix for the recursive policy bug that bit <code>profiles</code> early on.</span>
+  <b>Definer functions closed</b><span>Forty-seven <code>revoke</code> statements across the migrations, several in migrations whose entire purpose is closing grants Supabase adds by default. Three separate hardening passes in March and September.</span>
+  <b>Idempotent money</b><span>Dedupe keys on every ledger row, advisory locks inside <code>spend_credits</code>, one settlement function shared by webhook and redirect, verify-then-settle for Flutterwave, Stripe signature verification.</span>
+  <b>Constant-time comparison</b><span><code>safeEqual</code> is used for the cron secret, the Flutterwave hash, the music callback secret and the producer session token. Consistently, not occasionally.</span>
+  <b>Private media</b><span>Both storage buckets are private. Audio is served through a proxy that checks ownership, share token or demo session before minting a 60-second signed URL.</span>
+  <b>Voice session binding</b><span>An HMAC token over <code>{userId, sessionId}</code>, minted only where ownership was just checked. It closed a real vulnerability where a caller could name someone else's producer session and have the agent read out their brief.</span>
+  <b>Cron fails closed</b><span>The retention endpoint returns 404 — not 401 — when unauthenticated, and refuses to run at all when <code>CRON_SECRET</code> is unset.</span>
+  <b>Security in CI</b><span>GitLab SAST and secret detection run on every pipeline; typecheck, lint, format and 1,413 unit tests block merges.</span>
+  <b>Tests written from incidents</b><span><code>e2e/spend.spec.ts</code> exists because both spend routes once answered anonymous callers. The test's header documents the exact flaw. That is the right instinct.</span>
+</div>
+
+<h2 id="compliance">5. Compliance</h2>
+
+<p>SongScribe sells to Nigeria, the UK and the euro area, processes intimate personal data, takes card payments, records voice, and generates synthetic audio. That combination pulls in six regimes at once. None of them are satisfied today, and three of them are already in force.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Regime</th><th>Applies because</th><th>Status</th><th>Exposure</th></tr></thead>
+<tbody>
+<tr><td><b>NDPA 2023</b> (Nigeria)</td><td>Nigerian users, naira pricing, Flutterwave</td><td><span class="sev s-high">Unmet</span> No NDPC registration evident</td><td>₦10m or 2% of gross revenue</td></tr>
+<tr><td><b>GDPR / UK GDPR</b></td><td>GBP and EUR pricing targets EU and UK residents</td><td><span class="sev s-high">Partial</span> Policy exists, subprocessors unnamed, no DPA chain, no DSR process</td><td>€20m or 4% of turnover</td></tr>
+<tr><td><b>EU AI Act Art. 50</b></td><td>Generates synthetic audio for EU users</td><td><span class="sev s-crit">Unmet, in force</span> Since 2 Aug 2026; no content marking</td><td>€15m or 3% of turnover</td></tr>
+<tr><td><b>PCI DSS 4.0.1</b></td><td>Card payments, even fully hosted</td><td><span class="sev s-med">Partial</span> SAQ A scope, but 6.4.3 and 11.6.1 unmet</td><td>Acquirer penalties, loss of processing</td></tr>
+<tr><td><b>Copyright</b></td><td>Sells licences in AI-generated works</td><td><span class="sev s-high">Overclaimed</span> Exclusive tier promises more than is defensible</td><td>Refunds, misrepresentation claims</td></tr>
+<tr><td><b>Upstream ToS</b></td><td>Suno has no public API; access is via a reseller</td><td><span class="sev s-crit">Unresolved</span> Supply chain may breach vendor terms</td><td>Service termination; diligence failure</td></tr>
+</tbody></table></div>
+
+<h3 id="c-ndpa">Nigeria Data Protection Act 2023</h3>
+
+<p>The NDPA creates a category called a <b>data controller or processor of major importance</b>, and the Commission's guidance puts you in it once you process the personal data of more than 200 data subjects. SongScribe holds accounts, emails, payment references, song briefs naming real people, and play history. Two hundred users is an early milestone, not a distant one, and the obligation attaches whether or not anyone has registered.</p>
+
+<p>What that means concretely: register with the NDPC, file a Compliance Assessment Report annually, notify the Commission of significant changes within 60 days, and appoint a Data Protection Officer. The General Application and Implementation Directive issued in March 2025 is the operative detail. Penalties for a controller of major importance run to ₦10 million or 2% of annual gross revenue, whichever is higher.</p>
+
+<p>There is no evidence in the codebase or the legal pages of any of this. The privacy policy mentions "third-party" twice and does not name a single processor.</p>
+
+<h3 id="c-gdpr">GDPR and UK GDPR</h3>
+
+<p>Pricing in GBP and EUR, with prices held in <code>product_prices</code> for both, is the textbook indicator of "targeting" under Article 3(2). Extraterritorial scope applies. The gaps, in the order a regulator would find them:</p>
+
+<ul>
+<li><b>No named subprocessors.</b> Users are not told that their song brief goes to a music provider in one jurisdiction, their lyrics to Google, their conversation to Google or Anthropic, their voice to ElevenLabs, their email to Resend and ZeptoMail, their payment to Stripe or Flutterwave. Each of those needs naming, a lawful basis, and a data processing agreement on file.</li>
+<li><b>No records of processing, no DPIA.</b> A DPIA is expected for large-scale processing involving novel technology; an AI system that generates content from personal stories and records voice is squarely in that territory.</li>
+<li><b>No data subject request process.</b> Account deletion exists and is thorough — it soft-deletes rows, deletes the auth user and clears cookies. There is no export, and no documented route for access, rectification or objection requests.</li>
+<li><b>International transfers.</b> Nigerian, US and EU processing all mix. Transfer mechanisms need to be identified per processor.</li>
+<li><b>Breach notification.</b> Seventy-two hours, and currently nobody is monitoring for a breach at all (SEC-10), so the clock would start whenever someone happened to notice.</li>
+</ul>
+
+<h3 id="c-voice">Voice and biometric-adjacent data</h3>
+
+<p>This one is under-appreciated in the current design. The AI Producer's voice mode streams the user's microphone to ElevenLabs. Voice recordings are personal data always, and under most GDPR readings they become biometric data — an Article 9 special category requiring explicit consent — when processed for the purpose of identifying a person. SongScribe does not identify anyone by voice, which is the strongest argument that Article 9 is not engaged. But the conservative reading, and the one a buyer's counsel will take, is that a voice conversation carrying a person's story about their family needs explicit notice, a stated retention period, and a signed DPA with the processor.</p>
+
+<p>Today, a user taps a microphone button, the browser asks for permission, and nothing tells them a third-party US company receives the audio. ElevenLabs publishes a DPA, operates under the EU-US Data Privacy Framework and offers data residency, but residency is an enterprise-tier feature and processing may still occur outside the selected region for support and moderation. Their stated biometric retention is until no longer needed or three years after the relationship ends.</p>
+
+<div class="note"><p><b>Minimum viable fix:</b> a sentence at the microphone prompt naming ElevenLabs and linking the policy, ElevenLabs' DPA countersigned and filed, the retention period written into the privacy policy, and a decision recorded on whether voice is stored at all or only streamed. If it is only streamed and never persisted, say so — that is the strongest position available and it is nearly free.</p></div>
+
+<h3 id="c-aiact">EU AI Act, Article 50</h3>
+
+<p>This is the finding with the nearest deadline, because the deadline has passed. Article 50's transparency obligations applied from <b>2 August 2026</b>. SongScribe is a deployer of a generative AI system and, because it packages and supplies generated audio to end users under its own brand, plausibly a downstream provider too.</p>
+
+<p>Two obligations bite. Providers of systems generating synthetic audio must mark outputs in a <b>machine-readable format</b> so they can be detected as artificially generated. Deployers publishing AI-generated content must <b>disclose its artificial nature</b> to the audience. Fines reach €15 million or 3% of worldwide turnover.</p>
+
+<p>SongScribe does neither. The MP3 that a customer downloads carries no provenance metadata, the public share page at <code>/s/[token]</code> does not state that the track is AI-generated, and the licence PDF is silent on it. The marketing copy says "AI-powered", which is a claim about the service, not a disclosure attached to the content.</p>
+
+<div class="callout">
+<p><b>What good looks like here is cheap.</b> Write C2PA-style provenance or, at minimum, ID3 tags naming the generator into every file at the point <code>storage.ts</code> saves it. Add a visible line on the share page and in the licence certificate. Adopt the DDEX AI-disclosure fields in any distribution metadata. This is a few days of work that converts a live regulatory exposure into a feature you can advertise, and it aligns with where Spotify and Apple Music have already moved.</p>
+</div>
+
+<h3 id="c-pci">PCI DSS</h3>
+
+<p>Both payment flows redirect to a hosted page — Stripe Checkout Sessions and Flutterwave payment links — and no card data ever touches SongScribe's servers. That is the right architecture and it puts you in SAQ A, the shortest self-assessment.</p>
+
+<p>SAQ A is not zero. Under PCI DSS 4.0.1, merchants retain requirements <b>6.4.3</b> (inventory and authorise every script on the payment page) and <b>11.6.1</b> (detect tampering with payment page headers and content), plus the Requirement 12 policy obligations. With no CSP (SEC-03), no script inventory, and Tag Manager free to inject arbitrary scripts into pages in the payment flow, there is currently no way to evidence either. Eligibility for SAQ A also has to be confirmed with the acquirer rather than assumed.</p>
+
+<h3 id="c-ip">Copyright, licensing and the supply chain</h3>
+
+<p>Three problems stack here, and together they are the most commercially serious section of this report.</p>
+
+<p><b>The output may not be copyrightable.</b> The US Copyright Office's position, as set out in its 2025 guidance on generative AI, is that purely AI-generated material is not protected; registration requires meaningful human authorship, and typing a prompt and pressing generate does not qualify. A SongScribe user who fills in a wizard and receives a track has, on that reading, no copyright to be granted. Yet the Exclusive tier sells "full commercial rights", "Content ID allowed" and "Exclusive Worldwide license", and the FAQ says the song "will never be resold or reused by us". Some of that is a contractual promise SongScribe can keep. "You own it and can register it with Content ID" is not.</p>
+
+<p><b>The FAQ promises features that do not exist.</b> It states that higher tiers provide lossless WAV downloads. Nothing in the codebase produces WAV. There is a <code>audio.wav</code> row in the credit price list, which suggests intent, but the download path serves MP3. That is a straightforward misrepresentation to fix before it becomes a refund dispute.</p>
+
+<p><b>The supply chain is the existential one.</b> As of 2026 Suno publishes no sanctioned developer API. Every "Suno API" in circulation, including sunoapi.org and musicapi.org, wraps reverse-engineered access. SongScribe's entire product is built on one of them. Three consequences: the service can stop the day Suno blocks the reseller; the commercial-use rights the reseller passes through may not be the reseller's to grant, which undermines every licence SongScribe sells downstream; and an acquirer's counsel will treat this as a material risk requiring either a direct vendor agreement or a demonstrated ability to switch providers.</p>
+
+<p>The provider abstraction in <code>src/lib/music/</code> was built for exactly this. Finishing it — a second adapter, and routing stems, cover art and style boost through the seam rather than calling <code>sunoClient</code> directly — is the single highest-value engineering task in the business, and it should be framed to the team as risk reduction rather than refactoring.</p>
+
+<h2 id="acq">6. Acquisition readiness</h2>
+
+<p>A buyer's technical diligence asks four questions: do you own it, does it work, is it safe, and can someone else run it. Here is how SongScribe answers today.</p>
+
+<h3 id="a-killers">Deal killers, in order</h3>
+
+<div class="f crit">
+<div class="f-head"><span class="f-id">ACQ-01</span><span class="sev s-crit">Critical</span><h4>Chain of title on the code</h4></div>
+<p>Every one of the 258 commits is by one author. If there is no signed agreement assigning copyright in that work to the company — an employment contract with an IP clause, or a contractor IP assignment — then the company does not clearly own its only asset. This is the most common reason small software acquisitions collapse, and it is the only item on this list whose difficulty <i>increases</i> with time and with the existence of a deal.</p>
+<div class="fix"><b>Do now</b>Confirm the agreement exists and covers all work from the first commit. If it does not, get one signed while the relationship is good and nothing is pending. Do the same for anyone else who has ever contributed, including designers who produced the Figma files the UI is built from.</div>
+</div>
+
+<div class="f crit">
+<div class="f-head"><span class="f-id">ACQ-02</span><span class="sev s-crit">Critical</span><h4>No contract with the upstream model provider</h4></div>
+<p>See the supply-chain paragraph above. A buyer will ask to see the agreement that entitles SongScribe to generate and commercially license music. There is a reseller relationship, and the reseller's own right to grant that is unclear. Expect either a price reduction, an escrow holdback, or a condition precedent requiring a direct agreement.</p>
+<div class="fix"><b>Do now</b>Obtain the reseller's written terms on commercial use and sublicensing. Approach Suno or an alternative vendor about a direct agreement. Finish the provider seam so "we can switch in a week" is demonstrable rather than aspirational.</div>
+</div>
+
+<div class="f high">
+<div class="f-head"><span class="f-id">ACQ-03</span><span class="sev s-high">High</span><h4>Bus factor of one, with no operational documentation</h4></div>
+<p>One author, no code review history, no runbook, no architecture document that is current (<code>claude.md</code> is stale and <code>README.md</code> is create-next-app boilerplate), and every privileged operation performed by hand from a laptop. Buyers price key-person risk directly, and integration planning depends on being able to hand the system to a new team.</p>
+<div class="fix"><b>Do now</b>The handover handbook is the start. Add a runbook, put reviews on merge requests, and get a second engineer's hands on every critical path. You taking over is itself the mitigation — make the transfer visible in the commit history.</div>
+</div>
+
+<div class="f high">
+<div class="f-head"><span class="f-id">ACQ-04</span><span class="sev s-high">High</span><h4>No security or privacy programme to point at</h4></div>
+<p>No penetration test, no SOC 2, no ISO 27001, no vulnerability disclosure policy, no incident history, no access review, no evidence of offboarding. For a consumer product at this stage that is normal; the problem is that "normal" still scores zero on a diligence questionnaire, and enterprise customers ask the same questions before they sign.</p>
+<div class="fix"><b>Do now</b>Cheapest credible order: fix the findings in this report, write the policies, commission a one-week external penetration test, then start a SOC 2 Type I. Type II needs an observation window, so it is a next-year item.</div>
+</div>
+
+<h3 id="a-room">What belongs in the data room</h3>
+
+<p>Assemble this before you need it. Every item you cannot produce in the week it is asked for becomes a discount.</p>
+
+<div class="two">
+<div class="callout"><p><b>Ownership and legal</b></p><ul>
+<li>IP assignment for every contributor, from commit one</li>
+<li>Contracts with Suno reseller, ElevenLabs, Google, Anthropic, Stripe, Flutterwave, Supabase, Upstash, Vercel, Resend</li>
+<li>DPAs with each of the above</li>
+<li>Trademark and domain registrations</li>
+<li>Licence texts reviewed by counsel</li>
+</ul></div>
+<div class="callout"><p><b>Technical</b></p><ul>
+<li>Architecture diagram and data-flow map</li>
+<li>Software bill of materials and licence inventory <span class="small">(the SCA in this review is a clean starting point)</span></li>
+<li>Dependency and vulnerability report with remediation dates</li>
+<li>Penetration test report and retest</li>
+<li>Technical debt log, written honestly</li>
+<li>Test coverage and CI evidence</li>
+</ul></div>
+<div class="callout"><p><b>Privacy and security</b></p><ul>
+<li>NDPC registration and latest Compliance Assessment Report</li>
+<li>Records of processing, DPIA, subprocessor list</li>
+<li>Privacy policy naming every processor</li>
+<li>Incident response plan and any incident history</li>
+<li>Access control list: who holds which production credential</li>
+<li>Backup policy and a dated restore test</li>
+</ul></div>
+<div class="callout"><p><b>Operational</b></p><ul>
+<li>Uptime and error-rate history <span class="small">(you have none today — start collecting)</span></li>
+<li>Cost per generation and gross margin by tier</li>
+<li>Provider concentration and switching plan</li>
+<li>Runbook: deploy, roll back, rotate a key, refund a customer</li>
+<li>Roadmap with the credits migration state clearly described</li>
+</ul></div>
+</div>
+
+<h3 id="a-clocks">The items on long clocks</h3>
+
+<p>Most of this report can be fixed in a sprint. These cannot be compressed, so they decide when you are actually sale-ready:</p>
+
+<div class="tw"><table>
+<thead><tr><th>Item</th><th>Realistic elapsed time</th><th>Start when</th></tr></thead>
+<tbody>
+<tr><td>IP assignment signatures</td><td>Days, if relationships are good; never, if they sour</td><td>Immediately</td></tr>
+<tr><td>NDPC registration and first CAR</td><td>Weeks to months</td><td>Immediately</td></tr>
+<tr><td>Direct or alternative model-provider agreement</td><td>1–6 months</td><td>Immediately</td></tr>
+<tr><td>External penetration test and retest</td><td>4–8 weeks</td><td>After the critical and high fixes</td></tr>
+<tr><td>SOC 2 Type I</td><td>2–4 months</td><td>After policies exist</td></tr>
+<tr><td>SOC 2 Type II</td><td>6–12 months of observation on top</td><td>Only if enterprise sales demand it</td></tr>
+<tr><td>Uptime and incident history worth showing</td><td>6–12 months of collection</td><td>The day you add monitoring</td></tr>
+</tbody></table></div>
+
+<h2 id="plan">7. Remediation plan</h2>
+
+<p>Ordered by risk reduction per hour of work, and sequenced around the credits migration so nothing collides with the work already in flight.</p>
+
+<ol class="steps">
+<li><b>This week — stop the bleeding.</b> Upgrade Next.js past the two RCE advisories (SEC-01). Make the GitHub mirror private and rotate anything it touched (SEC-02). Add an error tracker with three alerts: webhook verification failures, provider health strikes, credits errors (SEC-10). Publish a <code>SECURITY.md</code> with a contact (SEC-20).</li>
+<li><b>This week — one migration, one file.</b> Add <code>SET search_path</code> to all 34 unpinned definer functions (SEC-04). It is mechanical, it is testable, and it removes the finding a database scanner will lead with.</li>
+<li><b>Next two weeks — the money paths.</b> Remove the Flutterwave email fallback and replace it with a reconciliation queue plus an alert (SEC-05). Route both amount conversions through <code>toMinorUnits</code> (SEC-06). Add authorisation to the image proxy (SEC-11). Close the demo quota race (SEC-14). These are all outside the files your colleague is editing for the credits migration.</li>
+<li><b>Next two weeks — headers and identity.</b> Ship CSP in report-only, then enforce; add HSTS (SEC-03). Fix the rate-limit identifier (SEC-08). Assert <code>NEXT_PUBLIC_APP_URL</code> at boot (SEC-16). Decide and document Redis failure behaviour per control (SEC-09).</li>
+<li><b>Within a month — compliance that is already overdue.</b> AI Act content marking in <code>storage.ts</code>, the share page and the licence PDF. Start NDPC registration. Rewrite the privacy policy to name every subprocessor, state retention, and describe the voice flow. Correct the FAQ's WAV claim and soften the Exclusive tier's ownership language pending legal review.</li>
+<li><b>Within a month — operational floor.</b> Move the service-role scripts into manual CI jobs (SEC-13). Add dependency scanning and automated update merge requests (SEC-15). Write the runbook and test a restore (SEC-19). Redact personal data from logs and set retention (SEC-12).</li>
+<li><b>This quarter — the structural ones.</b> Finish the provider seam and onboard a second music provider. Commission an external penetration test. Get the IP assignment and the upstream contract in writing. Build the admin surface with authorisation in the handler and in RLS, plus an audit log (SEC-17).</li>
+<li><b>Ongoing.</b> Security review on every merge request that touches a spend path, a webhook, a proxy route or a definer function. Add the finding IDs from this report to your tracker so the fixes are auditable later.</li>
+</ol>
+
+<h2 id="method">8. Method and limits</h2>
+
+<p>This review read the source of the <code>dev</code> branch at commit <code>206f916</code>: every API route, the proxy, the security headers, the rate limiter, the Supabase clients, the payment and music webhooks, the media proxies, the producer session and token code, and all 57 migrations. It ran a software composition analysis and licence inventory over 267 production dependencies, a secret scan across the full git history for Stripe, Flutterwave, Supabase, Google and Resend key patterns, and a survey of current guidance on the six regulatory regimes above.</p>
+
+<p><b>What it did not do, and what a real assessment would add:</b> no penetration test and no dynamic testing against a running instance; no review of the Supabase, Vercel, Upstash or Cloudflare account configuration, which is where multi-factor authentication, access lists and backup settings actually live; no review of the RLS policies executing against real data, which is the only way to prove they hold; no phishing or social-engineering assessment; and no legal opinion — the compliance section identifies obligations and gaps, and a qualified lawyer in each jurisdiction should confirm the conclusions before they are acted on commercially.</p>
+
+<p class="small" style="margin-top:36px">Findings verified against source on 22 September 2026. Advisory counts from <code>npm audit</code> the same day and will drift. Where this document and the code disagree, the code is right.</p>
+</main>
+</div>
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if(!links.length||!('IntersectionObserver' in window))return;
+  var map=new Map();
+  links.forEach(function(a){var el=document.getElementById(a.getAttribute('href').slice(1));if(el)map.set(el,a);});
+  var current=null,visible=new Map();
+  function setActive(a){if(current===a)return;if(current)current.classList.remove('active');current=a;if(a)a.classList.add('active');}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting)visible.set(e.target,e.boundingClientRect.top);else visible.delete(e.target);});
+    var best=null,bestTop=Infinity;
+    visible.forEach(function(top,el){if(top<bestTop){bestTop=top;best=el;}});
+    if(best)setActive(map.get(best));
+  },{rootMargin:'-10% 0px -70% 0px',threshold:0});
+  map.forEach(function(_,el){io.observe(el);});
+})();
+</script>
+
+</body></html>

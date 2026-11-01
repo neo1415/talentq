@@ -1,0 +1,452 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Q Voice Listening Board</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root {
+  --ground:#f3f5f7; --panel:#ffffff; --ink:#15202b; --muted:#5b6876; --line:#d9e0e7;
+  --accent:#0b6e6e; --accent-soft:#e0f0ef; --warn:#8a5a00; --warn-soft:#fbf1dc; --bad:#9b2d2d; --bad-soft:#f8e4e4;
+  --sans:'Instrument Sans', 'Segoe UI', system-ui, sans-serif; --mono:'JetBrains Mono', ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --ground:#0f161c; --panel:#162029; --ink:#e6edf3; --muted:#9aa8b5; --line:#26333e;
+  --accent:#5cc7c1; --accent-soft:#12302f; --warn:#e3b35c; --warn-soft:#2d2412; --bad:#ef8f8f; --bad-soft:#341919; color-scheme:dark; } }
+:root[data-theme="dark"] {
+  --ground:#0f161c; --panel:#162029; --ink:#e6edf3; --muted:#9aa8b5; --line:#26333e;
+  --accent:#5cc7c1; --accent-soft:#12302f; --warn:#e3b35c; --warn-soft:#2d2412; --bad:#ef8f8f; --bad-soft:#341919; color-scheme:dark; }
+body { background:var(--ground); color:var(--ink); font:15px/1.55 var(--sans); padding-inline:16px; padding-block:28px 64px; }
+.wrap { max-width:1180px; margin:0 auto; display:grid; gap:22px; }
+h1 { font-size:clamp(26px,4vw,36px); line-height:1.15; margin:0; text-wrap:balance; letter-spacing:-0.01em; }
+.lede { color:var(--muted); max-width:70ch; margin:6px 0 0; }
+.brief { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
+.brief > div { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px 16px; }
+.brief h3 { margin:0 0 6px; font-size:13px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+.brief p, .brief li { margin:0; }
+.brief ul { margin:0; padding-left:18px; display:grid; gap:4px; }
+.case { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; display:grid; gap:12px; }
+.case.focus { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+.chead { display:flex; flex-wrap:wrap; align-items:center; gap:10px; justify-content:space-between; }
+.chead h2 { margin:0; font-size:19px; display:flex; gap:10px; align-items:baseline; }
+.num { font:600 13px var(--mono); color:var(--muted); }
+.flag { font-size:12px; font-weight:600; color:var(--accent); background:var(--accent-soft); padding:3px 9px; border-radius:999px; }
+.said { margin:0; color:var(--muted); max-width:95ch; }
+.said q { color:var(--ink); font-family:var(--mono); font-size:13px; quotes:none; }
+.voices { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; }
+.voice { border:1px solid var(--line); border-radius:8px; padding:12px; display:grid; gap:8px; align-content:start; }
+.voice.proposed { background:var(--accent-soft); border-color:transparent; }
+.vhead { display:flex; flex-direction:column; gap:1px; }
+.tag { font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+.vname { font-weight:600; }
+audio { width:100%; max-width:100%; height:36px; }
+.nums { display:flex; gap:18px; margin:0; }
+.nums div { display:grid; }
+.nums dt { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+.nums dd { margin:0; font:600 14px var(--mono); font-variant-numeric:tabular-nums; }
+.nums small { color:var(--muted); font-weight:400; }
+.cue { font-size:12px; padding:2px 8px; border-radius:6px; justify-self:start; }
+.cue.ok { background:var(--accent-soft); color:var(--accent); }
+.voice.proposed .cue.ok { background:var(--panel); }
+.cue.no { background:var(--warn-soft); color:var(--warn); }
+.heard { margin:0; font-size:13px; color:var(--ink); }
+.heard span { display:block; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+.decide { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 18px; }
+.decide h2 { margin:0 0 6px; font-size:18px; }
+.decide p { margin:0; max-width:75ch; }
+</style>
+<main class="wrap">
+  <header>
+    <h1>How should Q sound?</h1>
+    <p class="lede">The same ten Q replies spoken by three voice engines. Two things matter here: how natural each one sounds, and how quickly the first sound arrives (measured from Lagos; Railway will be a little faster). Nothing has been switched yet.</p>
+  </header>
+  <div class="brief">
+    <div><h3>Proposed</h3><p>Move Q's voice from ElevenLabs turbo v2.5 to <b>ElevenLabs v3 Conversational</b>, with the same voice (Sarah).</p></div>
+    <div><h3>Why</h3><ul><li>First audio as fast or faster on short replies (about 250–280 ms).</li><li>The only engine that performs a laugh, chuckle or sigh instead of reading the word aloud.</li><li>Reads money ranges correctly (“three million”, not “three meters”).</li><li>Same cost per character.</li></ul></div>
+    <div><h3>Trade-offs</h3><ul><li>p95 first audio about 200 ms wider on short text; re-checked on Railway after the switch.</li><li>Ignores the speed setting, so pace is expressed by pauses only.</li><li>Laughs and sighs are short. Rows 04–07 are the ones to judge.</li></ul></div>
+  </div>
+  
+  <section class="case" id="c01">
+    <header class="chead">
+      <h2><span class="num">01</span> Neutral</h2>
+    </header>
+    <p class="said">Q says: <q>Got it. You&#x27;re raising a seed round, and you&#x27;d like to close it before the end of the year. What&#x27;s the smallest cheque you&#x27;d take?</q></p>
+    <div class="voices">
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Current voice</span><span class="vname">ElevenLabs turbo v2.5</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-turbo-v2_5-current/01-neutral.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>319 ms <small>p95 521</small></dd></div>
+          <div><dt>Length</dt><dd>7.1 s</dd></div>
+        </dl>
+        
+        <p class="heard"><span>Transcribed back as</span> “Got it. You&#x27;re raising a seed round, and you&#x27;d like to close it before the end of the year. What&#x27;s the smallest check you&#x27;d take?”</p>
+      </div>
+      <div class="voice proposed">
+        <div class="vhead"><span class="tag">Proposed</span><span class="vname">ElevenLabs v3 Conversational</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-v3-conversational/01-neutral.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>249 ms <small>p95 457</small></dd></div>
+          <div><dt>Length</dt><dd>7.0 s</dd></div>
+        </dl>
+        
+        <p class="heard"><span>Transcribed back as</span> “Got it. You&#x27;re raising a seed round, and you&#x27;d like to close it before the end of the year. What&#x27;s the smallest check you&#x27;d take?”</p>
+      </div>
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Fallback</span><span class="vname">Deepgram Aura-2 (Thalia)</span></div>
+        <audio controls preload="none" src="clips/deepgram-aura-2-thalia/01-neutral.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>267 ms <small>p95 584</small></dd></div>
+          <div><dt>Length</dt><dd>6.6 s</dd></div>
+        </dl>
+        
+        <p class="heard"><span>Transcribed back as</span> “Got it. You&#x27;re raising a seed round, and you&#x27;d like to close it before the end of the year. What&#x27;s the smallest check you&#x27;d take?”</p>
+      </div>
+    </div>
+  </section>
+  <section class="case" id="c02">
+    <header class="chead">
+      <h2><span class="num">02</span> Uncertainty</h2>
+    </header>
+    <p class="said">Q says: <q>I&#x27;m not sure yet. [short pause] Your deck says eighteen months of runway, but the burn you mentioned would make it closer to twelve. Which one should I trust?</q></p>
+    <div class="voices">
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Current voice</span><span class="vname">ElevenLabs turbo v2.5</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-turbo-v2_5-current/02-uncertainty.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>347 ms <small>p95 356</small></dd></div>
+          <div><dt>Length</dt><dd>8.8 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause, pace</span>
+        <p class="heard"><span>Transcribed back as</span> “I&#x27;m not sure yet. Your deck says eighteen months of runway, but the burn you mentioned would make it closer to twelve. Which one should I trust?”</p>
+      </div>
+      <div class="voice proposed">
+        <div class="vhead"><span class="tag">Proposed</span><span class="vname">ElevenLabs v3 Conversational</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-v3-conversational/02-uncertainty.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>258 ms <small>p95 301</small></dd></div>
+          <div><dt>Length</dt><dd>10.7 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause</span><span class="cue no">Not supported: pace</span>
+        <p class="heard"><span>Transcribed back as</span> “I&#x27;m not sure yet. Your deck says eighteen months of runway, but the burn you mentioned would make it closer to twelve. Which one should I trust?”</p>
+      </div>
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Fallback</span><span class="vname">Deepgram Aura-2 (Thalia)</span></div>
+        <audio controls preload="none" src="clips/deepgram-aura-2-thalia/02-uncertainty.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>880 ms <small>p95 984</small></dd></div>
+          <div><dt>Length</dt><dd>9.2 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause</span><span class="cue no">Not supported: pace</span>
+        <p class="heard"><span>Transcribed back as</span> “I&#x27;m not sure yet. Your deck says eighteen months of runway, but the burn you mentioned would make it closer to twelve. Which one should I trust?”</p>
+      </div>
+    </div>
+  </section>
+  <section class="case" id="c03">
+    <header class="chead">
+      <h2><span class="num">03</span> Thoughtful pause</h2>
+    </header>
+    <p class="said">Q says: <q>That&#x27;s a good question. [short pause] Honestly, it depends on what you want the next round to prove. [short pause] If it&#x27;s traction, raise less and move faster.</q></p>
+    <div class="voices">
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Current voice</span><span class="vname">ElevenLabs turbo v2.5</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-turbo-v2_5-current/03-thoughtful-pause.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>347 ms <small>p95 361</small></dd></div>
+          <div><dt>Length</dt><dd>8.6 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause</span>
+        <p class="heard"><span>Transcribed back as</span> “That&#x27;s a good question. Honestly, it depends on what you want the next round to prove. If it&#x27;s traction, raise less and move faster.”</p>
+      </div>
+      <div class="voice proposed">
+        <div class="vhead"><span class="tag">Proposed</span><span class="vname">ElevenLabs v3 Conversational</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-v3-conversational/03-thoughtful-pause.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>277 ms <small>p95 524</small></dd></div>
+          <div><dt>Length</dt><dd>10.2 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause</span>
+        <p class="heard"><span>Transcribed back as</span> “That&#x27;s a good question. Honestly, it depends on what you want the next round to prove. If it&#x27;s traction, raise less and move faster.”</p>
+      </div>
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Fallback</span><span class="vname">Deepgram Aura-2 (Thalia)</span></div>
+        <audio controls preload="none" src="clips/deepgram-aura-2-thalia/03-thoughtful-pause.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>1028 ms <small>p95 1430</small></dd></div>
+          <div><dt>Length</dt><dd>8.3 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause</span>
+        <p class="heard"><span>Transcribed back as</span> “That&#x27;s a good question. Honestly, it depends on what you want the next round to prove. If it&#x27;s traction, raise less and move faster.”</p>
+      </div>
+    </div>
+  </section>
+  <section class="case focus" id="c04">
+    <header class="chead">
+      <h2><span class="num">04</span> Amusement</h2><span class="flag">Listen to this one first</span>
+    </header>
+    <p class="said">Q says: <q>[chuckles] Fair enough, that one&#x27;s on me. I did ask you the same thing twice.</q></p>
+    <div class="voices">
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Current voice</span><span class="vname">ElevenLabs turbo v2.5</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-turbo-v2_5-current/04-amusement.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>294 ms <small>p95 296</small></dd></div>
+          <div><dt>Length</dt><dd>3.9 s</dd></div>
+        </dl>
+        <span class="cue no">Not supported: reaction</span>
+        <p class="heard"><span>Transcribed back as</span> “Fair enough. That one&#x27;s on me. I did ask you the same thing twice.”</p>
+      </div>
+      <div class="voice proposed">
+        <div class="vhead"><span class="tag">Proposed</span><span class="vname">ElevenLabs v3 Conversational</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-v3-conversational/04-amusement.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>249 ms <small>p95 520</small></dd></div>
+          <div><dt>Length</dt><dd>5.3 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: reaction</span>
+        <p class="heard"><span>Transcribed back as</span> “Fair enough. That one&#x27;s on me. I did ask you the same thing twice.”</p>
+      </div>
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Fallback</span><span class="vname">Deepgram Aura-2 (Thalia)</span></div>
+        <audio controls preload="none" src="clips/deepgram-aura-2-thalia/04-amusement.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>367 ms <small>p95 987</small></dd></div>
+          <div><dt>Length</dt><dd>4.5 s</dd></div>
+        </dl>
+        <span class="cue no">Not supported: reaction</span>
+        <p class="heard"><span>Transcribed back as</span> “Fair enough. That one&#x27;s on me. I did ask you the same thing twice.”</p>
+      </div>
+    </div>
+  </section>
+  <section class="case focus" id="c05">
+    <header class="chead">
+      <h2><span class="num">05</span> Laughter</h2><span class="flag">Listen to this one first</span>
+    </header>
+    <p class="said">Q says: <q>[laughs] No, you don&#x27;t need a finished product to talk to investors at pre-seed. You need a sharp reason why now.</q></p>
+    <div class="voices">
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Current voice</span><span class="vname">ElevenLabs turbo v2.5</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-turbo-v2_5-current/05-laughter.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>311 ms <small>p95 604</small></dd></div>
+          <div><dt>Length</dt><dd>5.8 s</dd></div>
+        </dl>
+        <span class="cue no">Not supported: reaction</span>
+        <p class="heard"><span>Transcribed back as</span> “No, you don&#x27;t need a finished product to talk to investors at Preseed. You need a sharp reason why now.”</p>
+      </div>
+      <div class="voice proposed">
+        <div class="vhead"><span class="tag">Proposed</span><span class="vname">ElevenLabs v3 Conversational</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-v3-conversational/05-laughter.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>276 ms <small>p95 487</small></dd></div>
+          <div><dt>Length</dt><dd>8.1 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: reaction</span>
+        <p class="heard"><span>Transcribed back as</span> “No, you don&#x27;t need a finished product to talk to investors at Pre seed. You need a sharp reason why now.”</p>
+      </div>
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Fallback</span><span class="vname">Deepgram Aura-2 (Thalia)</span></div>
+        <audio controls preload="none" src="clips/deepgram-aura-2-thalia/05-laughter.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>352 ms <small>p95 387</small></dd></div>
+          <div><dt>Length</dt><dd>6.2 s</dd></div>
+        </dl>
+        <span class="cue no">Not supported: reaction</span>
+        <p class="heard"><span>Transcribed back as</span> “No. You don&#x27;t need a finished product to talk to investors at Preseed. You need a sharp reason why now.”</p>
+      </div>
+    </div>
+  </section>
+  <section class="case focus" id="c06">
+    <header class="chead">
+      <h2><span class="num">06</span> Sigh</h2><span class="flag">Listen to this one first</span>
+    </header>
+    <p class="said">Q says: <q>[sighs] That&#x27;s a hard market right now. Fintech rounds in Lagos took about twice as long to close this year.</q></p>
+    <div class="voices">
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Current voice</span><span class="vname">ElevenLabs turbo v2.5</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-turbo-v2_5-current/06-sigh.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>301 ms <small>p95 316</small></dd></div>
+          <div><dt>Length</dt><dd>5.5 s</dd></div>
+        </dl>
+        <span class="cue no">Not supported: reaction</span>
+        <p class="heard"><span>Transcribed back as</span> “That&#x27;s a hard market right now. Fintech rounds and logos took about twice as long to close this year.”</p>
+      </div>
+      <div class="voice proposed">
+        <div class="vhead"><span class="tag">Proposed</span><span class="vname">ElevenLabs v3 Conversational</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-v3-conversational/06-sigh.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>252 ms <small>p95 541</small></dd></div>
+          <div><dt>Length</dt><dd>6.7 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: reaction</span>
+        <p class="heard"><span>Transcribed back as</span> “That&#x27;s a hard market right now. Fintech rounds in Lagos took about twice as long to close this year.”</p>
+      </div>
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Fallback</span><span class="vname">Deepgram Aura-2 (Thalia)</span></div>
+        <audio controls preload="none" src="clips/deepgram-aura-2-thalia/06-sigh.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>365 ms <small>p95 377</small></dd></div>
+          <div><dt>Length</dt><dd>5.1 s</dd></div>
+        </dl>
+        <span class="cue no">Not supported: reaction</span>
+        <p class="heard"><span>Transcribed back as</span> “That&#x27;s a hard market right now. Fintech rounds in Lagos took about twice as long to close this year.”</p>
+      </div>
+    </div>
+  </section>
+  <section class="case focus" id="c07">
+    <header class="chead">
+      <h2><span class="num">07</span> Disagreement</h2><span class="flag">Listen to this one first</span>
+    </header>
+    <p class="said">Q says: <q>I&#x27;d push back on that. [short pause] Forty customers on free pilots ISN&#x27;T traction yet. Three of them paying would tell an investor far more.</q></p>
+    <div class="voices">
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Current voice</span><span class="vname">ElevenLabs turbo v2.5</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-turbo-v2_5-current/07-disagreement.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>349 ms <small>p95 359</small></dd></div>
+          <div><dt>Length</dt><dd>8.2 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause</span><span class="cue no">Not supported: emphasis</span>
+        <p class="heard"><span>Transcribed back as</span> “I&#x27;d push back on that. Forty customers on free pilots isn&#x27;t traction yet. Three of them paying would tell an investor far more.”</p>
+      </div>
+      <div class="voice proposed">
+        <div class="vhead"><span class="tag">Proposed</span><span class="vname">ElevenLabs v3 Conversational</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-v3-conversational/07-disagreement.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>268 ms <small>p95 525</small></dd></div>
+          <div><dt>Length</dt><dd>10.3 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause, emphasis</span>
+        <p class="heard"><span>Transcribed back as</span> “I&#x27;d push back on that. Forty customers on free pilots isn&#x27;t traction yet. Three of them paying would tell an investor far more.”</p>
+      </div>
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Fallback</span><span class="vname">Deepgram Aura-2 (Thalia)</span></div>
+        <audio controls preload="none" src="clips/deepgram-aura-2-thalia/07-disagreement.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>1019 ms <small>p95 1199</small></dd></div>
+          <div><dt>Length</dt><dd>8.1 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause</span><span class="cue no">Not supported: emphasis</span>
+        <p class="heard"><span>Transcribed back as</span> “I&#x27;d push back on that. Forty customers on FreePilots isn&#x27;t traction yet. Three of them paying would tell an investor far more.”</p>
+      </div>
+    </div>
+  </section>
+  <section class="case" id="c08">
+    <header class="chead">
+      <h2><span class="num">08</span> Numbers and a range</h2>
+    </header>
+    <p class="said">Q says: <q>Most investors I&#x27;d match you with write cheques of 250 thousand dollars–3m. Your target of 1.2 million dollars sits in the middle, and 38% of them closed a deal before 14 March 2026.</q></p>
+    <div class="voices">
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Current voice</span><span class="vname">ElevenLabs turbo v2.5</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-turbo-v2_5-current/08-numbers.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>437 ms <small>p95 514</small></dd></div>
+          <div><dt>Length</dt><dd>13.3 s</dd></div>
+        </dl>
+        
+        <p class="heard"><span>Transcribed back as</span> “Most investors I&#x27;d match you with write checks of two hundred and fifty thousand dollars three annum. Your target of one point two million dollars sits in the middle, and thirty eight percent of them closed a deal before fourteenth March two thousand twenty six.”</p>
+      </div>
+      <div class="voice proposed">
+        <div class="vhead"><span class="tag">Proposed</span><span class="vname">ElevenLabs v3 Conversational</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-v3-conversational/08-numbers.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>245 ms <small>p95 540</small></dd></div>
+          <div><dt>Length</dt><dd>15.6 s</dd></div>
+        </dl>
+        
+        <p class="heard"><span>Transcribed back as</span> “Most investors I&#x27;d match you with write checks of two hundred fifty thousand dollars to three million. Your target of one point two million dollars sits in the middle, and thirty eight percent of them closed a deal before fourteen March twenty twenty six.”</p>
+      </div>
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Fallback</span><span class="vname">Deepgram Aura-2 (Thalia)</span></div>
+        <audio controls preload="none" src="clips/deepgram-aura-2-thalia/08-numbers.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>1067 ms <small>p95 1371</small></dd></div>
+          <div><dt>Length</dt><dd>12.7 s</dd></div>
+        </dl>
+        
+        <p class="heard"><span>Transcribed back as</span> “Most investors I&#x27;d match you with write checks of two hundred fifty thousand dollars three meters. Your target of one point two million dollars sits in the middle, and thirty eight percent of them closed a deal before March fourteenth, twenty twenty six.”</p>
+      </div>
+    </div>
+  </section>
+  <section class="case" id="c09">
+    <header class="chead">
+      <h2><span class="num">09</span> Long explanation</h2>
+    </header>
+    <p class="said">Q says: <q>Here&#x27;s how I&#x27;d think about it. [short pause] At pre-seed, investors are mostly buying the team and the size of the problem, so your job is to show you understand the problem better than anyone they&#x27;ll meet this month. At seed, the question shifts to evidence. They want to see that someone other than you believes it, which usually means paying customers, or at least usage that keeps coming back without you pushing it. Your forty pilots are a real start. What would make them persuasive is knowing how many would pay, and at what price. If you can get three of them to sign even a small paid contract before you raise, that changes the conversation more than another month of product work. So my suggestion is to pick your five most engaged pilots this week, ask them plainly whether they&#x27;d pay, and bring me what they say.</q></p>
+    <div class="voices">
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Current voice</span><span class="vname">ElevenLabs turbo v2.5</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-turbo-v2_5-current/09-long-explanation.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>654 ms <small>p95 724</small></dd></div>
+          <div><dt>Length</dt><dd>49.7 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause</span>
+        <p class="heard"><span>Transcribed back as</span> “Here&#x27;s how I think about it. At pre seed, investors are mostly buying the team and the size of the problem. So your job is to show you understand the problem better than anyone they&#x27;ll meet this month. At seed, the question shifts to evidence. They want to see that someone other than you believes it, which usually means paying customers, or at least usage that keeps coming back without you pushing it. Your forty pilots are a real start. What would make them persuasive is knowing how many would pay and at what price. If you can get three of them to sign even a small paid contract before you raise, that changes the conversation more than another month of product work. So my suggestion is to pick your five most engaged pilots this week. Ask them plainly whether they&#x27;d pay and bring me what they say.”</p>
+      </div>
+      <div class="voice proposed">
+        <div class="vhead"><span class="tag">Proposed</span><span class="vname">ElevenLabs v3 Conversational</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-v3-conversational/09-long-explanation.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>603 ms <small>p95 737</small></dd></div>
+          <div><dt>Length</dt><dd>50.6 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause</span>
+        <p class="heard"><span>Transcribed back as</span> “Here&#x27;s how I&#x27;d think about it. At Pre SEED, investors are mostly buying the team and the size of the problem, so your job is to show you understand the problem better than anyone they&#x27;ll meet this month. At SEED, the question shifts to evidence. They want to see that someone other than you believes it, which usually means paying customers, or at least usage that keeps coming back without you pushing it. Your forty pilots are a real start. What would make them persuasive is knowing how many would pay and at what price. If you can get three of them to sign even a small paid contract before you raise, that changes the conversation more than another month of product work. So my suggestion is to pick your five most engaged pilots this week, ask them plainly whether they&#x27;d pay, and bring me what they say.”</p>
+      </div>
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Fallback</span><span class="vname">Deepgram Aura-2 (Thalia)</span></div>
+        <audio controls preload="none" src="clips/deepgram-aura-2-thalia/09-long-explanation.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>1109 ms <small>p95 1223</small></dd></div>
+          <div><dt>Length</dt><dd>48.6 s</dd></div>
+        </dl>
+        <span class="cue ok">Cue rendered: pause</span>
+        <p class="heard"><span>Transcribed back as</span> “Here&#x27;s how I&#x27;d think about it. At pre seed, investors are mostly buying the team and the size of the problem. So your job is to show you understand the problem better than anyone they&#x27;ll meet this month. At seed, the question shifts to evidence. They want to see that someone other than you believes it, which usually means paying customers, or at least usage that keeps coming back without you pushing it. Your forty pilots are a real start. What would make them persuasive is knowing how many would pay and at what price. If you can get three of them to sign even a small paid contract before you raise, that changes the conversation more than another month of product work. So my suggestion is to pick your five most engaged pilots this week, ask them plainly whether they pay, and bring me what they say.”</p>
+      </div>
+    </div>
+  </section>
+  <section class="case" id="c10">
+    <header class="chead">
+      <h2><span class="num">10</span> Interrupted mid-reply</h2>
+    </header>
+    <p class="said">Q says: <q>Here&#x27;s how I&#x27;d think about it. At pre-seed, investors are mostly buying the team and the size of the problem, so your job is to show you understand the problem better than anyone they&#x27;ll meet this month. At seed, the question shifts to evidence. They want to see that someone other than you believes it, which usually means paying customers, or at least usage that keeps coming back without you pushing it. Your forty pilots are a real start. What would make them persuasive is knowing how many would pay, and at what price. If you can get three of them to sign even a small paid contract before you raise, that changes the conversation more than another month of product work. So my suggestion is to pick your five most engaged pilots this week, ask them plainly whether they&#x27;d pay, and bring me what they say.</q></p>
+    <div class="voices">
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Current voice</span><span class="vname">ElevenLabs turbo v2.5</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-turbo-v2_5-current/10-interruption.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>660 ms <small>p95 682</small></dd></div>
+          <div><dt>Length</dt><dd>1.5 s</dd></div>
+        </dl>
+        
+        <p class="heard"><span>Transcribed back as</span> “Here&#x27;s how I&#x27;d think about it.”</p>
+      </div>
+      <div class="voice proposed">
+        <div class="vhead"><span class="tag">Proposed</span><span class="vname">ElevenLabs v3 Conversational</span></div>
+        <audio controls preload="none" src="clips/elevenlabs-v3-conversational/10-interruption.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>526 ms <small>p95 592</small></dd></div>
+          <div><dt>Length</dt><dd>1.5 s</dd></div>
+        </dl>
+        
+        <p class="heard"><span>Transcribed back as</span> “Here&#x27;s how I&#x27;d think about it.”</p>
+      </div>
+      <div class="voice ">
+        <div class="vhead"><span class="tag">Fallback</span><span class="vname">Deepgram Aura-2 (Thalia)</span></div>
+        <audio controls preload="none" src="clips/deepgram-aura-2-thalia/10-interruption.wav"></audio>
+        <dl class="nums">
+          <div><dt>First audio</dt><dd>276 ms <small>p95 800</small></dd></div>
+          <div><dt>Length</dt><dd>1.5 s</dd></div>
+        </dl>
+        
+        <p class="heard"><span>Transcribed back as</span> “Here&#x27;s how I&#x27;d think about it.”</p>
+      </div>
+    </div>
+  </section>
+  <section class="decide">
+    <h2>Your call</h2>
+    <p>If rows 04–07 sound right to you on v3, say “switch the voice” in the chat. If any laugh, sigh or push-back sounds off, say which row, and Q keeps its current voice while that gets fixed. Delivery cues are chosen by Q from what it actually means, never from rules, and they never appear in transcripts or Q’s memory.</p>
+  </section>
+</main>
+
+</body></html>

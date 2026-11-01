@@ -1,0 +1,903 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>SongScribe Handover Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F6F6F8;--surface:#FFFFFF;--ink:#16171B;--muted:#5E626E;--rule:#DDDFE6;
+  --accent:#D22F3F;--accent-ink:#B4222F;--accent-soft:#FCE9EB;--code-bg:#ECEDF1;
+  --good:#1F7A4D;--good-soft:#E3F3EA;--warn:#9A6B00;--warn-soft:#FBF1D6;--bad:#B3261E;--bad-soft:#FBE4E2;--info:#2B5BB7;--info-soft:#E4ECFA;
+  --display:"Bricolage Grotesque","IBM Plex Sans",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0F1013;--surface:#15161B;--ink:#E9EAEE;--muted:#9A9EAA;--rule:#272930;
+  --accent:#F25B68;--accent-ink:#FF7A85;--accent-soft:#2B171A;--code-bg:#1B1D23;
+  --good:#5CC48E;--good-soft:#14281D;--warn:#E0B44C;--warn-soft:#2A2312;--bad:#F27C74;--bad-soft:#2E1614;--info:#7FA6EE;--info-soft:#151E31;
+}}
+:root[data-theme="dark"]{
+  --paper:#0F1013;--surface:#15161B;--ink:#E9EAEE;--muted:#9A9EAA;--rule:#272930;
+  --accent:#F25B68;--accent-ink:#FF7A85;--accent-soft:#2B171A;--code-bg:#1B1D23;
+  --good:#5CC48E;--good-soft:#14281D;--warn:#E0B44C;--warn-soft:#2A2312;--bad:#F27C74;--bad-soft:#2E1614;--info:#7FA6EE;--info-soft:#151E31;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent-ink);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+a:hover{border-bottom-color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+code,kbd{font-family:var(--mono);font-size:.86em;background:var(--code-bg);padding:.1em .38em;border-radius:4px;color:var(--ink)}
+pre{font-family:var(--mono);font-size:.84rem;line-height:1.55;background:var(--code-bg);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;overflow-x:auto;margin:14px 0}
+pre code{background:none;padding:0;font-size:inherit}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,5vw,54px);font-weight:700;letter-spacing:-.02em}
+h2{font-size:30px;font-weight:700;letter-spacing:-.015em;margin-top:72px;padding-top:28px;border-top:1px solid var(--rule)}
+h3{font-size:21px;font-weight:700;margin-top:40px}
+h4{font-size:17px;font-weight:600;margin-top:28px;font-family:var(--body)}
+p{margin:12px 0;max-width:72ch}
+ul,ol{max-width:72ch;padding-left:1.3em}
+li{margin:5px 0}
+li>ul,li>ol{margin-top:4px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.wrap{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:1120px){.wrap{grid-template-columns:250px minmax(0,1fr)}}
+.toc{display:none}
+@media(min-width:1120px){
+  .toc{display:block;position:sticky;top:0;height:100vh;overflow-y:auto;padding:36px 20px 40px 28px;border-right:1px solid var(--rule);font-size:13px}
+  .toc ol{list-style:none;padding:0;margin:0}
+  .toc li{margin:0}
+  .toc a{display:block;padding:5px 0;color:var(--muted);border:0;border-left:2px solid transparent;padding-left:10px;margin-left:-12px}
+  .toc a:hover{color:var(--ink)}
+  .toc a.active{color:var(--ink);border-left-color:var(--accent)}
+  .toc .sub a{padding-left:22px;font-size:12px}
+}
+main{padding:40px 24px 120px;max-width:920px}
+@media(min-width:1120px){main{padding:56px 56px 140px}}
+header.top{margin-bottom:8px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px 28px;margin:28px 0 8px;padding:18px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font-size:13.5px}
+.meta b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:3px}
+.meta code{font-size:12.5px}
+.lede{font-size:19px;line-height:1.5;color:var(--ink);max-width:66ch}
+.lede em{font-style:normal;color:var(--accent-ink)}
+.note{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:18px 0;max-width:72ch}
+.note p{margin:6px 0}
+.callout{border:1px solid var(--rule);background:var(--surface);border-radius:10px;padding:16px 18px;margin:18px 0;max-width:72ch}
+.callout p:first-child{margin-top:0}.callout p:last-child{margin-bottom:0}
+.files{display:grid;grid-template-columns:minmax(200px,300px) minmax(0,1fr);border-top:1px solid var(--rule);margin:16px 0 8px;font-size:14.5px}
+.files>div{padding:11px 14px 11px 0;border-bottom:1px solid var(--rule)}
+.files>div:nth-child(odd){font-family:var(--mono);font-size:12.5px;color:var(--accent-ink);word-break:break-word;padding-right:18px;font-weight:500}
+.files>div:nth-child(even){color:var(--ink)}
+.files>div:nth-child(even) p{margin:0 0 6px;max-width:none}
+.files>div:nth-child(even) p:last-child{margin-bottom:0}
+@media(max-width:700px){.files{grid-template-columns:1fr}.files>div:nth-child(odd){border-bottom:0;padding-bottom:2px}.files>div:nth-child(even){padding-top:0}}
+dl.gloss{max-width:76ch;margin:14px 0}
+dl.gloss dt{font-weight:600;margin-top:14px}
+dl.gloss dd{margin:2px 0 0;color:var(--ink)}
+ol.steps{counter-reset:s;list-style:none;padding:0;max-width:76ch}
+ol.steps>li{counter-increment:s;position:relative;padding:10px 0 10px 46px;border-bottom:1px solid var(--rule)}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:11px;width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);font-family:var(--mono);font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:500}
+ol.steps b{font-weight:600}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:14px 0}
+.tw{overflow-x:auto;margin:14px 0}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td code{white-space:nowrap}
+tbody tr:hover{background:color-mix(in srgb,var(--surface) 60%,var(--paper))}
+.num{font-variant-numeric:tabular-nums;text-align:right}
+.chip{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;font-weight:500;vertical-align:middle;margin-right:6px}
+.c-bad{background:var(--bad-soft);color:var(--bad)}.c-warn{background:var(--warn-soft);color:var(--warn)}.c-good{background:var(--good-soft);color:var(--good)}.c-info{background:var(--info-soft);color:var(--info)}
+.finding{border:1px solid var(--rule);border-radius:10px;padding:14px 18px;margin:14px 0;background:var(--surface);max-width:76ch}
+.finding h4{margin:0 0 6px;font-family:var(--body);font-size:16px}
+.finding p{margin:6px 0}
+.finding .where{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px;word-break:break-word}
+.tl{border-left:2px solid var(--rule);margin:18px 0 18px 6px;padding-left:22px;max-width:72ch}
+.tl>div{position:relative;padding-bottom:18px}
+.tl>div::before{content:"";position:absolute;left:-28px;top:7px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--paper)}
+.tl b{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:block;font-weight:500}
+.mermaid{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:12px;overflow-x:auto;margin:16px 0}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-size:14.5px;max-width:72ch;margin:12px 0}
+.kv b{font-weight:600;white-space:nowrap;font-family:var(--mono);font-size:12.5px;color:var(--accent-ink)}
+.small{font-size:13.5px;color:var(--muted)}
+hr{border:0;border-top:1px solid var(--rule);margin:32px 0}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <div class="eyebrow" style="margin-bottom:14px">Contents</div>
+  <ol>
+    <li><a href="#setup">0. What I did on your machine</a></li>
+    <li><a href="#what">1. What SongScribe is</a></li>
+    <li><a href="#money">2. How it makes money</a></li>
+    <li><a href="#shape">3. The shape of the system</a></li>
+    <li><a href="#glossary">4. Words you will hear</a></li>
+    <li><a href="#flows">5. The main journeys</a>
+      <ol class="sub">
+        <li><a href="#f-demo">Anonymous demo</a></li>
+        <li><a href="#f-auth">Sign up and sign in</a></li>
+        <li><a href="#f-buy">Buying a plan or pack</a></li>
+        <li><a href="#f-wizard">Wizard song</a></li>
+        <li><a href="#f-producer">AI Producer song</a></li>
+        <li><a href="#f-credits">A credit spend</a></li>
+        <li><a href="#f-tools">Stems, cover, style boost</a></li>
+        <li><a href="#f-after">Library, sharing, licence</a></li>
+        <li><a href="#f-notify">Notifications and email</a></li>
+      </ol>
+    </li>
+    <li><a href="#db">6. The database</a></li>
+    <li><a href="#files">7. Every file</a>
+      <ol class="sub">
+        <li><a href="#d-root">Repository root</a></li>
+        <li><a href="#d-supabase">supabase/</a></li>
+        <li><a href="#d-app">src/app pages</a></li>
+        <li><a href="#d-api">src/app/api routes</a></li>
+        <li><a href="#d-lib">src/lib</a></li>
+        <li><a href="#d-components">src/components</a></li>
+        <li><a href="#d-state">hooks, store, types</a></li>
+        <li><a href="#d-tests">tests, scripts, public</a></li>
+      </ol>
+    </li>
+    <li><a href="#env">8. Environment and third parties</a></li>
+    <li><a href="#run">9. Running it day to day</a></li>
+    <li><a href="#history">10. How it got here</a></li>
+    <li><a href="#review">11. My assessment</a>
+      <ol class="sub">
+        <li><a href="#r-good">What is good</a></li>
+        <li><a href="#r-bugs">Bugs and risks</a></li>
+        <li><a href="#r-code">Code quality</a></li>
+        <li><a href="#r-arch">Architecture</a></li>
+        <li><a href="#r-biz">Product and business</a></li>
+        <li><a href="#r-plan">What to do first</a></li>
+      </ol>
+    </li>
+    <li><a href="#week">12. Your first week</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="top">
+  <div class="eyebrow">Internal · engineering handover · 14 Sep 2026</div>
+  <h1 style="margin-top:10px">SongScribe Handover Handbook</h1>
+  <p class="lede" style="margin-top:18px">Everything in the <em>kuuza-ai/songscribe</em> repository, read file by file and explained as if it is your first day. Part one tells you what the product is and how each piece works. Part two is my honest opinion of the code, the architecture, and the business it serves.</p>
+  <div class="meta">
+    <div><b>Source of truth</b><code>gitlab.com/kuuza-ai/songscribe</code></div>
+    <div><b>Branch read</b><code>dev</code> at <code>206f916</code> (8 Sep 2026)</div>
+    <div><b>Your branch</b><code>daniel/dev</code></div>
+    <div><b>Local clone</b><code>C:\Users\DELL\Documents\songscribe</code></div>
+    <div><b>Mirror</b><code>github.com/neo1415/songscribe</code></div>
+    <div><b>Size</b>258 commits · 1 author · 57 migrations · 90 test files · 1,281 tests</div>
+  </div>
+</header>
+
+<h2 id="setup">0. What I did on your machine</h2>
+<p>Before any reading, here is the state of your setup so nothing surprises you.</p>
+<ul>
+  <li><b>main and dev are identical.</b> <code>main</code> is one merge commit on top of <code>dev</code>. <code>dev</code> is where work lands; <code>main</code> is what gets deployed. The twelve <code>songscribe/*</code> feature branches are all older than <code>dev</code> and already merged into it, so <code>dev</code> is the furthest along.</li>
+  <li><b>Cloned to</b> <code>C:\Users\DELL\Documents\songscribe</code>, next to your other projects. The GitLab remote is called <code>origin</code>.</li>
+  <li><b>Your working branch is <code>daniel/dev</code></b>, cut from <code>dev</code>, and it is checked out now. Push it to either remote when you are ready.</li>
+  <li><b>GitHub mirror.</b> Your repo <code>neo1415/songscribe</code> already existed and was empty, so I pushed every branch there under a second remote called <code>github</code>. This is a mirror rather than a GitHub "Fork" button fork, because the source lives on GitLab. Two things to know: the repo is <b>public</b>, which means the entire product source and the internal <code>claude.md</code> guide are now visible to anyone. I recommend making it private today. Also the default branch there is still <code>main</code>; the command to switch it to <code>dev</code> was blocked, so change it in GitHub settings if you want.</li>
+  <li><b>No commits were made</b>, so nothing carries any author or co-author line from me. Local git identity is set to <code>neo1415 / adedaniel502@gmail.com</code>. The upstream code itself already mentions Claude in a few places (<code>claude.md</code>, the producer's Anthropic adapter, tests). That is the original developer's content, not a trace of this session.</li>
+  <li>I raised <code>http.postBuffer</code> in the local git config because GitHub was dropping the first large push.</li>
+</ul>
+
+<h2 id="what">1. What SongScribe is</h2>
+<p>SongScribe is a website where a person describes a song they want, and an AI writes and records it for them in about a minute. The person might want a birthday song for their mum with her name in it, an anthem for their small business, a wedding proposal track, or a jingle for a podcast. They choose the occasion, who it is for, the mood, the vocal style and the genre, and either paste their own lyrics or let the AI write them. A minute later they get two versions to listen to, and if they pay, they can download the MP3 and get a licence certificate saying what they are allowed to do with it.</p>
+<p>There are two ways to build the brief. The <b>wizard</b> is an eight-step form. The <b>AI Producer</b> is a chat, by text or by voice, where an AI "producer" asks questions and proposes the brief, and nothing is spent until the person taps a confirm card that shows the price.</p>
+<p>The product is aimed at Nigeria and the UK first (it prices in naira and pounds as well as dollars, and it integrates Flutterwave alongside Stripe), but there is nothing region-locked about it. The company name on invoices is SongScribe AI Ltd; the GitLab group is kuuza-ai.</p>
+<p>Behind the curtain, SongScribe does not generate music itself. It pays a third party (a Suno reseller, musicapi.org / sunoapi.org) per generation, pays Google Gemini for lyrics and cover art, pays ElevenLabs for the voice conversation, and pays Anthropic as a backup brain for the producer. SongScribe's value is the guided experience, the licensing, and the packaging, not the model.</p>
+
+<h2 id="money">2. How it makes money</h2>
+<p>There are two overlapping pricing systems in the code, because the product is halfway through a migration from one to the other. You need to understand both.</p>
+<h3>The old system: plans with counters</h3>
+<p>A customer buys a <b>tier</b>. The <code>tiers</code> table holds them: Personal, Standard, Business, Exclusive, Studio Pro (a monthly subscription), plus a free Founder tier for staff. Buying one creates an <b>order</b> with counters on it: how many songs, variations, revisions and style boosts the order allows, and how many have been used. Every generation increments a counter. When songs are used up, the person buys another plan or an <b>add-on</b> (extra variations or revisions).</p>
+<p>A <b>variation</b> is "generate again with the same brief"; a <b>revision</b> is "change the brief and generate again". Each generate call returns two tracks and counts as two variations.</p>
+<h3>The new system: credits</h3>
+<p>From August 2026 the code has a full <b>credits ledger</b>. Every action has a price in credits in the <code>credit_costs</code> table (a generation is 1,000 credits; lyrics drafting, cover art, stems and style boost each have their own prices). Credits arrive in <b>lots</b> that can expire, and are spent oldest-expiring first. New accounts get 3,000 free credits on signup. Customers top up by buying <b>credit packs</b> priced in USD, NGN, GBP or EUR.</p>
+<p>A single environment variable, <code>CREDITS_ENFORCEMENT</code>, decides how much of this is real:</p>
+<ul>
+  <li><code>off</code>: credits are ignored entirely.</li>
+  <li><code>shadow</code> (the default): every action is priced and recorded in the ledger, but nobody is refused for lack of credits and the old counters still decide. This lets the team see what the new system <i>would</i> have done.</li>
+  <li><code>enforce</code>: credits decide. A 402 response with a top-up offer appears when the balance is too low.</li>
+</ul>
+<p>The code repeatedly refers to "the flip", meaning the day this switch goes to <code>enforce</code>. As of the last commit, that has not happened as far as the code can tell.</p>
+<h3>The funnel</h3>
+<p>Anonymous visitors can try a <b>demo</b> without an account: up to ten variations a day per IP, previews capped at sixty seconds or half the track, no downloads. Demo songs live in the visitor's browser storage for 48 hours. Signing up claims them into the account; paying (with a plan slot or with credits) "unlocks" them for download. This try-before-you-buy path is the main acquisition tool and shows up everywhere in the code as <code>isDemo</code> / <code>mode=demo</code>.</p>
+
+<h2 id="shape">3. The shape of the system</h2>
+<p>SongScribe is one Next.js application deployed on Vercel. There is no separate backend service. The browser talks to Next.js pages and API routes; those talk to Supabase (database, login, file storage), Upstash Redis (short-lived counters and locks), and the external AI and payment providers. Providers call back into the app through webhooks.</p>
+<pre class="mermaid">
+flowchart LR
+  B[Browser - React 19 pages] -->|pages and fetch| N[Next.js 16 on Vercel - server components and API routes]
+  N --> S[(Supabase - Postgres 17, Auth, Storage)]
+  N --> R[(Upstash Redis - rate limits, sessions, caches)]
+  N --> M[musicapi.org - Suno music generation]
+  N --> G[Google Gemini - lyrics, cover art, producer LLM]
+  N --> A[Anthropic Claude - producer LLM failover]
+  N --> E[ElevenLabs - voice agent]
+  N --> P1[Stripe]
+  N --> P2[Flutterwave]
+  N --> X[Resend and ZeptoMail - email]
+  M -.webhook.-> N
+  P1 -.webhook.-> N
+  P2 -.webhook.-> N
+  E -.custom LLM calls.-> N
+  V[Vercel Cron 04:00 daily] -.-> N
+</pre>
+<p>Inside the app the code is layered like this, and once you see it the directory tree makes sense:</p>
+<div class="kv">
+  <b>src/app/(group)/…/page.tsx</b><span>Pages. Server components that check who is signed in, fetch what the page needs, and hand it to a client component.</span>
+  <b>src/app/api/**/route.ts</b><span>Server endpoints. Every action that costs money, touches another user, or talks to a provider goes through one of these.</span>
+  <b>src/lib/**</b><span>The engine room. Pure logic and provider clients. Pages and routes are meant to be thin and call into here.</span>
+  <b>src/components/**</b><span>React UI. Feature folders (create, producer, library, credits…) plus a <code>ui/</code> folder of shadcn primitives.</span>
+  <b>src/store/**</b><span>Five Zustand stores: browser-side state that several components share.</span>
+  <b>src/hooks/**</b><span>Client hooks that own network conversations (the producer session, voice, notifications).</span>
+  <b>supabase/migrations</b><span>The database schema as a numbered history of SQL files. A lot of business logic lives here as SQL functions.</span>
+</div>
+<p>Three principles run through the whole codebase and are worth naming now, because they explain many decisions you will meet:</p>
+<ol>
+  <li><b>The server is authoritative.</b> Prices, quotas, the producer's brief, and whether a song is downloadable are decided on the server. The browser only displays and asks.</li>
+  <li><b>Everything that spends is idempotent.</b> Webhooks retry, users double-click, and polls race the webhook, so every completion path has a dedupe key or a lock so that running it twice does nothing the second time.</li>
+  <li><b>Defence in depth.</b> Row Level Security in Postgres, a CSRF origin check in the proxy, rate limits in Redis, and per-route auth checks all overlap on purpose.</li>
+</ol>
+
+<h2 id="glossary">4. Words you will hear</h2>
+<p>Plain-English definitions of the technical terms this codebase uses constantly. Skim now, come back when you meet one.</p>
+<dl class="gloss">
+  <dt>Next.js App Router, server components, client components</dt>
+  <dd>Next.js is the React framework the app is built on. In the App Router, a file called <code>page.tsx</code> inside <code>src/app/some/path/</code> becomes the page at <code>/some/path</code>. By default these components run on the server: they can read the database directly and send finished HTML. A file that starts with <code>'use client'</code> runs in the browser instead and can use state, clicks and effects. The pattern here is: server page fetches data, client component handles interaction.</dd>
+  <dt>Route groups</dt>
+  <dd>Folders in parentheses like <code>(marketing)</code> or <code>(shell)</code> do not appear in the URL. They exist so different sections can share different layouts: marketing pages get a header and footer, shell pages get the sidebar.</dd>
+  <dt>Route handler / API route</dt>
+  <dd>A <code>route.ts</code> file exporting <code>GET</code>, <code>POST</code>, etc. It is a server endpoint the browser calls with <code>fetch</code>. All money-spending actions go through these.</dd>
+  <dt>Proxy (middleware)</dt>
+  <dd>Code that runs before every request. Next.js 16 calls it <code>proxy.ts</code> (it used to be <code>middleware.ts</code>). Here it refreshes the login session, redirects signed-out visitors away from protected pages, and blocks cross-site POSTs.</dd>
+  <dt>Supabase</dt>
+  <dd>A hosted Postgres database with login (Auth), file storage, and a REST API. The app uses all three. There are two clients: the normal one, which acts as the signed-in user and is limited by RLS, and the <b>admin</b> or <b>service-role</b> client, which bypasses RLS and is only used on the server for things like webhooks.</dd>
+  <dt>RLS (Row Level Security)</dt>
+  <dd>Rules inside Postgres that say which rows a given user may see or change. For example, "a user can select from <code>songs</code> only where <code>user_id</code> equals their own id". Even a bug in the app cannot leak another person's songs, because the database itself refuses.</dd>
+  <dt>RPC, SQL function, SECURITY DEFINER</dt>
+  <dd>An RPC is a function that lives inside the database and is called from the app with <code>supabase.rpc('name', args)</code>. <code>SECURITY DEFINER</code> means the function runs with the privileges of whoever created it (the admin), not the caller. This is how the app does things a normal user is not allowed to do directly, such as spend credits, in one atomic step. Because such functions are powerful, several migrations exist only to revoke the right to call them from the public roles.</dd>
+  <dt>Migration</dt>
+  <dd>A numbered SQL file that changes the database schema. They are applied in order, once each, and never edited after they ship. The folder <code>supabase/migrations</code> is the true history of the data model.</dd>
+  <dt>Redis (Upstash)</dt>
+  <dd>A fast key-value store used for things that must be quick and short-lived: "how many requests has this IP made this minute", "which producer sessions are live", "is this generation already being finalised". Data here can be lost without breaking anything important; Postgres is the record.</dd>
+  <dt>Rate limiter</dt>
+  <dd>A counter that refuses the Nth request in a time window and returns a 429 status. Here they protect every expensive route.</dd>
+  <dt>Webhook</dt>
+  <dd>A URL the app exposes so an outside service can call <i>us</i> when something happens: Stripe says "payment succeeded", the music provider says "your track is done". Webhooks must verify a signature so nobody can fake them, and must tolerate being called twice.</dd>
+  <dt>Idempotent / dedupe key</dt>
+  <dd>An operation is idempotent if doing it twice has the same effect as doing it once. A dedupe key is a unique string stored with the first attempt so a second attempt recognises itself and stops. You will see keys like <code>song.generate:&lt;generationId&gt;</code> everywhere in the credits code.</dd>
+  <dt>TOCTOU race</dt>
+  <dd>"Time of check to time of use". You check "has quota", then you use it, but between those two steps another request also checked and used. The fix is doing check and use in one atomic database statement. The codebase has fixed most of these and admits to one it has not.</dd>
+  <dt>Signed URL</dt>
+  <dd>A temporary link to a private file in storage, valid for a few minutes. Audio and images are private in Supabase Storage; the app mints signed URLs on demand so only entitled people can fetch them.</dd>
+  <dt>CSRF, Origin header</dt>
+  <dd>Cross-site request forgery is another website making your browser POST to SongScribe with your cookies. The proxy rejects any mutating API call whose <code>Origin</code> header is not SongScribe's own domain.</dd>
+  <dt>Nonce</dt>
+  <dd>A random one-time token. The producer's confirm card carries one; redeeming it is what authorises a spend, and it can only be redeemed once.</dd>
+  <dt>Zustand</dt>
+  <dd>A tiny React state library. A "store" is an object with values and setter functions that any component can subscribe to. Some stores persist to <code>sessionStorage</code> or <code>localStorage</code>.</dd>
+  <dt>TanStack Query</dt>
+  <dd>A library for fetching and caching server data in the browser. Installed and provided in <code>providers.tsx</code> but used sparingly.</dd>
+  <dt>zod</dt>
+  <dd>A schema validation library. Request bodies from the browser and responses from providers are checked against zod schemas so bad shapes fail loudly at the boundary.</dd>
+  <dt>NDJSON, SSE, streaming</dt>
+  <dd>Ways to send a response piece by piece. The producer chat streams the model's words as they are generated: NDJSON is one JSON object per line; SSE ("server-sent events") is the format ElevenLabs and OpenAI-compatible clients expect.</dd>
+  <dt>Tool loop / function calling</dt>
+  <dd>The producer gives the language model a list of "tools" it may call (update the brief, propose lyrics…). The model replies with a tool call instead of prose; the server executes it, feeds the result back, and lets the model continue. That repeat is the loop.</dd>
+  <dt>shadcn/ui, Tailwind</dt>
+  <dd>Tailwind is utility-class CSS (<code>flex items-center px-4</code>). shadcn/ui is a set of copy-pasted React components (Button, Dialog, Slider…) that live in <code>src/components/ui</code> and are yours to edit.</dd>
+  <dt>Vitest, MSW, Playwright</dt>
+  <dd>Vitest runs unit tests. MSW (Mock Service Worker) intercepts network calls in tests so nothing real is hit; it is configured to fail any test that makes an unexpected request. Playwright drives a real browser for end-to-end tests, run only in CI.</dd>
+</dl>
+
+<h2 id="flows">5. The main journeys, step by step</h2>
+<p>These are the paths a real person takes through the product, traced through the code. Each step names the file that does the work so you can open it alongside.</p>
+
+<h3 id="f-demo">5.1 A visitor tries the demo without an account</h3>
+<ol class="steps">
+  <li><b>They land on the home page</b> (<code>src/app/(marketing)/page.tsx</code>) and click "Try the free demo", which links to <code>/create?mode=demo</code>.</li>
+  <li><b>The proxy lets them through.</b> <code>src/proxy.ts</code> asks <code>src/lib/route-access.ts</code> whether the path needs login. <code>/create</code> and <code>/create/manual</code> are on the demo allowlist when <code>?mode=demo</code> is present; <code>/create/ai</code> never is. The proxy also sets an <code>ss_country</code> cookie from Vercel's country header for pricing later.</li>
+  <li><b>The chooser page</b> (<code>src/app/(create)/create/page.tsx</code>) offers "Manual wizard" or "AI Producer". For anonymous users, the Producer card routes to login.</li>
+  <li><b>The wizard runs</b> (<code>src/components/create/song-wizard.tsx</code>) with <code>isDemo</code> true. Every answer is saved to the <code>song-form-store</code> in <code>sessionStorage</code> so a reload does not lose the form.</li>
+  <li><b>Lyrics are drafted</b> by <code>POST /api/lyrics/generate</code>. For a demo it is metered per IP by the <code>lyrics</code> rate limiter (5 per minute) and produces up to 2 variations via Gemini.</li>
+  <li><b>Generation is requested</b> by <code>POST /api/generate</code> with <code>isDemo: true</code>. The route checks the <code>demo_usage</code> table for that IP (10 variations per day), creates a <code>songs</code> row with <code>user_id null</code> and <code>is_demo true</code>, a <code>generations</code> row, and dispatches to the music provider through <code>src/lib/music/dispatch.ts</code>.</li>
+  <li><b>The browser polls</b> <code>GET /api/generate?taskId=…</code> every few seconds (<code>step-generate.tsx</code>). When the provider is done, the same idempotent <code>completeGeneration</code> that the webhook uses copies the audio into private storage and marks the generation ready.</li>
+  <li><b>The song is remembered locally.</b> The IDs go into the <code>demo-songs-store</code> in <code>localStorage</code> with a 48-hour TTL. Playback goes through <code>/api/audio/stream</code>, which serves a demo track in full to the browser but the players cap playback at 60 seconds or half the length with a fade (<code>DEMO_LIMITS</code> in <code>constants.ts</code>).</li>
+  <li><b>They are nudged to sign up</b> by the sidebar card ("Create a free account to keep the songs you make") and by <code>demo-song-claimer.tsx</code>, which after signup posts the stored IDs to <code>/api/songs/claim-demo</code> so the songs move into the new account.</li>
+</ol>
+
+<h3 id="f-auth">5.2 Sign up and sign in</h3>
+<ol class="steps">
+  <li><b>Pages</b> live in <code>src/app/(auth)/</code>: login, signup, forgot-password, update-password. They call Supabase Auth directly from the browser using <code>src/lib/supabase/client.ts</code>. Email+password and Google OAuth are both offered.</li>
+  <li><b>OAuth and email links come back</b> through <code>src/app/auth/callback/route.ts</code>, which exchanges the code for a session and redirects to the <code>redirect</code> query param (validated to be a relative path).</li>
+  <li><b>A profile row is created by a database trigger</b> on <code>auth.users</code> insert (in the initial migration), and since August a second trigger grants the 3,000-credit signup lot with a dedupe key <code>grant.signup:&lt;userId&gt;</code>.</li>
+  <li><b>The session is refreshed on every request</b> by <code>proxy.ts</code>, which is what keeps cookies valid. The root layout (<code>src/app/layout.tsx</code>) reads the user on the server and hydrates the <code>auth-store</code> so client components know who is signed in on first paint.</li>
+  <li><b>Signing out</b> is <code>POST /api/auth/signout</code> plus <code>src/lib/sign-out.ts</code>, which clears every SongScribe key in browser storage (<code>clear-user-data.ts</code>) so the next user on a shared machine does not inherit a half-filled form.</li>
+  <li><b>Password change</b> happens through <code>POST /api/auth/change-password</code>, rate limited by the <code>auth</code> limiter (3 per window), and the update-password page uses a server action.</li>
+  <li><b>Account deletion</b> is <code>POST /api/account/delete</code>: it deletes the user's storage objects, then the auth user (cascading rows), using the admin client.</li>
+</ol>
+
+<h3 id="f-buy">5.3 Buying a plan, an add-on, or a credit pack</h3>
+<ol class="steps">
+  <li><b>Prices are never in the browser.</b> The pricing page (<code>(marketing)/pricing/page.tsx</code>) calls <code>src/lib/currency/product-pricing.ts</code> on the server, which reads <code>product_prices</code> and formats strings for the visitor's currency. Currency comes from <code>resolveCurrency</code> in <code>src/lib/currency/index.ts</code>: profile preference, then the <code>ss_country</code> cookie, then Vercel's country header, then USD.</li>
+  <li><b>The checkout page</b> (<code>(app)/checkout/page.tsx</code> + <code>checkout-client.tsx</code>) shows the tier, add-ons, and a payment-method picker (<code>components/checkout/payment-method-picker.tsx</code>). Naira is Flutterwave only; other currencies can use Stripe or Flutterwave.</li>
+  <li><b>Plans:</b> <code>POST /api/checkout</code> creates a <code>pending</code> order row (one per user, enforced by a unique index) and then either a Stripe Checkout Session (<code>src/lib/stripe.ts</code>) or a Flutterwave payment link (<code>src/lib/flutterwave.ts</code>) with <code>tx_ref</code> prefixed <code>SS-</code>. Checkout is rate limited to 3 per window.</li>
+  <li><b>Packs:</b> <code>POST /api/billing/checkout</code> does the same for credit packs (<code>src/lib/credits/packs.ts</code>), writing a <code>credit_purchases</code> row and using <code>tx_ref</code> prefix <code>SSPACK-</code>. Stripe pack sessions ask Stripe to create an invoice too.</li>
+  <li><b>The customer pays on the provider's page</b> and is redirected back: Stripe to <code>/api/checkout/success</code> or <code>/api/billing/checkout/return</code>, Flutterwave to the same return routes with its transaction id.</li>
+  <li><b>Settlement happens twice on purpose</b>: once on the redirect (so the customer sees success immediately) and once on the webhook (<code>/api/webhooks/stripe</code>, <code>/api/webhooks/flutterwave</code>) in case the redirect never happened. Both call the same code: order activation for plans, and <code>settlePurchase</code> in <code>src/lib/credits/settle-purchase.ts</code> for packs, which grants the credit lot with a dedupe key so the second call is a no-op. Flutterwave payments are always re-verified server-side before anything is granted.</li>
+  <li><b>Follow-ups:</b> add-on bonuses are applied by the <code>apply_addon_bonuses</code> SQL function, an upgrade from one active plan to another carries remaining quota via <code>handle_order_upgrade</code>, orphaned demo songs are claimed via <code>claim_orphaned_songs</code>, and a receipt email is sent through <code>src/lib/email/dispatch.ts</code>.</li>
+  <li><b>Refunds:</b> Stripe's <code>charge.refunded</code> event reclaims the unspent part of a pack's lot via the <code>reclaim_credit_lot</code> RPC. There is no equivalent for Flutterwave refunds.</li>
+  <li><b>Afterwards</b> the person can see the statement, purchases, and download their own PDF invoice from <code>/billing</code> (<code>components/credits/billing-client.tsx</code>, <code>/api/billing/statement</code>, <code>/api/billing/invoice/[id]</code>).</li>
+</ol>
+
+<h3 id="f-wizard">5.4 Making a song with the wizard</h3>
+<ol class="steps">
+  <li><b>Eight steps</b>, each a component in <code>src/components/create/steps/</code>: intent, recipient, mood, vocals, style, lyrics, review-lyrics, generate. <code>song-wizard.tsx</code> owns the step counter, the Next/Back rules from <code>src/lib/create-validation.ts</code>, and skips the review step when lyrics are custom or the song is instrumental.</li>
+  <li><b>Answers are typed</b> by <code>SongFormData</code> in <code>src/types/index.ts</code>, validated by the zod schema in <code>src/lib/song-form-schema.ts</code>, and drawn from the option lists in <code>src/lib/constants.ts</code> (intents, mood groups, style groups, vocal types, special elements, length preferences).</li>
+  <li><b>Arriving with context</b>: <code>?orderId=</code> ties the song to a plan, <code>?songId=</code> makes it a revision of an existing song (pre-filled from the database), <code>?sampleId=</code> pre-fills from one of the 24 showcase samples in <code>src/lib/sample-songs.ts</code>.</li>
+  <li><b>Lyrics step</b> calls <code>POST /api/lyrics/generate</code>, which builds a Gemini prompt (<code>buildGeminiLyricsPrompt</code> in <code>prompt-builder.ts</code>) asking for structured JSON with several titled variations. The person picks one and can edit it. A snapshot of the form is saved so changing an earlier answer regenerates automatically.</li>
+  <li><b>Generate step</b> shows a staged animation and posts to <code>POST /api/generate</code>. That route is the busiest file in the app. It: authenticates; rate limits; checks entitlement against the order counters (<code>src/lib/entitlements.ts</code>) or demo usage; runs the credits preflight; builds the provider payload (<code>buildSunoPrompt</code>, <code>generate-payload.ts</code>); inserts <code>songs</code> and <code>generations</code> rows; dispatches; charges credits after acceptance; and returns a task id.</li>
+  <li><b>Dispatch</b> goes through <code>src/lib/music/</code>: the router picks a provider (only <code>musicapi</code> exists today), the budget checks in-flight capacity in Redis, the limiter throttles submissions (18 per 10 seconds globally), and failures mark health strikes so a sick provider is skipped.</li>
+  <li><b>Completion</b> arrives either by webhook (<code>/api/webhooks/suno</code> or <code>/api/webhooks/music/[provider]</code>, both delegating to <code>src/lib/music/callback-handler.ts</code>) or by the browser's poll of <code>GET /api/generate</code>. Both call <code>completeGeneration</code> in <code>src/lib/suno/complete-generation.ts</code>, which takes a Redis lock, downloads each track into the private <code>audio-files</code> bucket (<code>src/lib/suno/storage.ts</code>), stores lyrics and cover art URLs in the generation's metadata, flips statuses to ready, increments the order counters, writes a notification and sends the "song ready" email.</li>
+  <li><b>Failures</b> mark the generation failed, refund credits if any were charged, and write a "song failed" notification. Artist-name rejections from the provider are not retried.</li>
+  <li><b>The person is sent to</b> <code>/library/songs/[id]</code> to listen, or, for a demo, kept in the wizard with the demo player.</li>
+</ol>
+
+<h3 id="f-producer">5.5 Making a song with the AI Producer</h3>
+<p>This is the most sophisticated part of the codebase, and it is built around one rule: <b>the model may only propose; the person confirms; the server spends</b>.</p>
+<ol class="steps">
+  <li><b>Open <code>/create/ai</code></b> (signed in only). Its layout sets a <code>Permissions-Policy</code> that allows the microphone on this route alone. The sidebar deliberately links to the chooser with a full page load so the header is fresh.</li>
+  <li><b>Bootstrap</b>: <code>use-producer-session.ts</code> posts to <code>/api/producer/session</code>. The server creates a session in Redis (<code>session-store.ts</code>) with a fresh spec, admits it under the budgets in <code>session-budget.ts</code> (25 live sessions globally, 1 per user, 60 turns, 250k tokens, 60 minutes text or 15 minutes voice), and returns a <b>projection</b> (<code>projection.ts</code>) of the state for the UI. Returning users see a picker of past conversations (<code>conversation-picker.tsx</code>, backed by <code>/api/producer/conversations</code> and the <code>producer_sessions</code> archive table). First-timers see a short onboarding survey (<code>onboarding-survey.tsx</code>, saved by <code>/api/producer/attribution</code>).</li>
+  <li><b>Each text turn</b> posts to <code>/api/producer/chat</code>, which streams NDJSON back. Inside, <code>engine.ts</code> runs the tool loop: it builds the system prompt (<code>system-prompt.ts</code>, with vocabulary from <code>vocabulary.ts</code> and a phase from <code>state-machine.ts</code>), calls the LLM through <code>llm/index.ts</code> (Gemini Flash by default, Anthropic on failure), and executes any tool calls through <code>tool-runtime.ts</code>. Tools (<code>tools.ts</code>) are: update the spec, propose lyrics, select lyrics, propose generation, cancel proposal, hand off to the wizard. At most three tool iterations per turn.</li>
+  <li><b>The spec</b> (<code>spec.ts</code>) is the brief: the same fields the wizard collects. Every change is merged three-way (<code>merge-turn.ts</code>) so text and voice turns arriving at once do not clobber each other, and the session revision number increases so the browser can ignore stale state.</li>
+  <li><b>A proposal</b> becomes a <b>confirm card</b> in the chat with a nonce and a price locked from the price list (<code>pricing.ts</code>, <code>price-lock.ts</code>). The card expires after 120 seconds and is bound to a hash of the spec, so editing the brief after the card appears invalidates it.</li>
+  <li><b>Confirm</b>: the browser posts the nonce to <code>/api/producer/confirm</code> (<code>proposal.ts</code> redeems it exactly once), then itself calls the ordinary <code>/api/lyrics/generate</code> or <code>/api/generate</code> with the payload the server returned, then reports what happened to <code>/api/producer/session-event</code>. Generation progress is polled by the same hook, and on reload the watch is resumed.</li>
+  <li><b>Voice</b>: <code>voice-surface.tsx</code> and <code>use-producer-voice.ts</code> ask <code>/api/producer/voice</code> for a signed ElevenLabs URL plus an HMAC session token (<code>session-token.ts</code>). ElevenLabs then talks to <code>/api/webhooks/producer/[[...path]]</code>, which pretends to be an OpenAI chat-completions endpoint (<code>openai-adapter.ts</code>), verifies a bearer secret and the session token, and runs the same engine. Because voice turns happen entirely server-side, the browser polls <code>/api/producer/state?since=</code> to keep the spec panel current.</li>
+  <li><b>Endings</b>: a conversation ends when a budget is hit; it stays readable, and "continue" starts a new session seeded with the old brief (<code>resume.ts</code>). Every turn is archived to <code>producer_sessions</code> (<code>session-archive.ts</code>). The daily cron (<code>/api/cron/producer-retention</code>) deletes abandoned conversations after 30 days and song-producing ones after a year.</li>
+</ol>
+
+<h3 id="f-credits">5.6 How a credit spend actually happens</h3>
+<ol class="steps">
+  <li><b>Price lookup.</b> <code>src/lib/credits/actions.ts</code> maps an action name like <code>song.generate</code> to its row in <code>credit_costs</code>.</li>
+  <li><b>Preflight.</b> Before calling a provider, the route calls <code>preflightCredits</code> in <code>enforcement.ts</code>. In <code>enforce</code> mode it reads the balance (<code>balance.ts</code>) and returns a structured 402 (<code>out-of-credits.ts</code>) if short. In <code>shadow</code> it only logs.</li>
+  <li><b>Charge after acceptance.</b> Once the provider accepts the job, <code>chargeAfterDispatch</code> calls the <code>spend_credits</code> RPC (<code>spend.ts</code>). That SQL function takes an advisory lock per user, checks the balance, picks lots by soonest expiry, writes <code>credit_allocations</code> against them, and appends one <code>credit_ledger</code> row with the dedupe key. Calling it again with the same key returns the same result without spending.</li>
+  <li><b>Refund on failure.</b> If the generation fails, <code>refund_credits</code> is called with a key derived from the spend, and the ledger gets a matching positive row.</li>
+  <li><b>Statement.</b> <code>statement.ts</code> turns the ledger into the human-readable list on <code>/billing</code>, pairing refunds with their spends and naming the song involved.</li>
+  <li><b>Demo unlock.</b> A demo song can be kept for credits: <code>unlock.ts</code> prices it and <code>/api/songs/unlock</code> calls the <code>unlock_demo_song</code> RPC, which spends and flips <code>is_demo</code> in one transaction.</li>
+</ol>
+
+<h3 id="f-tools">5.7 Stems, cover art, style boost</h3>
+<p>After a song is ready, the song page shows a Tools panel (<code>components/library/song-tools.tsx</code>) whose availability comes from the tier's feature flags (<code>getUserFeatures</code> in <code>entitlements.ts</code>).</p>
+<ul>
+  <li><b>Stems</b> (<code>tool-stems.tsx</code>, <code>/api/studio/stems</code>): asks the provider to separate vocals from instrumental. An <code>operations</code> row tracks it; <code>/api/studio/operations/[id]</code> is polled; <code>complete-operation.ts</code> stores the resulting files; <code>/api/audio/stems</code> streams them.</li>
+  <li><b>Cover art</b> (<code>tool-cover-art.tsx</code>, <code>/api/studio/cover</code>): generates images through Gemini's image model with a prompt from <code>buildCoverArtPrompt</code>. <code>/api/songs/[id]/cover</code> sets the chosen one; <code>/api/images</code> proxies private images.</li>
+  <li><b>Style boost</b> (<code>tool-style-boost.tsx</code>, <code>/api/studio/style-boost</code> and <code>…/regenerate</code>): asks the provider to enrich the genre description, then regenerates the song with it. Metered by the order's style-boost counter and priced in credits.</li>
+</ul>
+<p>Note: these four routes still call the old <code>sunoClient</code> directly instead of the newer provider abstraction. That matters for the assessment later.</p>
+
+<h3 id="f-after">5.8 Library, sharing, licence, invoices</h3>
+<ul>
+  <li><b>Library</b> (<code>(shell)/library/page.tsx</code> + <code>library-client.tsx</code>): all of the person's songs with search, filters, favourites and stat cards. Data shaping is in <code>src/lib/library.ts</code>. Deletions are soft (a <code>deleted_at</code> stamp).</li>
+  <li><b>Song page</b> (<code>library/songs/[id]/page.tsx</code>): the player with every generation attempt, lyrics, the prompt that was sent, metadata, add-ons, the tools panel, revision and delete actions, and the demo banners that offer to claim or unlock.</li>
+  <li><b>Playback</b>: a persistent bottom player (<code>ui/persistent-player.tsx</code>, <code>player-store.ts</code>) takes over from inline players when it is mounted. Plays are counted through <code>src/lib/plays.ts</code> with a Redis cooldown so refreshing does not inflate counts.</li>
+  <li><b>Sharing</b>: <code>share-song-toggle.tsx</code> creates a token; <code>/s/[token]</code> is a public page with a call to action for visitors.</li>
+  <li><b>Licence PDF</b>: <code>/api/songs/[id]/license</code> renders <code>src/lib/license-pdf.tsx</code> using the wording in <code>policies/licenses.txt</code> and the tier's licence type.</li>
+  <li><b>Invoice PDF</b>: <code>/api/billing/invoice/[id]</code> renders <code>src/lib/invoice-pdf.tsx</code> on demand for any payment.</li>
+  <li><b>Download all</b>: <code>download-all-button.tsx</code> zips variations in the browser with JSZip.</li>
+</ul>
+
+<h3 id="f-notify">5.9 Notifications and email</h3>
+<ul>
+  <li>Notifications are rows in <code>notifications</code>; a null <code>user_id</code> means a broadcast to everyone. Read state lives in <code>notification_reads</code>. Kinds today: song ready, song failed, order activated, announcement, and a trending kind nothing writes yet.</li>
+  <li>The sidebar badge (<code>use-unread-notifications.ts</code>) is seeded on the server and kept live over Supabase Realtime for personal rows, with a recount on every navigation to catch broadcasts.</li>
+  <li>The page (<code>notifications-client.tsx</code>) pages with a cursor and marks read optimistically via <code>/api/notifications/read</code>.</li>
+  <li>Broadcasts are sent with <code>scripts/announce.mjs</code>, never from the UI, because the table deliberately has no user insert policy.</li>
+  <li>Email goes through Resend (<code>src/lib/email/resend.ts</code>) for order receipts, song ready, welcome-once (stamped in <code>welcome_email_sent_at</code>), and pack receipts, each with an idempotency key. The contact form uses ZeptoMail instead (<code>zeptomail.ts</code>, <code>/api/contact</code>).</li>
+</ul>
+
+<h2 id="db">6. The database, table by table</h2>
+<p>Postgres 17 on Supabase. Every table has RLS on. This is what each one holds, in the order you are likely to care.</p>
+<div class="tw"><table>
+<thead><tr><th>Table</th><th>One row is…</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><code>profiles</code></td><td>a user's public profile</td><td>Created by trigger from <code>auth.users</code>. Holds name, email, currency preference, first-touch attribution (source, medium, campaign), <code>welcome_email_sent_at</code>. RLS was once recursive and had to be fixed (migration 20260130200000).</td></tr>
+<tr><td><code>tiers</code></td><td>a purchasable plan</td><td>id, name, price in cents, licence type, song/variation/revision/style-boost limits, feature flags. Includes <code>founder</code> (free, staff) and <code>studio_pro</code> (subscription, 99999 sentinel limits).</td></tr>
+<tr><td><code>orders</code></td><td>a plan purchase</td><td>Status pending → active → completed. Counters <code>songs_used/limit</code>, <code>variations_used/limit</code>, <code>revisions_used/limit</code>, <code>style_boosts_used/limit</code>. Stripe or Flutterwave ids. One pending order per user (unique index).</td></tr>
+<tr><td><code>order_add_ons</code>, <code>addon_definitions</code></td><td>an add-on bought with an order / the catalogue</td><td>Extra variations or revisions. <code>apply_addon_bonuses</code> adds them to the order counters.</td></tr>
+<tr><td><code>songs</code></td><td>a song brief</td><td>All wizard fields, the prompt that was sent, status (generating/ready/failed), <code>order_id</code> (nullable), <code>is_demo</code>, share token and flag, title, cover, favourite, play count, soft delete.</td></tr>
+<tr><td><code>generations</code></td><td>one attempt to make a song</td><td>Attempt number, provider and task id, status, <code>variation_urls</code> (storage paths), metadata JSON with the provider's track info and lyrics, <code>is_revision</code>, error message.</td></tr>
+<tr><td><code>operations</code></td><td>a post-generation job</td><td>Stem separation, cover art, style boost. Type, params, status, result JSON.</td></tr>
+<tr><td><code>demo_usage</code></td><td>an anonymous IP's daily demo count</td><td>Upserted atomically. The remaining known race is a check followed by an increment in <code>/api/generate</code>.</td></tr>
+<tr><td><code>song_plays</code>, favourites on <code>songs</code></td><td>a play event</td><td>Added August 2026 for the coming Explore feature.</td></tr>
+<tr><td><code>notifications</code>, <code>notification_reads</code></td><td>an in-app notification / a read receipt</td><td>Null <code>user_id</code> = broadcast. Dedupe key prevents double "song ready" rows. Realtime publication enabled.</td></tr>
+<tr><td><code>producer_sessions</code></td><td>an archived AI Producer conversation</td><td>Transcript, spec, phase, song id if any, runtime info, expiry for retention.</td></tr>
+<tr><td><code>credit_costs</code></td><td>the price of an action in credits</td><td>Keyed by action name. Editable without a deploy.</td></tr>
+<tr><td><code>credit_lots</code></td><td>a batch of credits granted</td><td>Amount, remaining, expiry, reason, dedupe key, order or purchase link. Spent soonest-expiring first.</td></tr>
+<tr><td><code>credit_ledger</code></td><td>one movement of credits</td><td>Append only. Spend, refund, grant, expiry, reclaim. Dedupe key. This is the audit trail.</td></tr>
+<tr><td><code>credit_allocations</code></td><td>which lot a spend came from</td><td>Links ledger rows to lots so refunds and reclaims return credits to the right lot.</td></tr>
+<tr><td><code>credit_packs</code>, <code>credit_purchases</code></td><td>the pack catalogue / one pack purchase</td><td>Purchases carry provider, reference, currency, amount, invoice fields, refund state.</td></tr>
+<tr><td><code>product_prices</code></td><td>a price for a product in a currency</td><td>Tiers, add-ons and packs in USD, NGN, GBP, EUR. The single source of truth for displayed and charged prices since 7 Sep 2026.</td></tr>
+<tr><td><code>payment_methods</code>, <code>assets</code></td><td>(largely unused)</td><td>Created early, no live code path writes them meaningfully.</td></tr>
+</tbody></table></div>
+<p><b>Functions worth knowing</b> (all in migrations): <code>spend_credits</code>, <code>grant_credits</code>, <code>refund_credits</code>, <code>reclaim_credit_lot</code>, <code>expire_credit_lots</code>, <code>credit_balance</code>, <code>credit_balance_detail</code>, <code>unlock_demo_song</code>, <code>claim_orphaned_songs</code>, <code>claim_demo_generation</code>, <code>handle_order_upgrade</code>, <code>apply_addon_bonuses</code>, <code>increment_style_boost</code>, <code>assign_tier</code> (admin only), plus the signup and profile triggers. Three proof scripts in <code>supabase/tests/</code> exercise the ledger, the lots, and the signup grant.</p>
+
+<h2 id="files">7. Every file, directory by directory</h2>
+<p>Test files (<code>*.test.ts</code>, <code>*.test.tsx</code>) sit next to the code they test and are not listed individually; section 7.8 covers what they check. Everything else is here.</p>
+
+<h3 id="d-root">7.1 Repository root</h3>
+<div class="files">
+<div>README.md</div><div>The default create-next-app boilerplate. It says nothing about SongScribe. Treat <code>claude.md</code> as the real README.</div>
+<div>claude.md</div><div>A 912-line project guide written for an AI coding assistant: architecture, conventions, flows, gotchas. Mostly accurate but stale in places (it still mentions a <code>/dashboard</code> page, "20 migrations", and Polar as the payment provider). Read it once; trust the code over it.</div>
+<div>package.json</div><div>Dependencies and scripts. Key scripts: <code>dev</code>, <code>build</code>, <code>lint</code>, <code>typecheck</code>, <code>test</code> (Vitest), <code>test:e2e</code> (Playwright), <code>verify</code> (typecheck + lint + format check + tests, what CI runs), <code>db:local</code> / <code>db:remote</code> (switch database), <code>db:types</code> (regenerate DB types), <code>announce</code>, <code>credits:backfill</code>.</div>
+<div>.env.local.example</div><div>Every environment variable with a comment explaining it. Copy to <code>.env.local</code> and fill in. Section 8 lists them.</div>
+<div>next.config.ts</div><div>Applies the security headers from <code>src/lib/security-headers.ts</code> to every route and allows remote images from Supabase storage, the R2 samples bucket and provider CDNs.</div>
+<div>tsconfig.json</div><div>Strict TypeScript, path alias <code>@/</code> → <code>src/</code>.</div>
+<div>eslint.config.mjs</div><div>Next.js and React hooks rules. Unused variables warn unless prefixed with <code>_</code>.</div>
+<div>.prettierrc.json, .prettierignore</div><div>Formatting rules. CI fails on unformatted files, so run <code>npx prettier --write .</code> before pushing.</div>
+<div>postcss.config.mjs, components.json</div><div>Tailwind v4 wiring and the shadcn/ui configuration (new-york style, lucide icons).</div>
+<div>vitest.config.ts, vitest.setup.ts</div><div>jsdom environment, Testing Library, MSW server started with "error on unhandled request", the provider base URL pinned to a fake host so tests can never reach the real API.</div>
+<div>playwright.config.ts</div><div>Chromium, starts the dev server, runs the four specs in <code>e2e/</code>. Only runs in CI on <code>dev</code> and <code>main</code>.</div>
+<div>.gitlab-ci.yml</div><div>Pipeline: typecheck, lint, format check and unit tests block merges; SAST and secret detection run; e2e runs on the two long-lived branches.</div>
+<div>vercel.json</div><div>One cron: <code>0 4 * * *</code> hitting <code>/api/cron/producer-retention</code>.</div>
+<div>.git-blame-ignore-revs</div><div>Commits (mass formatting) that <code>git blame</code> should skip.</div>
+<div>.gitignore</div><div>Standard. All <code>.env*</code> files are ignored except the example.</div>
+</div>
+
+<h3 id="d-supabase">7.2 supabase/</h3>
+<div class="files">
+<div>config.toml</div><div>Local Supabase stack settings for <code>supabase start</code>: ports, auth providers, Inbucket for local email.</div>
+<div>tests/*.sql</div><div>Three "proof" scripts run by hand against a local database to check the ledger balances, the FIFO lot spending, and that the signup trigger grants exactly once.</div>
+<div>migrations/ (57 files)</div><div><p>Read in order they tell the product's story. Grouped:</p>
+<p><b>Foundation, Jan–Feb 2026.</b> <code>001_initial_schema</code> creates profiles, tiers, orders, songs, generations, demo_usage, payment_methods and the auth trigger. <code>002</code> fixes constraints. The <code>20260130*</code> files adjust profiles, demo usage, and fix the recursive profiles RLS policy.</p>
+<p><b>Commerce, Feb 2026.</b> payment methods, add-ons, <code>claim_orphaned_songs</code>, <code>handle_order_upgrade</code>, <code>replace_polar_with_stripe</code> (the original payment provider was Polar), atomic demo usage upsert, one-pending-order index, revision tracking, tier quota updates, <code>generation.is_revision</code>, song constraint fixes, private audio storage bucket, selective claiming of demo songs.</p>
+<p><b>Studio tools and sharing, Feb 2026.</b> <code>operations</code> table and tier feature flags, operations update policy, style-boost quota and its fixes (including a <code>FOR UPDATE</code> lock), song sharing tokens, performance indexes, the founder tier.</p>
+<p><b>Hardening, Mar 2026.</b> drop unused SECURITY DEFINER views, RLS on <code>schema_migrations</code>, an <code>assign_tier</code> admin function.</p>
+<p><b>Producer and platform, Aug 2026.</b> provider column on generations, atomic <code>claim_demo_generation</code>, profile attribution, storage buckets, persisted producer sessions and their runtime column, song plays and favourites, notifications with dedupe.</p>
+<p><b>Credits, Aug–Sep 2026.</b> <code>credit_ledger</code>, <code>credit_lots</code>, signup grant trigger, credit packs, purchase invoices, <code>spend_credits</code> price override, <code>songs.is_demo</code>, revoke tier-granting RPCs from public roles, <code>unlock_demo_song</code>, <code>product_prices</code>, tier and add-on prices, close anonymous access to definer functions, welcome-email marker, reclaim a refunded lot.</p>
+</div>
+</div>
+
+<h3 id="d-app">7.3 src/app — pages and layouts</h3>
+<div class="files">
+<div>layout.tsx</div><div>Root layout. Loads fonts and <code>globals.css</code>, reads the signed-in user on the server and hydrates the auth store through <code>providers.tsx</code>, mounts Google Tag Manager, the Meta pixel and Vercel Analytics, the toast container, and the persistent audio player.</div>
+<div>robots.ts, sitemap.ts</div><div>SEO: block private routes, list the marketing pages.</div>
+<div>auth/callback/route.ts</div><div>Where Supabase sends the browser after OAuth or a magic link. Exchanges the code for a session, then redirects to a safe relative path.</div>
+<div>(marketing)/layout.tsx</div><div>Public header and footer around the marketing pages.</div>
+<div>(marketing)/page.tsx</div><div>Home page: hero with a playable sample, how it works, use cases, featured samples, final call to action.</div>
+<div>(marketing)/pricing/page.tsx</div><div>Renders the pricing sections with server-formatted prices in the visitor's currency and highlights the current plan if signed in.</div>
+<div>(marketing)/samples/page.tsx, demo/page.tsx</div><div>The 24 showcase songs by category, and a redirect page into the demo.</div>
+<div>(marketing)/faq/page.tsx, contact/page.tsx, licensing/page.tsx</div><div>Thin server wrappers around client components. Licensing explains the three licence types.</div>
+<div>(marketing)/privacy, terms, refund</div><div>Legal pages as static content.</div>
+<div>(marketing)/s/[token]/page.tsx</div><div>The public shared-song page. Looks up the song by share token with the admin client, renders a player and a sign-up call to action.</div>
+<div>(auth)/layout.tsx and pages</div><div>Centered card layout. Login (email + Google), signup, forgot-password, update-password (with a server action in <code>actions.ts</code> and a client form).</div>
+<div>(create)/layout.tsx</div><div>Wraps the creation routes in the sidebar shell, passing the sidebar quota and unread count computed on the server.</div>
+<div>(create)/create/page.tsx</div><div>The chooser between the wizard and the AI Producer.</div>
+<div>(create)/create/manual/layout.tsx, page.tsx</div><div>The wizard. The page reads <code>orderId</code>, <code>songId</code>, <code>sampleId</code> and demo mode from the URL, loads what it needs, and renders <code>SongWizard</code>.</div>
+<div>(create)/create/ai/layout.tsx, page.tsx</div><div>The AI Producer. The layout is what sets the microphone permission header. The page requires login and renders <code>ProducerClient</code>.</div>
+<div>(shell)/layout.tsx</div><div>Sidebar shell for signed-in areas. Same <code>AppShell</code> as the create group.</div>
+<div>(shell)/library/page.tsx, loading.tsx, error.tsx</div><div>The library with skeleton and error boundaries.</div>
+<div>(shell)/library/songs/[id]/page.tsx, loading.tsx, error.tsx</div><div>The song detail page described in 5.8. Fetches song, generations, active orders, the unlock offer, feature flags and existing stem operations in one server pass.</div>
+<div>(shell)/library/settings/page.tsx, settings-form.tsx</div><div>Profile name and currency, password change, account deletion.</div>
+<div>(shell)/billing/page.tsx, billing/checkout/page.tsx</div><div>Credits balance, statement, purchases, pack ladder; and the pack checkout page.</div>
+<div>(shell)/credits/page.tsx</div><div>Redirect to <code>/billing</code> (the old URL).</div>
+<div>(shell)/notifications/page.tsx</div><div>Server-renders the first page of notifications and hands off to the client list.</div>
+<div>(app)/layout.tsx</div><div>Minimal layout for checkout and legacy routes.</div>
+<div>(app)/checkout/page.tsx, checkout-client.tsx, status/page.tsx</div><div>Plan checkout and the post-payment status page (which polls until the order activates).</div>
+<div>(app)/dashboard/page.tsx, upgrade/page.tsx</div><div>Redirects kept for old links.</div>
+</div>
+
+<h3 id="d-api">7.4 src/app/api — server routes</h3>
+<div class="files">
+<div>generate/route.ts</div><div><b>POST</b> starts a generation (see 5.4). <b>GET ?taskId=</b> reports status and finalises a finished task, answering from the database row first before asking the provider. The single most important file in the app.</div>
+<div>lyrics/generate/route.ts</div><div>Synchronous lyric drafting through Gemini. Auth required unless <code>isDemo</code>. Rate limited, credit-metered.</div>
+<div>checkout/route.ts, checkout/success/route.ts</div><div>Create a plan checkout (Stripe or Flutterwave); handle the return from payment and settle.</div>
+<div>billing/checkout/route.ts, billing/checkout/return/route.ts</div><div>Same pair for credit packs.</div>
+<div>billing/statement/route.ts, billing/purchase/[id]/route.ts, billing/invoice/[id]/route.tsx</div><div>Paged ledger, purchase detail, and on-demand PDF invoice.</div>
+<div>pricing/route.ts</div><div>JSON prices in the resolved currency for client components that need them.</div>
+<div>webhooks/stripe/route.ts</div><div>Verifies the Stripe signature, handles checkout completed, invoice paid, and charge refunded.</div>
+<div>webhooks/flutterwave/route.ts</div><div>Verifies the hash header, normalises the two payload shapes Flutterwave sends, re-verifies the transaction with the API, then settles by <code>tx_ref</code> prefix.</div>
+<div>webhooks/suno/route.ts, webhooks/music/[provider]/route.ts</div><div>Music provider callbacks. Both delegate to the shared callback handler; the second is the future-proof per-provider URL.</div>
+<div>webhooks/producer/[[...path]]/route.ts</div><div>The OpenAI-compatible endpoint ElevenLabs calls during a voice conversation. Bearer-secret protected, session-token verified, streams SSE.</div>
+<div>audio/stream/route.ts, audio/stems/route.ts, images/route.ts</div><div>Signed-URL proxies for private storage. Check the caller may access the song (owner, shared token, or demo), then redirect or stream. Rate limited at 120 per minute.</div>
+<div>studio/stems, studio/cover, studio/style-boost, studio/style-boost/regenerate, studio/operations/[id]</div><div>The post-generation tools and their status poll.</div>
+<div>songs/[id]/route.ts</div><div>PATCH title, DELETE (soft).</div>
+<div>songs/[id]/cover, favourite, license</div><div>Set cover image, toggle favourite, download licence PDF.</div>
+<div>songs/claim-demo, claim-to-order, unlock</div><div>Move demo songs into an account; attach a song to a plan slot; pay for a demo song with credits.</div>
+<div>producer/session, chat, confirm, session-event, state, select-lyrics, conversations, conversations/[id]/resume, voice, attribution</div><div>Everything the AI Producer client talks to. See 5.5. All require login and a session the caller owns.</div>
+<div>notifications/route.ts, notifications/read/route.ts</div><div>Paged list with filter and cursor; mark one or all read.</div>
+<div>cron/producer-retention/route.ts</div><div>Deletes expired archived conversations. Requires <code>Authorization: Bearer $CRON_SECRET</code>; answers 404 to everyone else so the route's existence is not revealed.</div>
+<div>account/delete/route.ts</div><div>Full account deletion.</div>
+<div>auth/signout/route.ts, auth/change-password/route.ts</div><div>Server-side sign out and password change.</div>
+<div>contact/route.ts</div><div>Validates the contact form and sends it through ZeptoMail.</div>
+</div>
+
+<h3 id="d-lib">7.5 src/lib — the engine room</h3>
+<h4>Top level</h4>
+<div class="files">
+<div>constants.ts</div><div>Every option list the wizard shows (12 intents, mood groups, style groups, 6 vocal types, special elements, 5 lengths) and <code>DEMO_LIMITS</code>.</div>
+<div>prompt-builder.ts</div><div>Turns a song brief into text for the providers: the Suno prompt and style string, the Gemini lyrics prompt (asking for JSON), and the cover-art prompt.</div>
+<div>entitlements.ts</div><div>"Can this user do this?" against order counters: quota checks, feature flags per tier, the active order lookup.</div>
+<div>quota.ts, sidebar-quota.ts</div><div>Small helpers that compute "has quota remaining" and the sidebar card's numbers (plan counters today, credit balance after the flip).</div>
+<div>create-validation.ts, song-form-schema.ts</div><div>Wizard step rules (minimum lengths, which steps can proceed) and the zod schema for the brief.</div>
+<div>rate-limit.ts</div><div>All Upstash limiters and the <code>applyRateLimit</code> helper. The identifier is the user id if signed in, else the IP.</div>
+<div>route-access.ts</div><div>Pure function: does this path need login, and is it demo-exempt. Used by the proxy and tested on its own.</div>
+<div>security-headers.ts</div><div>CSP, HSTS, frame options, referrer policy, Permissions-Policy (mic off everywhere except the producer route).</div>
+<div>supabase/server.ts, supabase/client.ts</div><div>Factory functions for the server client (cookie-based, per request), the admin client (service role), and the browser client.</div>
+<div>errors.ts, validation.ts, utils.ts, crypto.ts</div><div><code>ApiError</code> with status codes; request-body helpers; <code>cn</code> and duration formatting; a constant-time string compare for secrets.</div>
+<div>stripe.ts, flutterwave.ts, flutterwave-refs.ts, flutterwave-webhook-payload.ts</div><div>Provider clients. Stripe is pinned to API version <code>2026-08-26.dahlia</code>. The Flutterwave files build payment links, verify transactions, parse the <code>SS-</code>/<code>SSPACK-</code> reference scheme, and normalise webhook bodies.</div>
+<div>currency/index.ts, currency/product-pricing.ts</div><div>Currency resolution and formatting; reading <code>product_prices</code> into the shapes pages need.</div>
+<div>email/resend.ts, email/dispatch.ts, email/zeptomail.ts</div><div>Transactional email templates and sending with idempotency keys; the contact-form sender.</div>
+<div>gemini/client.ts</div><div>Gemini calls for lyrics (JSON schema mode) and images.</div>
+<div>license-pdf.tsx, invoice-pdf.tsx</div><div>React-PDF documents. The invoice issuer block is SongScribe AI Ltd with no VAT number and an empty address.</div>
+<div>library.ts, plays.ts, audio-proxy.ts, audio-singleton.ts</div><div>Library data shaping; play counting with cooldown; the access check shared by the audio routes; a browser-side "only one audio element plays" helper.</div>
+<div>sample-songs.ts</div><div>The 24 showcase samples (title, category, tags, audio and cover URLs on Cloudflare R2, and the brief that pre-fills the wizard).</div>
+<div>clear-user-data.ts, sign-out.ts</div><div>Wipe SongScribe browser storage; the sign-out sequence.</div>
+</div>
+
+<h4>lib/music — the provider seam</h4>
+<div class="files">
+<div>provider.ts</div><div>The interface every music provider must implement: submit, status, and the shapes in between.</div>
+<div>providers/musicapi.ts</div><div>The only adapter. Wraps the Suno client. <code>aimusicapi</code> and <code>apipass</code> are reserved names for future providers.</div>
+<div>registry.ts</div><div>Reads <code>MUSIC_PROVIDERS</code> from the environment and builds the ordered list.</div>
+<div>router.ts</div><div>Pure function that picks the next healthy provider given health strikes and capacity.</div>
+<div>dispatch.ts</div><div>The shell that tries providers in order with failover, records in-flight jobs and strikes in Redis.</div>
+<div>budget.ts, limiter.ts</div><div>In-flight capacity as a Redis sorted set scored by dispatch time; per-provider submission tokens.</div>
+<div>callback-url.ts, callback-handler.ts</div><div>Which webhook URL to give each provider; the shared logic both webhook routes call.</div>
+<div>settled-poll.ts, status-cache.ts, models.ts</div><div>Polling with backoff; short Redis cache of provider status; model name constants (V5 default).</div>
+</div>
+
+<h4>lib/suno — the concrete client</h4>
+<div class="files">
+<div>client.ts</div><div>HTTP client for musicapi.org: generate, status, stems, cover, style boost. Zod-validates every response. Rate limited by the global Suno limiter.</div>
+<div>types.ts, generate-payload.ts</div><div>Provider request and response types; building the generate body from a brief.</div>
+<div>storage.ts</div><div>Downloads provider files into the private bucket and returns storage paths.</div>
+<div>complete-generation.ts, complete-operation.ts</div><div>The idempotent finalisers for songs and for tool operations. Take a Redis lock, store files, update rows, increment counters, write notifications, send email, refund on failure.</div>
+</div>
+
+<h4>lib/credits</h4>
+<div class="files">
+<div>actions.ts</div><div>Action names and the price lookup against <code>credit_costs</code>.</div>
+<div>enforcement.ts</div><div>The mode switch, <code>preflightCredits</code>, <code>chargeAfterDispatch</code>.</div>
+<div>spend.ts, balance.ts</div><div>Wrappers around the spend/refund RPCs and the balance functions.</div>
+<div>out-of-credits.ts</div><div>The structured 402 body and the client-side reader for it.</div>
+<div>packs.ts, purchases.ts, settle-purchase.ts</div><div>Pack catalogue in the right currency; purchase records; the single settlement function both Stripe and Flutterwave paths call.</div>
+<div>statement.ts, unlock.ts, index.ts</div><div>Human-readable statement rows and <code>formatCredits</code>; the demo-unlock offer; re-exports.</div>
+</div>
+
+<h4>lib/producer — the AI Producer</h4>
+<div class="files">
+<div>types.ts, spec.ts, state-machine.ts, state-cursor.ts</div><div>Event and session types; the brief and its defaults; the conversation phases and allowed transitions; the revision cursor.</div>
+<div>session-store.ts, session-budget.ts, session-archive.ts, resume.ts, conversation-list.ts</div><div>Redis session persistence with revision-checked writes; admission control and ceilings; archiving to Postgres; carrying a brief into a new conversation; the searchable history list.</div>
+<div>engine.ts, tools.ts, tool-runtime.ts, merge-turn.ts, projection.ts</div><div>The tool loop; the six tool definitions; executing them with guards; three-way merging of concurrent turns; the read model sent to the browser.</div>
+<div>proposal.ts, pricing.ts, price-lock.ts</div><div>Confirm-card nonces with expiry and spec binding; prices from the price list; locking a price to a card.</div>
+<div>system-prompt.ts, vocabulary.ts, onboarding.ts, origin.ts</div><div>The producer's instructions; the words it may use for moods and genres; the onboarding survey; first-touch attribution parsing.</div>
+<div>llm/types.ts, llm/index.ts, llm/gemini.ts, llm/anthropic.ts</div><div>A provider-neutral streaming interface, the failover selector, and the two adapters.</div>
+<div>openai-adapter.ts, session-token.ts, api-context.ts</div><div>Speaking OpenAI's chat-completions SSE for ElevenLabs; HMAC tokens that bind a voice call to a session; loading user, session and supabase client for every producer route.</div>
+</div>
+
+<h4>lib/notifications</h4>
+<div class="files">
+<div>types.ts, write.ts, read.ts, presentation.ts</div><div>Kinds and shapes; inserting with dedupe; paged reads and counts; icon, tone, action label and relative time per kind.</div>
+</div>
+
+<h3 id="d-components">7.6 src/components</h3>
+<div class="files">
+<div>providers.tsx</div><div>TanStack Query client, auth store hydration, toaster.</div>
+<div>layout/app-shell.tsx</div><div>The sidebar: nav (Create, Explore "soon", Library, Notifications), the credits or plan card, collapse state persisted in localStorage and mirrored to a cookie so the server renders the right width, a mobile drawer, and the profile menu.</div>
+<div>layout/header.tsx, footer.tsx, profile-menu.tsx, hero-player.tsx, featured-samples.tsx</div><div>Marketing chrome, the account dropdown, and the home page's sample players.</div>
+<div>create/song-wizard.tsx, wizard-ui.tsx, upgrade-popup.tsx</div><div>The wizard frame and step routing; shared visual primitives (headings, glass cards, tag pills, radio cards); the "you are out of quota" modal.</div>
+<div>create/steps/*.tsx</div><div>One file per step. The review step auto-drafts lyrics and shows a staged loading animation; the generate step submits, polls, and renders the result or the demo player.</div>
+<div>producer/producer-client.tsx</div><div>The producer screen: thread, composer, spec panel, history drawer, voice surface, onboarding survey, confirm cards, lyrics review, generation status and song player.</div>
+<div>producer/chat-message.tsx, composer.tsx, lyrics-review.tsx, generation-status.tsx, song-player.tsx, conversation-picker.tsx, conversation-history.tsx, onboarding-survey.tsx, voice-surface.tsx</div><div>The pieces of that screen.</div>
+<div>credits/billing-client.tsx, pack-checkout-client.tsx, out-of-credits-notice.tsx</div><div>The billing page, the pack checkout, and the reusable "you need N more credits" notice.</div>
+<div>checkout/payment-method-picker.tsx</div><div>Stripe vs Flutterwave choice, currency-aware.</div>
+<div>library/library-client.tsx, track-row.tsx, stat-cards.tsx</div><div>The library list.</div>
+<div>library/song-detail-client.tsx, song-variations-player.tsx, song-tools.tsx, tool-stems.tsx, tool-cover-art.tsx, tool-style-boost.tsx</div><div>The song page's interactive parts.</div>
+<div>library/claim-song-button.tsx, delete-song-button.tsx, download-all-button.tsx, editable-song-title.tsx, share-song-toggle.tsx, payment-banner.tsx, upgrade-button.tsx</div><div>Song actions.</div>
+<div>notifications/notifications-client.tsx</div><div>The notifications list with filters, paging and optimistic reads.</div>
+<div>pricing/pricing-cards.tsx</div><div>Pricing sections. Prices are passed in pre-formatted from the server.</div>
+<div>samples/samples-page-client.tsx, faq/faq-client.tsx, contact/contact-page-client.tsx, shared/shared-song-cta.tsx, demo-song-claimer.tsx</div><div>Marketing page bodies; the component that claims demo songs after signup.</div>
+<div>ui/*.tsx</div><div>shadcn primitives (button, dialog, slider, tabs, sheet, select…) plus three custom ones: <code>audio-player</code>, <code>persistent-player</code>, <code>player-padding-wrapper</code>.</div>
+</div>
+
+<h3 id="d-state">7.7 src/hooks, src/store, src/types</h3>
+<div class="files">
+<div>hooks/use-producer-session.ts</div><div>Bootstraps a producer session, streams turns, runs the confirm chain, polls generation, resumes and continues conversations. The comments in this file are the best explanation of the producer's client protocol.</div>
+<div>hooks/use-producer-voice.ts</div><div>Drives the ElevenLabs conversation SDK: mic permission, connect with signed URL, mute, end.</div>
+<div>hooks/use-conversation-history.ts</div><div>Server-searched, paged conversation list with debouncing and stale-response protection.</div>
+<div>hooks/use-unread-notifications.ts</div><div>Live unread badge over Realtime plus a recount on navigation.</div>
+<div>hooks/use-client-value.ts</div><div><code>useLocalStorageFlag</code> (with cookie mirror, cross-tab sync) and <code>useHydrated</code>.</div>
+<div>store/song-form-store.ts</div><div>The wizard's answers, step, lyric variations and demo click counters, persisted to sessionStorage.</div>
+<div>store/producer-store.ts</div><div>The producer thread and server projection. Deliberately does not persist the session id and never edits the spec locally.</div>
+<div>store/player-store.ts</div><div>The persistent player's track, position and demo cap.</div>
+<div>store/demo-songs-store.ts</div><div>Demo song IDs in localStorage with a 48-hour TTL.</div>
+<div>store/auth-store.ts</div><div>User, profile, active order id.</div>
+<div>types/index.ts</div><div>Hand-written domain types: <code>SongFormData</code> and its defaults, tags, profiles, orders, songs, demo songs.</div>
+<div>types/database.types.ts</div><div>Generated from the schema by <code>npm run db:types</code>. Committed for reference but not yet wired into the Supabase clients, so queries are still loosely typed.</div>
+</div>
+
+<h3 id="d-tests">7.8 Tests, e2e, scripts, policies, public</h3>
+<div class="files">
+<div>src/test/msw/server.ts, handlers.ts, anthropic.ts, gemini.ts</div><div>The MSW server; happy-path handlers for the music provider; scriptable SSE fakes for Anthropic and Gemini so the tool loop can be tested turn by turn.</div>
+<div>src/test/mocks.ts</div><div>In-memory Redis (with sorted sets and TTL), a failing Redis, rate limiter and provider limiter mocks.</div>
+<div>*.test.ts(x) — 90 files, 1,281 tests</div><div>Coverage is concentrated where the money and the state machines are: 24 files under <code>lib/producer</code>, 12 under <code>lib/credits</code>, 11 under <code>lib/music</code>, 9 for producer components, 3 for credits components. The rest are single files for validation, routing rules, security headers, the players, Flutterwave parsing, invoices, and a few UI pieces. Pages and API route handlers themselves are essentially untested at unit level.</div>
+<div>e2e/smoke.spec.ts</div><div>Home page renders, library redirects to login, demo paths are open, producer is not, pricing lists tiers.</div>
+<div>e2e/spend.spec.ts</div><div>Both spend routes refuse anonymous callers even with an order id, are behind the CSRF guard, and the demo is still open. Written after a real incident where lyrics generation had no auth check.</div>
+<div>e2e/cron.spec.ts, permissions.spec.ts</div><div>The retention cron refuses unauthenticated calls with a 404; the Permissions-Policy header disables the mic on marketing routes (the producer route test is still skipped).</div>
+<div>scripts/announce.mjs</div><div>Publish, list or revoke broadcast notifications. Refuses <code>--yes</code> against production without <code>--confirm-production</code>.</div>
+<div>scripts/backfill-credits.mjs</div><div>One-off grants for the credits launch: signup allowance for old accounts, unused v1 quota converted at par, a flat 50,000 launch bonus per paying customer, staff grants. All keyed, dry-run by default, aborts on any absurd amount.</div>
+<div>scripts/gen-db-types.mjs, use-local-db.mjs</div><div>Safe type regeneration (never truncates on failure); switch the dev server between local and remote Supabase by writing <code>.env.development.local</code>.</div>
+<div>policies/licenses.txt</div><div>The three licence agreements (Personal, Commercial, Exclusive) with placeholders the PDF fills in.</div>
+<div>public/images, public/figma</div><div>Marketing photography, logos, icons, backgrounds; SVGs exported from the Figma designs for the sidebar.</div>
+<div>src/app/globals.css</div><div>Tailwind v4 theme tokens, the dark palette, keyframe animations used by the loading screens.</div>
+</div>
+
+<h2 id="env">8. Environment and third parties</h2>
+<p>Every variable from <code>.env.local.example</code>, what it is for, and what breaks without it.</p>
+<div class="tw"><table>
+<thead><tr><th>Variable(s)</th><th>Service</th><th>Without it</th></tr></thead>
+<tbody>
+<tr><td><code>NEXT_PUBLIC_SUPABASE_URL</code>, <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code>, <code>SUPABASE_SECRET_KEY</code></td><td>Supabase</td><td>Nothing works. The secret key bypasses RLS; server only.</td></tr>
+<tr><td><code>UPSTASH_REDIS_REST_URL</code>, <code>UPSTASH_REDIS_REST_TOKEN</code></td><td>Upstash Redis</td><td>Rate limits, producer sessions, generation locks all fail. Most code degrades to "allow" if Redis errors, which is a choice to review.</td></tr>
+<tr><td><code>SUNO_API_KEY</code>, <code>SUNO_API_BASE_URL</code>, <code>MUSIC_PROVIDERS</code></td><td>musicapi.org</td><td>No music. Provider list defaults to <code>musicapi</code>.</td></tr>
+<tr><td><code>GEMINI_API_KEY</code></td><td>Google</td><td>No lyrics, no cover art, and the producer falls to Anthropic.</td></tr>
+<tr><td><code>ANTHROPIC_API_KEY</code>, <code>PRODUCER_LLM_PROVIDER</code></td><td>Anthropic</td><td>No producer failover. The override forces one provider.</td></tr>
+<tr><td><code>ELEVENLABS_API_KEY</code>, <code>ELEVENLABS_AGENT_ID</code>, <code>PRODUCER_LLM_BEARER</code>, <code>PRODUCER_TOKEN_SECRET</code></td><td>ElevenLabs</td><td>No voice. The bearer protects the custom-LLM endpoint; the token secret signs session tokens.</td></tr>
+<tr><td><code>STRIPE_SECRET_KEY</code>, <code>STRIPE_WEBHOOK_SECRET</code>, <code>NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code></td><td>Stripe</td><td>No card payments outside Nigeria.</td></tr>
+<tr><td><code>FLUTTERWAVE_SECRET_KEY</code>, <code>FLUTTERWAVE_WEBHOOK_HASH</code></td><td>Flutterwave</td><td>No naira payments.</td></tr>
+<tr><td><code>RESEND_API_KEY</code>, <code>RESEND_FROM</code>, ZeptoMail keys</td><td>Email</td><td>Receipts and song-ready mail silently skipped; contact form fails.</td></tr>
+<tr><td><code>CREDITS_ENFORCEMENT</code></td><td>Internal</td><td>Defaults to <code>shadow</code>. See section 2.</td></tr>
+<tr><td><code>CRON_SECRET</code></td><td>Vercel Cron</td><td>Retention cron refuses to run (fails closed).</td></tr>
+<tr><td><code>NEXT_PUBLIC_APP_URL</code></td><td>Internal</td><td>CSRF origin check and webhook callback URLs are built from it. Wrong value = every POST is 403.</td></tr>
+<tr><td><code>NEXT_PUBLIC_R2_SAMPLES_URL</code></td><td>Cloudflare R2</td><td>Sample songs on the marketing pages have no audio.</td></tr>
+</tbody></table></div>
+<p>Two identifiers are hardcoded rather than configured: the Google Tag Manager container <code>GTM-KP63F74M</code> and the Meta pixel <code>750371207831007</code>, both in the root layout.</p>
+
+<h2 id="run">9. Running it and working day to day</h2>
+<ol class="steps">
+  <li><b>Install.</b> Node 20+, then <code>npm install</code> in the clone.</li>
+  <li><b>Environment.</b> Copy <code>.env.local.example</code> to <code>.env.local</code>. You will need the real keys from whoever owns the Supabase, Upstash and provider accounts. Nothing in the repo contains a secret.</li>
+  <li><b>Database.</b> Either point at the shared remote project, or run <code>supabase start</code> (needs Docker) and <code>npm run db:local</code>, which writes an override file so your dev server uses the local stack. Migrations apply automatically to the local stack.</li>
+  <li><b>Run.</b> <code>npm run dev</code>. Webhooks cannot reach your laptop, which is fine: the browser poll finalises generations on its own.</li>
+  <li><b>Before every push.</b> <code>npm run verify</code> runs exactly what CI runs: typecheck, lint, Prettier check, and the unit tests. Prettier failures are the most common CI red.</li>
+  <li><b>Branching.</b> Work on <code>daniel/dev</code> (or feature branches named <code>songscribe/&lt;thing&gt;</code> to match the existing convention), open merge requests into <code>dev</code>, and let <code>main</code> take merges from <code>dev</code> when deploying.</li>
+  <li><b>Schema changes.</b> Add a new timestamped file in <code>supabase/migrations</code>, apply it locally, run <code>npm run db:types</code>, commit both. Never edit an old migration.</li>
+  <li><b>Announcements and one-off grants</b> use the scripts in section 7.8 and need the service-role key.</li>
+</ol>
+
+<h2 id="history">10. How it got here</h2>
+<p>258 commits by one author, Excel Chukwu, in two bursts with a five-month gap. The shape of the history explains a lot about the code.</p>
+<div class="tl">
+  <div><b>February 2026 · 114 commits</b>Initial commit on 6 Feb. Within the month: the wizard, Supabase schema, Suno integration, Polar then Stripe payments, add-ons, upgrades, demo mode, the studio tools (stems, cover art, style boost), song sharing, the marketing site. This is the v1 product, built fast.</div>
+  <div><b>March 2026 · 14 commits</b>Security hardening (dropping definer views, RLS on migrations), the founder tier, an admin <code>assign_tier</code> function. Then silence until August.</div>
+  <div><b>August 2026 · 103 commits</b>The second era. The AI Producer (text, then voice), a provider abstraction under the Suno client, the test harness (Vitest, MSW, Playwright), notifications, plays and favourites, persisted sessions, the Figma-driven sidebar shell, and the start of the credits system: ledger, lots, signup grant, packs, the billing page, shadow metering everywhere.</div>
+  <div><b>September 2026 · 27 commits</b>Multi-currency prices in the database, Flutterwave for packs, a single payment UI, invoices, real transactional email, refunds reclaiming lots, demo unlock with credits, several security fixes (revoking public execute on definer functions, verifying the producer session token on voice turns), then a Prettier sweep and the merge to <code>main</code> on 8 Sep.</div>
+</div>
+<p>The gap matters. Code written in February follows one set of habits (thinner comments, direct provider calls, order counters); code written in August and September follows another (long explanatory comments, seams, dedupe keys, credits). Both are live at once. Much of what follows is about the seam between those two eras.</p>
+
+<h2 id="review">11. My assessment</h2>
+<p>I will start with what is good, because a lot is, then go through the problems in order of how much they matter.</p>
+
+<h3 id="r-good">11.1 What is genuinely good</h3>
+<ul>
+  <li><b>Money is handled carefully.</b> Idempotent settlement shared by webhook and redirect, dedupe keys on every ledger row, advisory locks in <code>spend_credits</code>, verify-then-settle for Flutterwave, refunds that return credits to the right lot, prices in the database rather than in components. This is better than most early-stage products.</li>
+  <li><b>The AI Producer is well designed.</b> The model can only propose. Confirmation is a one-time nonce bound to a spec hash with a locked price. Sessions have budgets. Text and voice share one engine. The client store never edits server truth. These are the right decisions, and they are tested (24 test files).</li>
+  <li><b>Security posture is above average.</b> RLS everywhere, definer functions closed to public roles, CSRF origin checks, rate limits per route, private storage with signed URLs, secrets compared in constant time, cron that fails closed, security headers, mic permission scoped to one route. The two e2e specs written after real incidents show the team learns from mistakes.</li>
+  <li><b>The migration from counters to credits is being done responsibly.</b> Shadow mode, a keyed backfill with dry runs and production guards, a documented plan for "the flip".</li>
+  <li><b>The test harness is thoughtful.</b> MSW fails on any unmocked request; the Anthropic and Gemini fakes emit real SSE so the streaming parsers are tested; the Redis mock honours TTL because admission control depends on it.</li>
+  <li><b>Provider drift is caught at the boundary.</b> Every provider response is zod-validated.</li>
+  <li><b>Small UX decisions are considered.</b> The sidebar cookie to avoid a first-paint flash, stale-response guards on search, optimistic reads, "9+" badges, players that cap demo playback with a fade.</li>
+</ul>
+
+<h3 id="r-bugs">11.2 Bugs and risks I found</h3>
+<p>Ordered by how much I would worry. Severity is my judgement.</p>
+
+<div class="finding"><span class="chip c-bad">Critical</span><h4>The GitHub mirror is public</h4><p>Not a code bug, but the most urgent item. <code>github.com/neo1415/songscribe</code> exposes the full source, the internal <code>claude.md</code>, pricing logic, provider names, and the shape of every security control. No secrets are in the repo, but this is still a gift to a competitor and a map for an attacker. Make it private.</p></div>
+
+<div class="finding"><span class="chip c-bad">High</span><h4>Flutterwave webhook can create an order for the wrong account</h4><p>When a Flutterwave payment arrives whose <code>tx_ref</code> does not match a pending order, the webhook falls back to finding the user by the customer email Flutterwave reports, and can create a new order for them. Email is not a reliable identity: a customer paying with a different email than their account, or two accounts sharing a payment email, would get credit in the wrong place. The primary path (bind by verified transaction to the pending order) is fine; the fallback should log and stop, or land in a manual review queue, not act.</p><p class="where">src/app/api/webhooks/flutterwave/route.ts (user lookup by email, order creation branch)</p></div>
+
+<div class="finding"><span class="chip c-bad">High</span><h4>Flutterwave order amounts are not currency-aware</h4><p>The webhook stores <code>amount_cents: Math.round(amount * 100)</code>. For NGN that is fine in practice, but the same code would run for any currency Flutterwave sends, including zero-decimal currencies, and it disagrees with the checkout route which already computes cents correctly from <code>product_prices</code>. Amount comparisons between what was expected and what was paid should be done in minor units from one function.</p><p class="where">src/app/api/webhooks/flutterwave/route.ts:279, :304</p></div>
+
+<div class="finding"><span class="chip c-warn">Medium</span><h4>"Try again" on the checkout status page links to a broken URL</h4><p>The status page builds <code>/checkout?tier=${orderId}</code>. The checkout page expects a tier id like <code>standard</code>, not an order UUID, so the retry lands on an invalid tier. A customer whose payment failed is sent somewhere that does not work at exactly the moment they were willing to pay.</p><p class="where">src/app/(app)/checkout/status/page.tsx:64, :87</p></div>
+
+<div class="finding"><span class="chip c-warn">Medium</span><h4>Demo quota has an admitted race</h4><p>The route comments say so: the demo usage check is a select followed by an update, so parallel requests from one IP can exceed the daily ten. The cost is provider spend on free users. The atomic upsert migration exists for the increment, but the decision to allow is still made on the earlier read. A single "check and increment or refuse" SQL function closes it.</p><p class="where">src/app/api/generate/route.ts:112</p></div>
+
+<div class="finding"><span class="chip c-warn">Medium</span><h4>Four studio routes bypass the provider seam</h4><p><code>studio/stems</code>, <code>studio/style-boost</code>, <code>studio/style-boost/regenerate</code>, <code>studio/operations/[id]</code> and <code>songs/claim-demo</code> import <code>sunoClient</code> directly. They get none of the failover, health strikes, or capacity budgeting the generate path has, and adding a second provider will not help them. Either extend the provider interface to cover stems, cover and style boost, or explicitly document that those features are Suno-only.</p><p class="where">grep -rl sunoClient src/app/api</p></div>
+
+<div class="finding"><span class="chip c-warn">Medium</span><h4>Style boost moves the legacy counter before credits can refuse</h4><p>This is documented as deliberate: the check-and-increment RPC runs, then the credits preflight, so in <code>enforce</code> mode a refused boost still consumes a legacy style boost. The comment argues the counter is about to be dropped. That is a reasonable trade if the flip happens soon; if it slips, customers on plans lose boosts they never received. Worth a date on it.</p><p class="where">src/app/api/studio/style-boost/route.ts:60-80</p></div>
+
+<div class="finding"><span class="chip c-warn">Medium</span><h4>Redis failures mostly fail open</h4><p>Rate limiters and several guards catch Redis errors and allow the request so an Upstash outage does not take the site down. That is a defensible availability choice, but it means the day Redis is down is also the day nothing is rate limited, producer admission is unbounded, and generation locks do not hold. At minimum this should alert loudly; for the spend routes it should probably fail closed.</p><p class="where">src/lib/rate-limit.ts, src/lib/music/budget.ts, src/lib/producer/session-budget.ts</p></div>
+
+<div class="finding"><span class="chip c-warn">Medium</span><h4>No Flutterwave refund handling</h4><p>Stripe's <code>charge.refunded</code> reclaims unspent credits. A Flutterwave refund leaves the credits in the account. With NGN being Flutterwave-only, this is the market where it matters most.</p></div>
+
+<div class="finding"><span class="chip c-info">Low</span><h4>Invoice issuer details are incomplete</h4><p>The invoice PDF names SongScribe AI Ltd with an empty address and no VAT or registration number. For UK customers, and for any business buyer expensing the purchase, that is not a valid invoice. Fill it from configuration, not code.</p><p class="where">src/lib/invoice-pdf.tsx</p></div>
+
+<div class="finding"><span class="chip c-info">Low</span><h4>Analytics identifiers are hardcoded</h4><p>The GTM container id and the Meta pixel id are literals in the root layout, so every local dev session and preview deploy reports into production analytics. Move them to <code>NEXT_PUBLIC_*</code> variables and leave them unset outside production.</p><p class="where">src/app/layout.tsx</p></div>
+
+<div class="finding"><span class="chip c-info">Low</span><h4>Documentation drift</h4><p><code>README.md</code> is boilerplate. <code>claude.md</code> mentions a dashboard page that is now a redirect, "20 migrations" when there are 57, and Polar which was replaced in February. The FAQ says previews are "streaming only" and that variations per day is ten, which is true, but also says WAV downloads exist on higher tiers, which nothing in the code delivers.</p></div>
+
+<div class="finding"><span class="chip c-info">Low</span><h4>Unused tables and dead surface</h4><p><code>payment_methods</code> and <code>assets</code> have no meaningful writers. The <code>song_trending</code> notification kind, the Explore nav item, and the "AI Producer route allows the microphone" e2e test are all placeholders for work not started. Harmless individually; together they make the schema look bigger than it is.</p></div>
+
+<div class="finding"><span class="chip c-info">Low</span><h4>One light-theme leftover</h4><p>The checkout status page uses default shadcn colour classes (<code>bg-background</code>, <code>text-muted-foreground</code>) while every other screen is styled with literal dark hex values. It looks like a different app for the ten seconds a customer is most anxious.</p><p class="where">src/app/(app)/checkout/status/page.tsx</p></div>
+
+<h3 id="r-code">11.3 Code quality</h3>
+<p><b>Overall: good, with a distinctive and somewhat costly style.</b> TypeScript is strict, there are zero TODO markers, boundaries are validated, and the test count is real. The concerns are about weight and consistency rather than correctness.</p>
+<ul>
+  <li><b>The comments are enormous.</b> The generate route is 753 lines, of which 213 are comments. Files routinely carry paragraphs narrating the bug that led to a line, what the previous version did, and why an alternative was rejected. This is more useful than no comments, and some are excellent (the producer hook, the client-value hook). But it triples the reading time of every file, it goes stale the moment the code moves, and it reads as commit-message history stored in the wrong place. My honest read is that much of the August and September code was written with heavy AI assistance, which produces exactly this voice. That is not a criticism of the result, but you should expect to trim rather than add when you touch these files, and you should put history in commit messages and ADRs, not inline.</li>
+  <li><b>Several files are too big to hold in your head.</b> <code>step-generate.tsx</code> (1,335 lines) mixes the loading animation, polling, result rendering, demo player and claim flow. <code>billing-client.tsx</code> (1,098) is the whole billing page. <code>generate/route.ts</code> (753) does entitlement, credits, payload, dispatch and completion. <code>app-shell.tsx</code> (739). Each should be three to five files.</li>
+  <li><b>Two eras, two styles.</b> February code uses <code>any</code>-adjacent Supabase results and hand-typed rows; August code introduces zod and explicit types but the generated database types are committed and not used, so every query is still loosely typed. The song page hand-declares <code>ActiveOrderRow</code> for a reason the comment explains: the generated types model a to-one join as an array. That is a known Supabase quirk with a known fix (type helpers), and adopting the generated types module by module would remove a whole class of "NaN songs left" bugs the comments describe having fixed by hand.</li>
+  <li><b>Styling is literal hex everywhere.</b> <code>#e63946</code>, <code>rgba(255,255,255,0.05)</code>, and pixel sizes copied from Figma appear hundreds of times in class strings. There is a Tailwind theme with tokens, and it is bypassed. A brand colour change is a repository-wide find and replace. Define <code>brand</code>, <code>surface</code>, <code>line</code> tokens and use them.</li>
+  <li><b>Client fetch code is repeated.</b> A dozen components each hand-roll <code>fetch</code> + <code>res.json()</code> + error toast. TanStack Query is installed and provided and almost unused. Either use it for reads (library, notifications, conversations, billing) or remove it.</li>
+  <li><b>Tests are dense where money is and thin where users are.</b> No route handler is unit tested (the comments argue Vitest cannot see cookies and Supabase, which is true only if you do not extract the decision logic). No page component is tested. The e2e suite is four specs and only runs in CI. A regression in the wizard or the library would not be caught by anything automated.</li>
+  <li><b>Good habits worth keeping:</b> colocated tests, zod at boundaries, the <code>ApiError</code> class, dedupe keys named by convention (<code>action:artefactId</code>), the pure-function split (router, route-access, presentation) that makes logic testable without infrastructure.</li>
+</ul>
+
+<h3 id="r-arch">11.4 Architecture</h3>
+<ul>
+  <li><b>The fundamentals are right for the stage.</b> One Next.js app, managed Postgres, managed Redis, managed auth, provider webhooks. No microservices, no queue, no Kubernetes. That is the correct amount of infrastructure for a two-person company, and it keeps the operating cost near zero until there is revenue to justify more.</li>
+  <li><b>The dual pricing system is the biggest architectural debt.</b> Order counters and credit lots both run on every request. Every spend route has two guards, two error shapes, and comments explaining which one wins in which mode. The sidebar, the song page, the producer's pricing and the claim button all branch on it. Until the flip happens and the counters are deleted, every new feature costs double. I would set a date for the flip, do it, and spend the following month deleting: <code>songs_used</code>, <code>variations_used</code>, <code>revisions_used</code>, <code>style_boosts_used</code>, add-ons, <code>check_style_boost_quota</code>, the upgrade-carries-quota function, and the entitlement checks that read them.</li>
+  <li><b>Business logic is split between SQL and TypeScript without a rule.</b> Spending, granting, claiming, unlocking, upgrading and add-on bonuses are SQL functions. Entitlement checks, demo limits and pricing resolution are TypeScript. Both are legitimate, but a newcomer cannot predict where to look. Write the rule down: anything that must be atomic across rows lives in SQL; everything else lives in <code>src/lib</code>.</li>
+  <li><b>Completion has two entry points by design</b> (webhook and poll) sharing one idempotent finaliser. That is good. But the browser poll is load-bearing on localhost and in the producer, and a closed tab means nobody polls until the webhook arrives. If the webhook is misconfigured in production, songs silently never complete. A small server-side sweeper (cron every few minutes finalising any generation older than N minutes still marked generating) removes the dependency on either.</li>
+  <li><b>The music provider seam is half-built.</b> The interface, registry, router and dispatch exist and are tested, but only one adapter exists and only the generate path uses the seam. Either finish it (add the second provider, route stems and covers through it) or accept that it is speculative and keep it small. Half-built abstractions are the most expensive kind.</li>
+  <li><b>Redis holds state that would be painful to lose.</b> Live producer sessions and confirm nonces live only in Redis until archived. The archive happens every turn, so the loss window is small, but an Upstash incident mid-conversation ends every live session. Acceptable now; document it as a known limit.</li>
+  <li><b>There is no admin surface.</b> Tier grants, announcements, refund investigation, looking up a customer's order: all SQL or scripts with the service-role key on a laptop. The announce script's own comments say why (an admin gate is security-critical and should be designed on purpose). Agreed, but at the point where a non-engineer needs to answer a support ticket, this becomes the bottleneck of the whole company.</li>
+  <li><b>Observability is console.log.</b> Structured prefixes like <code>[FLW Webhook]</code> help, but there is no error tracker, no metrics, no alert when a webhook fails signature verification or a provider is struck out. Vercel logs are the only window. A Sentry-class tool and three alerts (webhook failures, provider health strikes, credits spend errors) would pay for themselves the first week.</li>
+  <li><b>Bus factor is one.</b> Every commit is one person. There is no CODEOWNERS, no review history, no runbook. You are now the second person, and this handbook is the first document that is not the code itself.</li>
+</ul>
+
+<h3 id="r-biz">11.5 Product and business</h3>
+<ul>
+  <li><b>The margin structure is thin per song and depends on a reseller.</b> The backfill script prices a credit at roughly 0.006 cents of provider cost, so a 1,000-credit generation costs about six cents to fulfil, against a Personal plan at $9.99 for one song. Gross margin on generation is excellent. The risk is upstream: the whole product routes through an unofficial Suno reseller. If that reseller loses access, or Suno changes terms, revenue stops the same afternoon. The provider seam exists precisely for this; finishing it and signing up a second provider is a business continuity task, not a code nicety.</li>
+  <li><b>Licensing claims outrun what the platform can guarantee.</b> The Exclusive tier promises "your song will never be resold or reused by us" and "Content ID allowed". SongScribe does not control the underlying model, and AI-generated music's copyright status is unsettled in most jurisdictions. The licence text should be reviewed by a lawyer before the Exclusive tier is sold at scale, and the FAQ should not promise WAV files the code cannot produce.</li>
+  <li><b>The credits flip is a pricing change customers will feel.</b> The backfill comments compute that early buyers paid three to four times more per credit than the new entry tier. A flat launch bonus is the chosen fix. Announce the flip clearly, in-app and by email, with the bonus visible in the statement, or the first month after the flip will be support tickets.</li>
+  <li><b>Two funnels, one metric missing.</b> Demo → signup → pay is instrumented through GTM and the pixel, but nothing in the database records which path (wizard or producer) produced a paying customer, beyond the producer's first-touch attribution. Add a <code>created_via</code> on songs and orders so the question "does the producer convert better than the wizard" has an answer.</li>
+  <li><b>Nigeria-first is a real advantage and under-served in the UI.</b> Naira pricing and Flutterwave are built, but the marketing copy, samples, and FAQ are written for a US audience ($199/mo, "YouTubers"). The samples list leans Afrobeat and Amapiano, which is right. Lean further: local occasions (naming ceremonies, owambe, send-forths), local payment reassurance, WhatsApp share.</li>
+  <li><b>Studio Pro "unlimited" is a liability under credits.</b> The subscription promises unlimited songs against a per-song provider cost. The backfill maps it to 600,000 credits a month. Make that ceiling visible before someone automates against it.</li>
+  <li><b>Support is an email address.</b> The FAQ says "Support Team: Online Now" over a stock photo. With no admin UI, every ticket is an engineer running SQL. Before any paid acquisition, budget for a support tool and the admin views to answer the top five ticket types: where is my song, why did my payment not activate, refund, change email, download licence again.</li>
+  <li><b>Explore is the growth feature the code keeps hinting at.</b> Plays, favourites, sharing and a trending notification kind are all built. A public gallery of shared songs is the cheapest organic acquisition channel this product could have, and most of the plumbing is already there.</li>
+</ul>
+
+<h3 id="r-plan">11.6 What I would do first</h3>
+<div class="two">
+  <div class="callout"><p><b>This week</b></p><ul>
+    <li>Make the GitHub mirror private.</li>
+    <li>Fix the checkout status retry link.</li>
+    <li>Stop the Flutterwave email fallback from creating orders; log and alert instead.</li>
+    <li>Add an error tracker and three alerts (webhook failures, provider strikes, spend errors).</li>
+    <li>Move analytics ids to environment variables.</li>
+  </ul></div>
+  <div class="callout"><p><b>This month</b></p><ul>
+    <li>Close the demo quota race with one atomic SQL function.</li>
+    <li>Add a server-side completion sweeper so songs finish without a poller.</li>
+    <li>Handle Flutterwave refunds.</li>
+    <li>Fill in invoice issuer details from config.</li>
+    <li>Pick a flip date for credits and communicate it.</li>
+    <li>Write a one-page runbook: deploy, rollback, rotate a key, refund a customer.</li>
+  </ul></div>
+  <div class="callout"><p><b>This quarter</b></p><ul>
+    <li>Flip credits to enforce; then delete the counter system.</li>
+    <li>Route stems, cover and style boost through the provider seam and onboard a second music provider.</li>
+    <li>Adopt the generated database types module by module.</li>
+    <li>Extract decision logic out of route handlers into testable functions; test them.</li>
+    <li>Split the four largest files.</li>
+    <li>Introduce design tokens and retire literal hex in components.</li>
+  </ul></div>
+  <div class="callout"><p><b>When there is revenue</b></p><ul>
+    <li>A minimal admin surface behind a real role check.</li>
+    <li>Legal review of the licence texts.</li>
+    <li>Explore: a public gallery from the sharing and plays plumbing.</li>
+    <li>A second engineer, and code review as a habit.</li>
+  </ul></div>
+</div>
+
+<h2 id="week">12. Your first week</h2>
+<ol class="steps">
+  <li><b>Day 1.</b> Make the GitHub mirror private. Get the environment keys. Run the app locally against the remote database and make one demo song end to end. Read <code>src/app/api/generate/route.ts</code> top to bottom with section 5.4 open.</li>
+  <li><b>Day 2.</b> Read <code>supabase/migrations</code> in order, skimming, with section 6 open. Run the three SQL proof scripts against a local stack. Read <code>src/lib/credits/enforcement.ts</code> and <code>spend.ts</code>.</li>
+  <li><b>Day 3.</b> Open the AI Producer, have a text conversation, confirm a generation. Then read <code>use-producer-session.ts</code>, <code>engine.ts</code>, <code>tool-runtime.ts</code>, <code>proposal.ts</code>. Run <code>npm test -- lib/producer</code> and read two or three of the tests; they are the clearest specification of intended behaviour.</li>
+  <li><b>Day 4.</b> Trace a Stripe test-mode purchase with the Stripe CLI forwarding webhooks to your machine. Read <code>settle-purchase.ts</code> and both webhook routes.</li>
+  <li><b>Day 5.</b> Pick two items from the fixes list in 11.6 that are small (the checkout status link, the style-boost ordering), fix them on <code>daniel/dev</code> with a test each, run <code>npm run verify</code>, and open a merge request into <code>dev</code>. That gets you through the whole contribution loop once while the stakes are low.</li>
+</ol>
+<p class="small" style="margin-top:40px">Prepared from a full read of the <code>dev</code> branch at commit <code>206f916</code>. Where this handbook and the code disagree, the code is right and this handbook should be updated.</p>
+</main>
+</div>
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if(!links.length)return;
+  var map=new Map();
+  links.forEach(function(a){var id=a.getAttribute('href').slice(1);var el=document.getElementById(id);if(el)map.set(el,a);});
+  var current=null;
+  function setActive(a){if(current===a)return;if(current)current.classList.remove('active');current=a;if(a)a.classList.add('active');}
+  if(!('IntersectionObserver' in window))return;
+  var visible=new Map();
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting)visible.set(e.target,e.boundingClientRect.top);else visible.delete(e.target);});
+    var best=null,bestTop=Infinity;
+    visible.forEach(function(top,el){if(top<bestTop){bestTop=top;best=el;}});
+    if(best)setActive(map.get(best));
+  },{rootMargin:'-10% 0px -70% 0px',threshold:0});
+  map.forEach(function(_,el){io.observe(el);});
+})();
+</script>
+
+<!--claude-mermaid-runtime-begin:3477-->
+<style>.mermaid-diagram{margin-block:4px}.mermaid-diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}</style>
+<script src="/_runtime/mermaid-11.16.1.min.js"></script>
+<script>(function(){
+var CFG={"palettes":{"light":{"surface":"#f4efe4","text":"#42392e","line":"#8a7f6d","border":"#7a6c52","bg":"#fffdf8"},"dark":{"surface":"#262b34","text":"#f2f3f5","line":"#a8adb8","border":"#9aa4b8","bg":"#1f232b"}}};
+if(typeof mermaid==='undefined')return;
+var pres=Array.prototype.slice.call(document.querySelectorAll('pre.mermaid')).filter(function(p){if(p.hasAttribute('data-claude-mermaid-claimed'))return false;p.setAttribute('data-claude-mermaid-claimed','1');return true;});
+if(!pres.length)return;
+var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+var root=document.documentElement;
+var items=pres.map(function(pre){
+var mount=document.createElement('div');mount.className='mermaid-diagram';
+return {pre:pre,mount:mount,src:pre.textContent||''};
+});
+var seq=0;
+var renderGen=0;
+var lastKey='';
+function pageBg(fallback){
+var els=[document.body,document.documentElement];
+for(var i=0;i<els.length;i++){
+var c=els[i]&&getComputedStyle(els[i]).backgroundColor;
+if(c&&c!=='transparent'&&c!=='rgba(0, 0, 0, 0)')return c;
+}
+return fallback;
+}
+function render(){
+var theme=root.getAttribute('data-theme');
+var dark=theme==='dark'||(!!(mq&&mq.matches)&&theme!=='light');
+var pal=dark?CFG.palettes.dark:CFG.palettes.light;
+var bg=pageBg(pal.bg);
+var key=(dark?'d':'l')+'|'+bg;
+if(key===lastKey)return;
+lastKey=key;
+var gen=++renderGen;
+var font=getComputedStyle(document.body).fontFamily||'sans-serif';
+var nat={useMaxWidth:false};
+mermaid.initialize({
+startOnLoad:false,securityLevel:'strict',theme:'base',
+flowchart:nat,sequence:nat,er:nat,state:nat,class:nat,pie:nat,
+gantt:nat,journey:nat,timeline:nat,gitGraph:nat,mindmap:nat,xyChart:nat,
+quadrantChart:nat,sankey:nat,c4:nat,requirement:nat,block:nat,
+packet:nat,kanban:nat,architecture:nat,radar:nat,
+themeVariables:{background:bg,mainBkg:pal.surface,primaryColor:pal.surface,
+primaryTextColor:pal.text,lineColor:pal.line,primaryBorderColor:pal.border,
+nodeBorder:pal.border,clusterBorder:pal.border,edgeLabelBackground:bg,
+clusterBkg:'rgba(127,127,127,0.07)',titleColor:pal.text,
+darkMode:dark,rowOdd:bg,rowEven:'rgba(127,127,127,0.07)',
+attributeBackgroundColorOdd:bg,attributeBackgroundColorEven:'rgba(127,127,127,0.07)',
+fontSize:'16px',fontFamily:font},
+themeCSS:'.node rect, .node circle, .node polygon, .node path, .cluster rect { stroke-width: 2px; }'
+});
+items.forEach(function(it){
+var id='claude-mermaid-'+seq++;
+mermaid.render(id,it.src).then(function(r){
+if(gen!==renderGen)return;
+var prev=it.pre.previousElementSibling;
+if(prev&&prev.className==='mermaid-diagram'&&prev!==it.mount)return;
+it.mount.innerHTML=r.svg;
+if(!it.mount.parentNode)it.pre.parentNode.insertBefore(it.mount,it.pre);
+it.pre.style.display='none';
+},function(){
+var scratch=document.getElementById(id);
+if(scratch)scratch.parentNode.removeChild(scratch);
+scratch=document.getElementById('d'+id);
+if(scratch)scratch.parentNode.removeChild(scratch);
+if(gen!==renderGen)return;
+if(it.mount.parentNode)it.mount.parentNode.removeChild(it.mount);
+it.pre.style.display='';
+});
+});
+}
+render();
+if(mq&&mq.addEventListener)mq.addEventListener('change',render);
+if(typeof MutationObserver!=='undefined')new MutationObserver(render).observe(root,{attributes:true,attributeFilter:['data-theme']});
+})();</script>
+<!--claude-mermaid-runtime-end-->
+
+</body></html>

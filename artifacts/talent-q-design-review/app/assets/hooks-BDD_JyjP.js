@@ -1,0 +1,1 @@
+import{r as o}from"./index-D1Lmb4uD.js";function i(r=760){const e=`(max-width: ${r}px)`,[a,s]=o.useState(()=>typeof window<"u"&&window.matchMedia(e).matches);return o.useEffect(()=>{const t=window.matchMedia(e),n=()=>s(t.matches);return t.addEventListener("change",n),()=>t.removeEventListener("change",n)},[e]),a}export{i as u};

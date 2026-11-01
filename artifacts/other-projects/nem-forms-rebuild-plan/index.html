@@ -1,0 +1,216 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>NEM Forms Rebuild Plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F6F4F1; --ink:#1F1A1C; --ink-2:#5A5154; --ink-3:#8C8285;
+  --line:#DED8D3; --panel:#FFFFFF; --panel-2:#EFEAE5;
+  --red:#8E1B2C; --red-ink:#6E1322; --gold:#D9A21B; --gold-soft:#F5E6C0;
+  --ok:#2F6B45; --warn:#9A5A10; --bad:#A02020;
+  --code:#F1ECE8;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#18151A; --ink:#EDE7E9; --ink-2:#B9AFB3; --ink-3:#847A7E;
+    --line:#332D31; --panel:#211D22; --panel-2:#2A2528;
+    --red:#D9445A; --red-ink:#F08A9A; --gold:#E4B23A; --gold-soft:#3B3220;
+    --ok:#7CC493; --warn:#E0A552; --bad:#F07C7C; --code:#26212A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#18151A; --ink:#EDE7E9; --ink-2:#B9AFB3; --ink-3:#847A7E;
+  --line:#332D31; --panel:#211D22; --panel-2:#2A2528;
+  --red:#D9445A; --red-ink:#F08A9A; --gold:#E4B23A; --gold-soft:#3B3220;
+  --ok:#7CC493; --warn:#E0A552; --bad:#F07C7C; --code:#26212A;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,Segoe UI,sans-serif;font-size:17px;line-height:1.55;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:48px}
+@media (max-width:820px){.wrap{grid-template-columns:1fr;gap:0}nav.toc{display:none}}
+nav.toc{position:sticky;top:24px;align-self:start;font-size:14px;padding-top:88px}
+nav.toc a{display:block;color:var(--ink-2);text-decoration:none;padding:5px 0;border-left:2px solid var(--line);padding-left:12px}
+nav.toc a:hover{color:var(--red);border-color:var(--red)}
+main{max-width:72ch}
+h1,h2,h3{font-family:"Bricolage Grotesque","Source Sans 3",sans-serif;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(34px,5vw,48px);font-weight:700;margin:56px 0 8px}
+h2{font-size:26px;font-weight:700;margin:56px 0 12px;padding-top:16px;border-top:3px solid var(--red)}
+h3{font-size:19px;font-weight:700;margin:28px 0 8px}
+p{margin:0 0 14px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.lede{font-size:19px;color:var(--ink-2);margin-bottom:24px}
+ul,ol{padding-left:22px;margin:0 0 14px}li{margin-bottom:6px}
+code{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.86em;background:var(--code);padding:1px 5px;border-radius:3px}
+pre{background:var(--code);padding:14px 16px;border-radius:6px;overflow-x:auto;font-size:13.5px;line-height:1.5;margin:0 0 16px}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;width:100%;font-size:15px;margin:0 0 18px}
+.tbl{overflow-x:auto}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+td.num{font-variant-numeric:tabular-nums}
+.status{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0 8px}
+.status div{background:var(--panel);border:1px solid var(--line);padding:12px 14px;border-radius:6px}
+.status b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:22px}
+.status span{font-size:13px;color:var(--ink-2)}
+.pill{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.04em;padding:2px 8px;border-radius:999px;border:1px solid currentColor;vertical-align:middle}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+.rail{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:20px 0 22px;counter-reset:st}
+.rail>div{position:relative;padding:14px 10px 10px;border-top:4px solid var(--gold);background:var(--panel);border-right:1px solid var(--line)}
+.rail>div:last-child{border-right:0}
+.rail b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:15px;letter-spacing:.08em}
+.rail small{display:block;color:var(--ink-2);font-size:13px;line-height:1.4;margin-top:6px}
+.rail em{display:block;font-style:normal;font-size:12px;color:var(--ink-3);margin-top:8px}
+@media (max-width:640px){.rail{grid-template-columns:1fr}.rail>div{border-right:0;border-left:4px solid var(--gold);border-top:0;border-bottom:1px solid var(--line)}}
+.callout{background:var(--gold-soft);border-left:4px solid var(--gold);padding:12px 16px;border-radius:0 6px 6px 0;margin:0 0 18px}
+.callout.red{background:var(--panel-2);border-left-color:var(--red)}
+.decide{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px;margin:0 0 12px}
+.decide b{color:var(--red-ink)}
+.phase{display:grid;grid-template-columns:64px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.phase .n{font-family:"Bricolage Grotesque",sans-serif;font-size:28px;color:var(--red);line-height:1}
+.phase .n small{display:block;font-size:12px;color:var(--ink-3);letter-spacing:.06em;margin-top:4px}
+.phase h3{margin:0 0 6px}
+.phase p{margin-bottom:6px;font-size:16px}
+footer{margin-top:56px;font-size:13px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:12px}
+a{color:var(--red-ink)}
+</style>
+
+<div class="wrap">
+<nav class="toc">
+  <a href="#state">Where we are</a>
+  <a href="#claims">1 · Claims lifecycle</a>
+  <a href="#auth">2 · Submit-first accounts</a>
+  <a href="#uploads">3 · Uploads that block</a>
+  <a href="#dash">4 · Dashboards</a>
+  <a href="#money">5 · Money &amp; regulation</a>
+  <a href="#seq">Sequence &amp; testing</a>
+  <a href="#decide">Decisions needed</a>
+</nav>
+<main>
+<div class="eyebrow">NEM Forms · nemkyc + apps/backend · 18 Sep 2026</div>
+<h1>NEM Forms Rebuild Plan</h1>
+<p class="lede">How the claims lifecycle, submit-first accounts, upload fixes and the dashboard split get built on the recovered codebase, in what order, and what has to be decided before each step.</p>
+
+<h2 id="state">Where we are</h2>
+<div class="status">
+  <div><b class="ok">Runs</b><span>Backend boots locally on the production service account; SMTP verified; CSRF issued; auth rejects anonymous calls.</span></div>
+  <div><b class="ok">Green</b><span>Typecheck, lint, 275 frontend tests, 29 backend tests.</span></div>
+  <div><b class="warn">Uncommitted</b><span>Yesterday's security fixes sit in the working tree of both clones. Nothing pushed.</span></div>
+  <div><b class="bad">Open</b><span>Session credential is still the raw Firebase UID. Fixed inside phase 2 below.</span></div>
+</div>
+<p>Local environment: <code>nemkyc/apps/backend/.env</code> is your <code>.env.backend</code> with dev overrides applied: <code>NODE_ENV=development</code>, <code>VERIFICATION_MODE=mock</code> so no paid Datapro or VerifyData calls, and <code>ENABLE_EVENTS_LOGGING=false</code> so local requests don't write event logs into production Firestore. Everything else, including the encryption key and the mail password, is the real value. <strong>Any form you submit from localhost writes a real document into the production project.</strong> The testing section explains how we stop that being a risk.</p>
+<div class="callout red"><strong>Three approvals still pending from yesterday.</strong> Skip CSRF for requests that already carry a Bearer token (the Safari and iOS fix), raise the per-IP public limits, and delete the ~30 verified dead files. Each was blocked by the permission classifier and needs your yes.</div>
+
+<h2 id="claims">1 · Claims lifecycle: REPORT → PAY</h2>
+<p>Your reading is right: FNOL and submission are the same event here. The claim form <em>is</em> the report of loss, so REPORT completes the moment a claim form is accepted and a ticket number is issued. No two-part form.</p>
+<div class="rail">
+  <div><b>REPORT</b><small>Report the loss · Claim registered · Claim number issued</small><em>Automatic on submit</em></div>
+  <div><b>SUBMIT</b><small>Submit required documents · Complete requirements · Complete claim file</small><em>Customer + claims unit</em></div>
+  <div><b>REVIEW</b><small>Confirm policy coverage · Assess loss &amp; quantum · Proceed / decline</small><em>Claims unit</em></div>
+  <div><b>ACCEPT</b><small>Receive settlement offer · Accept or query · Revised offer possible · Discharge</small><em>Customer decides</em></div>
+  <div><b>PAY</b><small>Payment processed · Payment confirmed · Claim closed</small><em>Finance / claims</em></div>
+</div>
+
+<h3>Data model</h3>
+<p>Today "status" is one string (<code>pending / processing / approved / rejected</code>) written by four different endpoints with three different field schemas, and the admin viewer bypasses the API and writes Firestore directly. That all goes. Each claim document gains one structured block:</p>
+<pre><code>claim: {
+  stage: 'report' | 'submit' | 'review' | 'accept' | 'pay' | 'closed' | 'declined',
+  step:  'registered' | 'docs_requested' | 'docs_complete' | 'coverage_confirmed'
+       | 'assessed' | 'offer_issued' | 'offer_queried' | 'offer_revised'
+       | 'discharged' | 'paid' | 'payment_confirmed' | 'closed',
+  waitingOn: 'customer' | 'nem',
+  history: [{ stage, step, at, byUid, byName, note, customerVisible }],
+  outstandingDocuments: [{ key, label, required, receivedAt?, url? }],
+  offers: [{ version, amount, currency, basis, excess, deductions, issuedAt,
+             status: 'offered'|'accepted'|'queried'|'superseded', dvUrl?, queryReason? }],
+  decision?: { outcome: 'proceed'|'decline', reason, at, byUid },
+  payment?: { reference, amount, paidAt, confirmedAt },
+  notifiedAt, targetDate            // 60-day clock, see section 5
+}
+status: 'pending'|'processing'|'approved'|'rejected'   // kept, derived from stage</code></pre>
+<p>The legacy <code>status</code> field stays and is derived from the stage, so every existing table, badge and email keeps working while the new UI lands. Compliance forms (KYC, CDD, NFIU) keep their simple status model; this block is claims-only.</p>
+
+<h3>One endpoint, one dialog, one email</h3>
+<ul>
+  <li><strong>Backend:</strong> <code>POST /api/claims/:collection/:id/transition</code> with <code>{ step, note, offer?, outstandingDocuments?, decision?, payment? }</code>. It validates the allowed transition, appends history, derives stage and legacy status, enforces <code>assignedClaimCollections</code> scoping for claims staff, logs the audit event, and sends the one stage email. The four current status routes are retired behind it.</li>
+  <li><strong>Customer endpoints:</strong> <code>POST .../offer/:version/accept</code>, <code>POST .../offer/:version/query</code> (reason required, optional new evidence), and the existing documents upload route for outstanding documents.</li>
+  <li><strong>Admin UI:</strong> the Processing / Approved / Rejected buttons in <code>FormViewer</code> become a single "Move claim" dialog that shows only the legal next steps, requires a note, and requires a written reason on decline. A "Request documents" checklist and an "Issue offer" form live in the same dialog.</li>
+  <li><strong>Emails:</strong> one template, stage-specific copy, deep-linking to the customer's claim page. Replaces the four near-identical HTML bodies that exist now.</li>
+  <li><strong>Customer view:</strong> a <code>ClaimProgress</code> component: the five-step rail, "waiting on you / waiting on NEM", the outstanding-documents checklist with upload, the offer card with Accept and Query, and the dated history.</li>
+</ul>
+
+<h2 id="auth">2 · Submit-first accounts</h2>
+<p>The client's ask: no registration form. A guest fills the form, gives an email in a small modal, submits, and receives two emails: the submission confirmation and their login details with a generated 8-character password that they must change on first sign-in.</p>
+<h3>What already exists and gets reused</h3>
+<ul>
+  <li><code>server-utils/passwordGenerator.cjs</code> generates and validates passwords (currently minimum 12).</li>
+  <li><code>server-utils/emailTemplates.cjs</code> has a welcome email with temporary password and login link.</li>
+  <li><code>users/{uid}.mustChangePassword</code> plus <code>PasswordResetGuard</code> and <code>/auth/password-reset</code> already force a change on first login, but only for admin-created users.</li>
+  <li>The two submit hooks already park a pending submission in session storage and resume it after sign-in.</li>
+</ul>
+<h3>The flow</h3>
+<ol>
+  <li>Guest reaches the summary step. Instead of redirecting to sign-in, an <strong>EmailCaptureModal</strong> asks for email, full name and phone. If the email already has an account the modal switches to a password field, because we must not attach a submission to someone else's account on the strength of an email address alone.</li>
+  <li><code>POST /api/submit-form</code> accepts unauthenticated submissions carrying <code>guest: { email, name, phone }</code>. In one transaction the backend creates the Firebase user with a generated password, writes <code>users</code> and <code>userroles</code> with <code>mustChangePassword: true</code> and <code>temporaryPasswordExpiresAt</code>, writes the submission with the new UID, and returns the ticket.</li>
+  <li>Two emails go out: confirmation with the ticket, and credentials. They are separate so the password never sits next to the claim details.</li>
+  <li>First sign-in lands on the forced password change. Login with an expired temporary password is refused with a one-click "resend credentials" that is rate-limited per email.</li>
+  <li>Sign-up shrinks to name, email, password for people who want an account first. Broker sign-up stays as is.</li>
+</ol>
+<div class="callout"><strong>Password length.</strong> NIST allows system-generated passwords as short as 6 characters if they are random and short-lived. Eight is fine <em>only</em> if the credential expires within 24 hours, is single-use, is never logged, and the forced change is enforced server-side. If NEM is open to it, the cleaner option is a "set your password" link (Firebase reset link, 1-hour expiry, single-use) instead of a password in email. I'll build the temporary password unless you say otherwise, and it will be 8 characters as requested.</div>
+<h3>Session fix rides along</h3>
+<p>The account work touches the same code paths as the open critical issue, so the fix lands here: <code>/api/login</code> and <code>/api/exchange-token</code> issue a random 256-bit session id stored in a <code>sessions</code> collection mapped to the UID; <code>requireAuth</code> stops accepting a bare UID from the cookie or the Bearer header. The frontend keeps sending whatever it receives as <code>sessionToken</code>, so only two admin pages that read it from local storage need adjusting.</p>
+
+<h2 id="uploads">3 · Uploads that block submission</h2>
+<p>Four separate causes, all confirmed in code:</p>
+<div class="tbl"><table>
+<tr><th>Cause</th><th>Where</th><th>Fix</th></tr>
+<tr><td>CDD forms refuse to submit unless Gemini OCR returns <code>isMatch === true</code>. Any OCR miss, quota error or cold start makes the form unsubmittable.</td><td><code>useEnhancedFormSubmit.ts</code> lines 490 to 500</td><td>Verification becomes advisory: the submission goes through with <code>reviewRequired: true</code> and compliance sees a flag. <span class="pill warn">decision</span></td></tr>
+<tr><td>Size limits disagree: picker allows 10 MB, one schema rejects above 3 MB, constants say 3 MB, uploader says 10 MB. A 4 MB PDF passes the picker and fails silently.</td><td><code>constants.ts</code>, <code>fileService.ts</code>, <code>GoodsInTransitClaim.tsx</code>, backend multer</td><td>One shared <code>FILE_POLICY</code> (10 MB, jpg/png/pdf/doc/docx) imported by picker, schemas, uploader and backend.</td></tr>
+<tr><td>Raw <code>File</code> objects are put into form state, then the pending submission is JSON-serialised for the sign-in detour. Files become <code>{}</code> and can overwrite good values on resume.</td><td><code>useEnhancedFormSubmit.ts</code> lines 178 to 189 and 568</td><td>Upload on selection, keep only the returned storage path in form state. Files never enter the JSON.</td></tr>
+<tr><td>Two different upload-then-submit patterns across forms; Goods in Transit uploads in a separate handler from the one the summary calls.</td><td>all <code>src/pages/claims</code>, <code>cdd</code>, <code>kyc</code>, <code>nfiu</code></td><td>A shared <code>useFormDocuments</code> hook used by every form; each page declares its document fields once.</td></tr>
+</table></div>
+<p>This applies to compliance forms and claim forms alike. The CSRF third-party-cookie problem and the per-IP limits from yesterday are part of the same symptom set and are still waiting on your approval.</p>
+
+<h2 id="dash">4 · Dashboards: claims for claims, compliance for compliance</h2>
+<h3>Customer</h3>
+<ul>
+  <li>The six analytics tiles (total, KYC, claims, pending, approved, rejected, approval rate) go. The header shows exactly what the client asked for: <strong>number of claims</strong> and <strong>the progress of each active claim</strong> as a compact rail.</li>
+  <li>Below that, four tabs: <strong>Claims · KYC · CDD · NFIU</strong>. Each lists that type's submissions with status and date; the claims tab opens the claim page with the full tracker.</li>
+  <li>The customer form viewer is rebuilt in the same component library as the dashboard (shadcn + Tailwind). Today it is the only customer page built in MUI, which is why it looks foreign.</li>
+</ul>
+<h3>Staff</h3>
+<ul>
+  <li>The backend already distinguishes <code>claims</code> and <code>compliance</code> roles. The admin sidebar does not: a claims officer sees KYC tables and vice versa. Navigation and route guards become role-scoped: claims staff see a claims queue grouped by stage and their assigned claim types; compliance staff see KYC, CDD and NFIU only; admins and super admins see both.</li>
+  <li>A claims queue view sorted by "days since notification" so the 60-day clock is visible before it is breached.</li>
+</ul>
+
+<h2 id="money">5 · Money, offers and regulation</h2>
+<p>Short answer on pricing: this portal never collects payment. Claims pay <em>out</em>, and compliance forms are free. There is nothing to price. What the industry does show is the <strong>settlement offer</strong>, and Nigerian practice already discloses the amount on the discharge voucher before payment, so showing it in the portal changes nothing legally.</p>
+<ul>
+  <li><strong>Show:</strong> offer amount, basis (sum insured, excess, deductions), the discharge voucher as a download, payment reference once paid.</li>
+  <li><strong>Query flow:</strong> the customer can accept or query an offer with a reason and new evidence; NEM issues a revised offer as a new version. History is kept per version, which is exactly the "revised offer may be sent" line in the claims department's table.</li>
+  <li><strong>Regulation:</strong> the Nigerian Insurance Industry Reform Act 2025 requires settlement within 60 days of notification and a written reason for any decline, with a fine plus compound interest for late payment. Secondary sources disagree on when the clock pauses for missing documents, so every stage transition is timestamped and "documents requested" is an explicit step. That gives NEM the evidence either way. Legal should confirm the reading; I couldn't get the Act's text.</li>
+  <li><strong>Document checklists</strong> per claim type (motor, fire, burglary, marine, GPA and so on) come from config, mirroring what NSIA, Cornerstone and NEM's own motor guide publish.</li>
+</ul>
+<p>Sources are in the research brief saved to the vault.</p>
+
+<h2 id="seq">Sequence and testing</h2>
+<div class="phase"><div class="n">0<small>NOW</small></div><div><h3>Land what's done</h3><p>Commit yesterday's fixes on a branch, deploy rules with the Firebase CLI, apply the three pending approvals if you say yes. Install <code>firebase-tools</code> and wire the Firestore, Auth and Storage <strong>emulators</strong> that <code>firebase.json</code> already configures, so integration tests and manual form testing never touch production.</p></div></div>
+<div class="phase"><div class="n">1<small>1–2 d</small></div><div><h3>Upload and submission reliability</h3><p>Shared file policy, upload-on-select, shared documents hook, advisory verification, CSRF and rate-limit changes. Verified with the existing submission tests plus new ones against the emulator.</p></div></div>
+<div class="phase"><div class="n">2<small>2–3 d</small></div><div><h3>Submit-first accounts and sessions</h3><p>Email capture modal, guest submission path, account provisioning, credentials email, expiry and resend, opaque sessions replacing UID credentials. Tested end to end on the Auth emulator with a mail sink, then one real submission with a throwaway address.</p></div></div>
+<div class="phase"><div class="n">3<small>3–4 d</small></div><div><h3>Claims lifecycle</h3><p>Data model and migration script that derives <code>claim.stage</code> from existing <code>status</code> values, transition endpoint, admin dialog, customer tracker, offer accept and query, stage emails. Old status routes retired.</p></div></div>
+<div class="phase"><div class="n">4<small>2–3 d</small></div><div><h3>Dashboards</h3><p>Customer dashboard with claims header and four tabs, customer viewer rebuilt, role-scoped staff navigation and claims queue.</p></div></div>
+<div class="phase"><div class="n">5<small>1 d</small></div><div><h3>Monorepo cut-over</h3><p>Point the Render service at nemkyc with <code>rootDir apps/backend</code>, re-enter env vars, verify health, archive n-server.</p></div></div>
+<p style="margin-top:18px">Order matters: phase 1 and 2 remove the two reasons submissions fail today and close the critical auth hole, and every later phase depends on a submission path we trust.</p>
+
+<h2 id="decide">Decisions needed before I start</h2>
+<div class="decide"><b>A.</b> Temporary password of 8 characters in email (as the client asked, hardened as above) <em>or</em> a set-your-password link. Default: 8-character password.</div>
+<div class="decide"><b>B.</b> Gemini document verification becomes advisory (flag for compliance) rather than a hard block. Default: advisory.</div>
+<div class="decide"><b>C.</b> Guest submission with an email that already has an account: require the password in the modal (default), or accept and email the account owner.</div>
+<div class="decide"><b>D.</b> Show settlement amounts and the discharge voucher to customers in the portal. Default: yes.</div>
+<div class="decide"><b>E.</b> The three pending approvals from yesterday: CSRF bypass for Bearer requests, per-IP limits, dead-file deletion.</div>
+<div class="decide"><b>F.</b> A staging Firebase project. Not required for the emulator plan, but the only safe way to demo to the client without production data.</div>
+
+<footer>Built from the code map, the security audit and the claims research of 17–18 Sep 2026. Vault copies: <code>vault/nemkyc/plan-2026-09-18.md</code>, <code>audit-2026-09-17.md</code>, <code>research-claims-2026-09-18.md</code>.</footer>
+</main>
+</div>
+
+</body></html>

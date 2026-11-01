@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nocturne — J7 Career home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#d9b56b}a:hover{color:#f0d395}
+button{font:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #0b0a08; color: #ece6da; font-family: Geist, system-ui, sans-serif; font-size: 16px; line-height: 1.5; display: flex; flex-direction: column; padding: 24px 20px 16px; gap: 24px; overflow: hidden">
+  <header style="display: flex; align-items: center; justify-content: space-between">
+    <span style="font-family: Newsreader, Georgia, serif; font-size: 20px">Talent Q</span>
+    <button type="button" aria-label="Open menu" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid #2e2a23; background: transparent; color: #ece6da; display: flex; align-items: center; justify-content: center">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 8h16M4 16h16"></path></svg>
+    </button>
+  </header>
+
+  <section aria-labelledby="j7" style="display: flex; flex-direction: column; gap: 10px">
+    <span style="font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #d9b56b">YOUR PATH · PRODUCT ANALYST</span>
+    <h1 id="j7" style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 32px; line-height: 1.15">Two gaps stand between you and applying.</h1>
+    <p style="margin: 0; color: #a8a194; font-size: 15px">Not a score. Each measure below is separate, with its evidence.</p>
+  </section>
+
+  <section aria-label="Measures" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+    <sc-for list="{{measures}}" as="m" hint-placeholder-count="4">
+      <div style="background: #12110e; border: 1px solid #23201b; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 13px; color: #a8a194">{{m.label}}</span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 24px">{{m.value}}</span>
+      </div>
+    </sc-for>
+  </section>
+
+  <section aria-labelledby="gaps" style="display: flex; flex-direction: column; gap: 10px">
+    <h2 id="gaps" style="margin: 0; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.08em; color: #a8a194">GAPS</h2>
+    <div style="background: #12110e; border: 1px solid #23201b; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-weight: 500">SQL window functions</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #e6b366">NOT EVIDENCED</span></div>
+      <p style="margin: 0; font-size: 14px; color: #a8a194">A 40-minute practice task would let you show it.</p>
+      <button type="button" style="min-height: 44px; border-radius: 999px; border: 0; background: {{gold}}; color: #0b0a08; font-weight: 600">Start practice</button>
+    </div>
+    <div style="background: #12110e; border: 1px solid #23201b; border-radius: 14px; padding: 16px; display: flex; justify-content: space-between; gap: 8px"><span style="font-weight: 500">Stakeholder writing</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #a8a194">EVIDENCE OUTDATED</span></div>
+  </section>
+
+  <form style="margin-top: auto; display: flex; gap: 8px; align-items: center; background: #12110e; border: 1px solid #2e2a23; border-radius: 999px; padding: 6px 6px 6px 18px">
+    <label for="ask-am" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Ask Q</label>
+    <input id="ask-am" type="text" placeholder="Ask Q about your path" style="flex: 1 1 auto; min-width: 0; background: transparent; border: 0; color: #ece6da; font: inherit; outline: none">
+    <button type="button" aria-label="Speak to Q" style="width: 44px; height: 44px; border-radius: 50%; border: 0; background: {{gold}}; color: #0b0a08; display: flex; align-items: center; justify-content: center">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="12" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>
+    </button>
+  </form>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"gold":{"editor":"color","default":"#d9b56b","options":["#d9b56b","#c9a24f","#e3c27d"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      gold: this.props.gold ?? '#d9b56b',
+      measures: [
+        { label: 'Evidence coverage', value: '6 of 9' },
+        { label: 'Readiness to apply', value: 'Close' },
+        { label: 'Practice this week', value: '3 tasks' },
+        { label: 'Role fit', value: 'Strong' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

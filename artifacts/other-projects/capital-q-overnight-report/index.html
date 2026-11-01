@@ -1,0 +1,132 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Capital Q Overnight Report</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono&display=swap">
+<style>
+/* Layout: a single readable column; status tables scroll inside their own box */
+:root{--bg:#f7f6f2;--surface:#ffffff;--fg:#1a1812;--muted:#5b574c;--line:#e3dfd4;--gold:#8a6a12;--ok-bg:#e7f1e6;--ok:#235a2a;--part-bg:#f6ecd6;--part:#6e5410;
+--display:"Fraunces",Georgia,serif;--body:"IBM Plex Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0e0d0a;--surface:#17150f;--fg:#f0ece2;--muted:#a9a395;--line:#2c2920;--gold:#d4ad55;--ok-bg:#16301a;--ok:#9fd8a6;--part-bg:#33290f;--part:#e8c66f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e0d0a;--surface:#17150f;--fg:#f0ece2;--muted:#a9a395;--line:#2c2920;--gold:#d4ad55;--ok-bg:#16301a;--ok:#9fd8a6;--part-bg:#33290f;--part:#e8c66f;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--body);padding-inline:16px;padding-block:24px 64px}
+main{max-width:880px;margin:0 auto}
+h1{font:600 clamp(28px,5vw,40px)/1.15 var(--display);margin:8px 0 20px;text-wrap:balance}
+h2{font:600 24px/1.25 var(--display);margin:40px 0 12px;padding-top:16px;border-top:1px solid var(--line)}
+h3{font:600 17px var(--body);margin:28px 0 8px;color:var(--gold)}
+p,li{max-width:72ch} ul,ol{padding-left:22px} li{margin:4px 0}
+code{font:13px var(--mono);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:0 4px;overflow-wrap:anywhere}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-weight:600;color:var(--muted);font-size:13px}
+tr:last-child td{border-bottom:0}
+td:first-child{font-family:var(--mono);white-space:nowrap}
+td:nth-child(2){white-space:nowrap}
+.st{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12.5px;font-weight:500}
+.st.done{background:var(--ok-bg);color:var(--ok)} .st.part{background:var(--part-bg);color:var(--part)}
+</style>
+<main>
+<h1>Overnight report, 6 October 2026</h1>
+<h2>Executive summary</h2>
+<p>Every item in the overnight brief has been worked on, merged into one build and deployed. All four services are live and healthy (web, api, q-api, workers on Railway). The hosted database has all 156 migrations, with none missing. The mockups the builders designed against are in the "Capital Q Overnight Mockups" gallery.</p>
+<p>What you can try this morning:</p>
+<ul>
+<li><strong>Company profile</strong> has tabs: Overview, Elevator, Data room, Pitch deck, Team. The data room has per-document visibility. Q reads the pitch deck into 12 standard sections you can swipe, and coaches the founder on the gaps.</li>
+<li><strong>Fit scores</strong> read "7.5/10 · Good fit" everywhere: profiles, Company requests, relationship cards, top 3 and Q's answer cards. Each score is backed by nine parameters with plain reasons. "Founder requests" is now <strong>Company requests</strong>.</li>
+<li><strong>Q's answers</strong> for top N, comparisons and research arrive as coloured cards. The card Q is talking about expands while the others shrink. Every card has a close button, cards move to the redesigned <strong>Board</strong> when the topic changes, and there is no PDF unless you ask for one. Suggestions run on one tap.</li>
+<li><strong>"Hey Q" / "Hello Q" / "Hi Q" / "OK Q"</strong> opens Q, and Q says "Hi — what can I do?". It's off by default; turn it on in Settings → Q.</li>
+<li><strong>Explore</strong> is a masonry grid of every pitch on the network. Opening one shows related pitches next, and search opens profiles.</li>
+<li><strong>GateQ</strong> has its own sidebar page: a 4-step form for founders, a Gmail-style inbox for investors with a download pack, and Find my startup.</li>
+<li><strong>Teams:</strong> invite colleagues, set roles (Owner, Admin, Member), leave or remove people, hand over ownership, and switch between companies or firms.</li>
+<li><strong>Q's team of agents:</strong> a lead Q plans jobs, and a reviewer grades every outward draft against your guides and sends weak drafts back for a redraft. The Work page shows who is doing what, the scores and the month's cost. Q can propose a job and spawn helpers, and you approve the plan.</li>
+<li><strong>Brand:</strong> black and gold is the default and can be switched back at any time. Q's presence morphs into freer shapes, and shows a warm human face only while speaking on the Q page. Soft sounds (On / Quiet / Off).</li>
+<li><strong>Voice:</strong> live voice now survives bad networks. It stays on the line through weak patches and rejoins on the same voice after a drop. Speed fixes are in: parallel readers, Gemini key failover, hedged classifiers, and starting the spoken answer early.</li>
+<li><strong>Wording:</strong> plain-language pass across the app for non-technical users.</li>
+</ul>
+<p>What is <strong>not</strong> finished, plainly:</p>
+<ol>
+<li><strong>Voice speed target not reached.</strong> Expected p50 first audio is about 3–3.5 s, down from 5.1 s. That is an estimate from tests, not yet measured live. The 1.5 s target needs the turn reader off the critical path entirely.</li>
+<li><strong>The wake word uses the browser's own speech recogniser, not a trained on-device model.</strong> That means up to 8 s of speech can go to Google or Apple after the loudness gate opens. The setting says so before you turn it on. Training a model needs a GPU machine and multi-accent audio (ADR 0058).</li>
+<li><strong>Fit data:</strong> stage, sector, geography and thesis use real data. Traction, team, business model and round terms have no data source yet, so they show "Unknown", and most real scores will be medium or low confidence.</li>
+<li><strong>GateQ</strong> records passes, replies and claim codes but sends no email for them yet. Applications are not yet linked to the shared company–investor relationship.</li>
+<li><strong>Not tested live in a browser with a real microphone or a bad network.</strong> Everything ran under automated tests with fakes, plus production builds.</li>
+</ol>
+<h2>Decisions I made under your blanket approval</h2>
+<ul>
+<li><strong>ADR 0059: one score scale.</strong> Fit shows a score out of 10 beside its words ("7.5/10 · Good fit"), matching Q's answer cards. It is computed in code only from the parameters you can see. There is no score at all when too little is known or a declared rule excludes the company. Never percentages, gauges or "94% match". This amends ADR 0052.</li>
+<li><strong>ADR 0051: Q's face.</strong> A human face only while Q speaks on the Q page at a large size; everywhere else Q is shape and motion. The black and gold preset is the default.</li>
+<li><strong>ADR 0053:</strong> Q may rank and score answer cards. The model rates each measure in words; code computes the number.</li>
+<li><strong>ADR 0055:</strong> Explore shows no counts anywhere (no views, likes or "48 more").</li>
+<li><strong>ADR 0057:</strong> organisations are teams with Owner, Admin and Member, and always at least one Owner.</li>
+<li><strong>ADR 0058:</strong> browser recogniser for the wake word until a trained model exists.</li>
+<li>Explore replaces Search in the sidebar and takes Capital's place in the phone bar. Capital stays in the sidebar and More.</li>
+<li>GateQ's three migrations were renumbered after the organisations migration because one of them reused its version number. Hosted applied cleanly.</li>
+</ul>
+<h2>Every item, one by one</h2>
+<h3>A. Company profile</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>A1</td><td><span class="st done">Done</span></td><td>Tabs Overview · Elevator · Data room · Pitch deck · Team. Overview unchanged, with the fit panel beside it for investors.</td></tr><tr><td>A2</td><td><span class="st done">Done</span></td><td>Elevator holds all the founder's videos and pitches.</td></tr><tr><td>A3</td><td><span class="st done">Done</span></td><td>Data room with research-based folders (incorporation, KYC/KYB, cap table, financials, tax, legal and IP, contracts, team) and four visibility levels: Public, On request, Shared only, Private. Investors never see titles of documents not shared with them. "Request access" leads to founder approval. Tables are server-only, with database tests passing.</td></tr><tr><td>A4</td><td><span class="st done">Done</span></td><td>The founder chooses downloadable or view-only. View-only still shows the deck.</td></tr><tr><td>A5</td><td><span class="st done">Done</span></td><td>Q reads a deck once per version into 12 sections in the same order for everyone, with slide citations. Swipe on phone, arrows on desktop. Runs automatically when a deck finishes processing.</td></tr><tr><td>A6</td><td><span class="st done">Done</span></td><td>Coaching scores each section, names what's missing or weak and how to fix it. "Let Q draft it" saves a new version only after approval, or the founder re-uploads. Deck quality never feeds investor ranking.</td></tr><tr><td>A7</td><td><span class="st done">Done</span></td><td>Founder as a person: age only if shared, and every background line labelled as the founder's claim or matched to a document.</td></tr><tr><td>A8</td><td><span class="st done">Done</span></td><td>Q tools to read, extract, coach, set visibility, request and answer access, all through approval where they change something.</td></tr></tbody></table></div>
+<h3>B. Match scores</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>B1</td><td><span class="st part">Done, partial data</span></td><td>Nine parameters (stage, sector, geography, cheque size, business model, traction, team, thesis, round terms), each with a word, a shape icon and a reason sentence. Unknown never counts against a company. Four parameters have no data source yet (see the summary).</td></tr><tr><td>B2</td><td><span class="st done">Done</span></td><td>"Top three" ranks and shows them side by side with scores and reasons, both as Q answer cards and on <code>/investors/top</code> with "Why these three?".</td></tr><tr><td>B3</td><td><span class="st done">Done</span></td><td>Scores on relationship cards, Company requests and the company profile.</td></tr><tr><td>B4</td><td><span class="st done">Done</span></td><td>Renamed to <strong>Company requests</strong> everywhere. Cards show the score, top reasons, the main mismatch and Q's view (Worth a look / Maybe / Probably not), sort by best fit, newest or waiting longest, and open the profile.</td></tr></tbody></table></div>
+<h3>C. Q page answers</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>C1</td><td><span class="st done">Done</span></td><td>Ranked, side-by-side and research answers render as coloured cards (1–10) with a score, three reasons and measures, laid out for any count.</td></tr><tr><td>C2</td><td><span class="st done">Done</span></td><td>The card Q is talking about expands and the rest shrink, synced to Q's voice. On phones, four or more become half-width tiles.</td></tr><tr><td>C3</td><td><span class="st done">Done</span></td><td>An X on every card and on the whole answer.</td></tr><tr><td>C4</td><td><span class="st done">Done</span></td><td>On a new topic, cards fly into the Board and the presence returns.</td></tr><tr><td>C5</td><td><span class="st done">Done</span></td><td>No PDF unless a file is asked for; comparisons show on screen. Root cause fixed: the request reader treated "a comparison" as a document request.</td></tr><tr><td>C6</td><td><span class="st done">Done</span></td><td>A compact answer chip on other pages, with "Open in Q" and "Board". Files keep their floating viewer.</td></tr><tr><td>C7</td><td><span class="st done">Done</span></td><td>The Board is redesigned as a timeline by day, with Pinned and Files (tabs on phone). Sources fold under one plain line.</td></tr><tr><td>C8</td><td><span class="st done">Done</span></td><td>12 suggestion buttons send at once. Only "Share X with…"-style prompts still pre-fill, because they need a name.</td></tr><tr><td>C9</td><td><span class="st done">Done</span></td><td>Root causes found in yesterday's logs: no ranked-answer shape plus an analyst rule forbidding scores (top three); a document-request misreading (PDF); no research structure (YC). All three are fixed.</td></tr></tbody></table></div>
+<h3>D. Wake words</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>D1</td><td><span class="st done">Done</span></td><td>Hey / Hello / Hi / OK Q opens Q with a chime, and Q says "Hi — what can I do?". Rejects "hey you", "OK cool" and "okay Google".</td></tr><tr><td>D2</td><td><span class="st part">Partly</span></td><td>Research done: Picovoice is too costly now, and openWakeWord's models are non-commercial. Shipped a local loudness gate plus the browser recogniser, with a visible toggle (off by default), a mic permission flow, a "Listening for 'Hey Q'" indicator with Pause, pausing when hidden or on low battery, and a lazy load. Not a trained on-device model (ADR 0058).</td></tr></tbody></table></div>
+<h3>E. Explore</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>E1</td><td><span class="st done">Done</span></td><td>Every network pitch you are allowed to see, lightly personalised from your mandate, adjacent areas, saves and newest, plus exploration and a diversity pass. Views are never used.</td></tr><tr><td>E2</td><td><span class="st done">Done</span></td><td>Masonry grid sized by each video's aspect ratio: 2 columns on phone, 4–5 on desktop, with no layout shift.</td></tr><tr><td>E3</td><td><span class="st done">Done</span></td><td>Opening a pitch gives a full-screen "Related to X" feed with a back button.</td></tr><tr><td>E4</td><td><span class="st done">Done</span></td><td>Search with tabs Top · Companies · Investors · People · Pitches. Results open profiles.</td></tr><tr><td>E5</td><td><span class="st done">Done</span></td><td>Research on Instagram and TikTok Explore, copying their structure but not their engagement goal. Each tile says why it is shown, with a "You're up to date" end point.</td></tr></tbody></table></div>
+<h3>F. GateQ</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>F1</td><td><span class="st done">Done</span></td><td>A 4-step form (not a chat), with "I'd rather not say" on every question and the investor's rules shown first. You get a rule-by-rule result after each step, with no model involved. Nothing is sent until "Send to &lt;fund&gt;".</td></tr><tr><td>F2</td><td><span class="st done">Done</span></td><td>Its own sidebar page at <code>/gateq</code>: Applications and Find my startup for founders; Inbox, Find a startup and Your gate for investors.</td></tr><tr><td>F3</td><td><span class="st done">Done</span></td><td>Founders find and claim their company (work email, registry document or asking members). Investors describe what they want and get matches from Discover, which they can save as an alert. Alerts don't notify yet.</td></tr><tr><td>F4</td><td><span class="st done">Done</span></td><td>A Gmail-style inbox with views, stars, labels, bulk actions, reply-by clocks, assign, team notes, a preview pane and keyboard shortcuts (which can be turned off). The download pack holds a summary PDF, only the documents the founder sent and their answers; team notes are never included and every download is logged. A pass always needs a reason and sends only the approved words. Q can triage, summarise and draft, but never sends.</td></tr></tbody></table></div>
+<h3>G. Organisations</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>G1</td><td><span class="st done">Done</span></td><td>Real teams: Owner, Admin, Member. Everyone starts as their own organisation's owner, and the database refuses removing the last owner.</td></tr><tr><td>G2</td><td><span class="st done">Done</span></td><td>Invite (several emails, one role), pending invites, resend or revoke, role changes, remove, leave, ownership handover, accept via link (<code>/join/…</code>), and the switcher (hidden until you belong to two). Screens say "Company" or "Firm". Q can invite and change roles on an approval card. Not built: domain auto-join.</td></tr></tbody></table></div>
+<h3>H. Wording</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>H1</td><td><span class="st done">Done</span></td><td>Audit of about 3,900 visible strings. About 60 system words were rewritten plus 31 "Not found." errors. Glossary: <code>docs/design/ux-writing-2026-10-06.md</code>.</td></tr><tr><td>H2</td><td><span class="st done">Done</span></td><td>Journey checks during each build: Explore in the bottom bar, GateQ in the sidebar, Company requests renamed, Team in Settings, Hey Q in Settings → Q.</td></tr></tbody></table></div>
+<h3>I. Voice and sound</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>I1</td><td><span class="st part">Done (resilience), partly (speed)</span></td><td>Yesterday's logs showed fallbacks caused by over-eager health thresholds, not the cap. A weak line now stays up with a deeper buffer, a drop gets 5 s to heal and then rejoins on the same voice with the conversation replayed, and the 10-minute limit renews silently. End reports now record the cause and line quality. Not yet tried on a real bad network. Research suggests UAE networks block WebRTC; a port-443 relay is the next step, and it needs your call (new infrastructure).</td></tr><tr><td>I2</td><td><span class="st done">Done</span></td><td>Seven quiet sounds: a hum while thinking (stops by itself after 20 s), a ping when ready, and more. On / Quiet / Off in Settings → Appearance. Silent while Q speaks and on Discover.</td></tr></tbody></table></div>
+<h3>J. Q's workforce</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>J1</td><td><span class="st done">Done</span></td><td>Roles: lead, outreach, mandate watcher, conversation, writer, reviewer, scheduler, documents, research, ad-hoc. Each has its own tools and budget, with every hand-off recorded.</td></tr><tr><td>J2</td><td><span class="st done">Done</span></td><td>The reviewer grades every outward draft against your guide and the house guide; integrity rules can't be averaged away. Below the bar it goes back to the writer (at most 2 redrafts). A draft that never passes is never sent. This covers all five outward paths.</td></tr><tr><td>J3</td><td><span class="st done">Done</span></td><td>Approvals, edits and rejections become "what worked" notes through the memory Write Gate, and feed the writer and reviewer.</td></tr><tr><td>J4</td><td><span class="st done">Done</span></td><td>Q can propose a job (<code>propose_q_job</code>). The lead's plan is the approval card, and approved helpers get only the tools their step needs. It is never re-planned or widened.</td></tr><tr><td>J5</td><td><span class="st done">Done</span></td><td>The Work page shows a run log per job: steps, specialists, hand-offs, the reviewer's score against the bar, "Sent back to Writer", approve-and-send on the exact text, and the month's cost by specialist.</td></tr><tr><td>J6</td><td><span class="st done">Done</span></td><td>Every agent call is priced per job in the usage ledger, with a monthly limit (default $60) after which new jobs hold. The <code>q.agent_jobs</code> plan feature appears in Settings → Usage.</td></tr><tr><td>J7</td><td><span class="st part">Done, with stated exceptions</span></td><td>Phrase lists replaced with model readings (approval/refusal, onboarding moves, preference polarity, meeting outcomes, "sounds like a no", and others). Kept as deterministic checks: guards on Q's own output (no early meeting ask, no false history), and bare "yes"/"no" on a live voice line, for speed.</td></tr><tr><td>J8</td><td><span class="st done">Done</span></td><td>Guides load before every outward message, and the reviewer enforces them. Includes the "think before acting" step from yesterday.</td></tr><tr><td>J9</td><td><span class="st done">Done</span></td><td>Q drafts a plan, you approve it and it runs as you within budget. Not yet proven on a long real job.</td></tr></tbody></table></div>
+<h3>K. Presence and brand</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>K1</td><td><span class="st done">Done</span></td><td>Free morphing shapes (ring, wave, spiral, constellation, ribbon) with a swirling staggered morph.</td></tr><tr><td>K2</td><td><span class="st done">Done</span></td><td>The "demon" face is gone. Its look came from hollow eye sockets and harsh lighting. The new face is warm and evenly lit, with blinking and a lower lip that moves with the voice. It appears only while speaking on the Q page.</td></tr><tr><td>K3</td><td><span class="st done">Done</span></td><td>Black and gold is the default, with full presets for page, menu bar, buttons and Q's light, and every colour pair passes AA. It can be switched back to blue at any time from Admin → Brand.</td></tr></tbody></table></div>
+<h3>L, M, N</h3>
+<div class="tw"><table><thead><tr><th>Id</th><th>Status</th><th>What was done</th></tr></thead><tbody><tr><td>L1</td><td><span class="st part">Partly</span></td><td>Pages: the app layout, Discover, onboarding checks, relationships and profile now load in parallel. Q answers: settings reads run in parallel. Voice: the decision reader runs alongside the turn reader, a refused Gemini key fails over to the other key (this removes the 3.5–5 s stalls), classifiers are hedged after 2 s, bursts are debounced and the answer starts speculatively. Estimated p50 about 3–3.5 s, from 5.1 s; not measured live. The 1.5 s target is not reached.</td></tr><tr><td>M1</td><td><span class="st done">Done</span></td><td>12 research files in <code>docs/research/2026-10-06/</code> (data room, pitch deck, matching, Explore, GateQ inbox, organisations, wake word, voice resilience, agent workforce, UX writing, sound, presence and brand), each ending with gaps and recommendations, which the builders followed.</td></tr><tr><td>N1</td><td><span class="st done">Done</span></td><td>580 + 107 mockup screenshots (phone and desktop, light, dark and gold) and 17 videos; the curated set is in the gallery.</td></tr><tr><td>N2</td><td><span class="st part">Done, with limits</span></td><td>Built to the mockups, with screenshot comparisons per area. Tests: the full unit suite (about 9,400 tests), database RLS suites for every new table, typecheck and a production web build. Not done: e2e and live browser trials with a real microphone.</td></tr><tr><td>N3</td><td><span class="st done">Done</span></td><td>Deployed and healthy; this report.</td></tr></tbody></table></div>
+<h2>Technical detail</h2>
+<p><strong>Deployed commit:</strong> <code>225b779d</code> on <code>recovery/2026-09-12</code> (deploy), <code>recovery/2026-09-12-8y2j4w</code> and <code>claude/rana-account-setup-8esh9e</code>; deployed at 07:29 UTC, all four services SUCCESS.</p>
+<p><strong>Hosted migrations added tonight (156 total, none missing):</strong></p>
+<ul>
+<li>20261206140000 and 20261206150000: wake and etiquette guides;</li>
+<li>20261207090000: workforce;</li>
+<li>20261207100000: brand presets;</li>
+<li>20261207110000 and 20261207120000: data room and deck extractions;</li>
+<li>20261207150000: organisation team;</li>
+<li>20261207163000: routing hedge;</li>
+<li>20261207170000, 20261207171000 and 20261207172000: GateQ inbox, Find my startup and application founders.</li>
+</ul>
+<p><strong>Checks run, exact:</strong></p>
+<ul>
+<li>Package build: 51/51 tasks.</li>
+<li>Typecheck: root, web, api, q-api and workers, 0 errors.</li>
+<li>Full vitest (<code>--maxWorkers=1</code>) after every merge: 9,429 passed, 1 skipped, 1 failed. The failure was the Company requests rename guard catching the old wording in a code comment; it was fixed (2/2 on rerun) and redeployed.</li>
+<li>pgTAP:</li>
+</ul>
+<p>  - organisations: 38/38;</p>
+<p>  - GateQ inbox: 26/26;</p>
+<p>  - Find my startup: 15/15;</p>
+<p>  - application founders: 7/7;</p>
+<p>  - schema guard: 12/12.</p>
+<ul>
+<li><code>next build</code>: compiled.</li>
+<li>Deploy: all four services SUCCESS; <code>/health/live</code> returns 200 on api and q-api; no errors in the logs.</li>
+</ul>
+<p><strong>Known technical gaps:</strong></p>
+<ul>
+<li>The GateQ pack streams through Next.js.</li>
+<li>The Explore slate is computed on read over the newest 240 pitches.</li>
+<li>Classic blue's field borders are below 3:1.</li>
+<li>Dev review pages need <code>CQ_DEV_PREVIEW=1</code>.</li>
+<li><code>pnpm format:check</code> still fails on about 175 older files that were already unformatted.</li>
+</ul>
+<h2>What I need from you</h2>
+<ol>
+<li>Try voice on a poor connection and tell me whether it holds. If the Dubai problem was a network block, decide whether we add a port-443 relay.</li>
+<li>Decide whether to fund training a real on-device wake-word model.</li>
+<li>Confirm the score format "7.5/10 · Good fit".</li>
+</ol>
+</main>
+</body></html>

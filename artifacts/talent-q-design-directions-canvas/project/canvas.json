@@ -1,0 +1,22 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-10-27T10:30:00Z" },
+  "title": "Talent Q — Design Directions",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 1440, "h": 1000, "title": "A · Nocturne — Recruiter Q home", "expand": "fill" },
+    "A_Mobile.dc.html": { "x": 1520, "y": 0, "w": 390, "h": 844, "title": "A · Nocturne — J7 Career home (mobile)" },
+    "B_Desktop.dc.html": { "x": 0, "y": 1420, "w": 1440, "h": 1000, "title": "B · Ledger — Recruiter Q home", "expand": "fill" },
+    "B_Mobile.dc.html": { "x": 1520, "y": 1420, "w": 390, "h": 844, "title": "B · Ledger — J7 Career home (mobile)" },
+    "C_Desktop.dc.html": { "x": 0, "y": 2840, "w": 1440, "h": 1000, "title": "C · Atelier — Recruiter Q home", "expand": "fill" },
+    "C_Mobile.dc.html": { "x": 1520, "y": 2840, "w": 390, "h": 844, "title": "C · Atelier — J7 Career home (mobile)" }
+  },
+  "order": ["Main.dc.html", "A_Mobile.dc.html", "B_Desktop.dc.html", "B_Mobile.dc.html", "C_Desktop.dc.html", "C_Mobile.dc.html"],
+  "notes": {
+    "rowA": { "x": 0, "y": -300, "text": "A · Nocturne — dark, presence-led, serif voice", "kind": "title1", "maxW": 1910 },
+    "rowB": { "x": 0, "y": 1120, "text": "B · Ledger — light, editorial grid, gold as a mark", "kind": "title1", "maxW": 1910 },
+    "rowC": { "x": 0, "y": 2540, "text": "C · Atelier — dark conversation beside a light artifact canvas", "kind": "title1", "maxW": 1910 }
+  },
+  "designSystems": []
+}

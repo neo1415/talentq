@@ -1,0 +1,463 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Salvage Valuation Accuracy Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,650&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a single reading column with a sticky contents rail on wide screens; tables and phase cards break out to the full column. */
+:root {
+  --bg: #f6f7f6;
+  --surface: #ffffff;
+  --ink: #18201f;
+  --ink-2: #44504e;
+  --ink-3: #6b7774;
+  --line: #dde2e0;
+  --accent: #0f5e57;
+  --accent-soft: #e2efec;
+  --good: #1f6b3a;
+  --good-soft: #e3f3e8;
+  --warn: #8a5a00;
+  --warn-soft: #fbf0d9;
+  --bad: #9b2c2c;
+  --bad-soft: #fbe6e4;
+  --display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111514; --surface: #181d1c; --ink: #e8ecea; --ink-2: #b9c3c0; --ink-3: #8b9693; --line: #2a3230;
+    --accent: #6cc3b8; --accent-soft: #19302d; --good: #7ed39b; --good-soft: #17291e; --warn: #e9be6a; --warn-soft: #2e2512;
+    --bad: #f0958d; --bad-soft: #321a19; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111514; --surface: #181d1c; --ink: #e8ecea; --ink-2: #b9c3c0; --ink-3: #8b9693; --line: #2a3230;
+  --accent: #6cc3b8; --accent-soft: #19302d; --good: #7ed39b; --good-soft: #17291e; --warn: #e9be6a; --warn-soft: #2e2512;
+  --bad: #f0958d; --bad-soft: #321a19; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 80px; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-inline: 16px; } nav.toc { position: static !important; } }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; font-size: 14px; }
+nav.toc p { margin: 0 0 8px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+nav.toc ol { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--ink-3); }
+nav.toc a { color: var(--ink-2); text-decoration: none; }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); text-decoration: underline; }
+main { min-width: 0; }
+header.doc { border-bottom: 1px solid var(--line); padding-bottom: 28px; margin-bottom: 8px; }
+.eyebrow { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 0 0 10px; }
+h1 { font: 650 clamp(30px, 4.4vw, 44px)/1.12 var(--display); margin: 0 0 14px; text-wrap: balance; letter-spacing: -.01em; }
+.lede { font-size: 19px; color: var(--ink-2); max-width: 66ch; margin: 0; }
+.meta { margin-top: 14px; font-size: 13px; color: var(--ink-3); }
+section { padding-top: 40px; scroll-margin-top: 20px; }
+h2 { font: 650 28px/1.2 var(--display); margin: 0 0 14px; text-wrap: balance; }
+h3 { font: 700 17px/1.35 var(--body); margin: 26px 0 8px; }
+p, li { max-width: 70ch; }
+p { margin: 0 0 14px; color: var(--ink); }
+ul, ol { margin: 0 0 14px; padding-left: 22px; display: grid; gap: 6px; }
+strong { font-weight: 650; }
+a { color: var(--accent); }
+code, .num { font-family: var(--mono); font-size: .88em; }
+.num { font-variant-numeric: tabular-nums; }
+.callout { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 18px 0; max-width: 74ch; }
+.callout p:last-child { margin-bottom: 0; }
+.callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+.scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 18px 0 8px; }
+.score { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.score b { display: block; font: 600 26px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
+.score span { font-size: 13px; color: var(--ink-3); }
+.score.low b { color: var(--bad); } .score.ok b { color: var(--good); }
+.table-wrap { overflow-x: auto; margin: 16px 0 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); font-weight: 650; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.k { font-weight: 650; white-space: nowrap; }
+.pill { display: inline-block; font-size: 12px; font-weight: 650; padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
+.pill.good { background: var(--good-soft); color: var(--good); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.bad { background: var(--bad-soft); color: var(--bad); }
+.pill.new { background: var(--accent-soft); color: var(--accent); }
+.finding { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.finding:last-child { border-bottom: 0; }
+.finding .pill { margin-top: 3px; }
+.finding p { margin: 0; }
+.finding .t { font-weight: 650; }
+.phases { display: grid; gap: 14px; margin-top: 16px; }
+.phase { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.phase header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 8px; }
+.phase h3 { margin: 0; font: 650 20px/1.3 var(--display); }
+.phase .when { font-size: 13px; color: var(--ink-3); font-weight: 600; }
+.phase ul { margin-bottom: 0; }
+.formula { font-family: var(--mono); font-size: 13.5px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; white-space: pre; margin: 12px 0 16px; }
+.sources { font-size: 13.5px; color: var(--ink-2); }
+.sources li { max-width: none; overflow-wrap: anywhere; }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-3); }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Contents">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#corolla">Why the Corolla scored 60%</a></li>
+      <li><a href="#today">How it works today</a></li>
+      <li><a href="#industry">How the industry does it</a></li>
+      <li><a href="#nigeria">Nigerian price sources</a></li>
+      <li><a href="#classes">Asset classes, now and next</a></li>
+      <li><a href="#methods">Better methods</a></li>
+      <li><a href="#confidence">A confidence score that means something</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#needs">What we need from the business</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="doc">
+      <p class="eyebrow">Research and plan · AI damage check and salvage value</p>
+      <h1>Making salvage valuations accurate, for every kind of asset</h1>
+      <p class="lede">What our valuation does today, why confidence comes out low, how insurers and salvage auctions value damaged assets elsewhere, where Nigerian prices can be found for each asset class, and a phased plan to make the numbers more accurate and the confidence score honest.</p>
+      <p class="meta">Prepared 4 October 2026 from a full read of the valuation code, the live Corolla case (4ed37041) and four research tracks: industry practice, Nigerian data sources, statistics and AI methods, and our own pipeline.</p>
+    </header>
+
+    <section id="summary">
+      <h2>Summary</h2>
+      <p>The damage check now works end to end and finds real adverts. Its weak points are in how it turns evidence into a number and a confidence score, and in three kinds of price it cannot find online at all: repair labour, structural repairs and most non-consumer assets.</p>
+      <div class="callout">
+        <p><strong>The five changes that matter most</strong></p>
+        <ol>
+          <li><strong>Price book for repairs.</strong> Panel beating, paint and structural work are never advertised, so they will always be AI guesses until we keep our own rate book from partner garages. On the Corolla this one gap pushed 72% of the repair cost into "AI estimate" and capped confidence at 60%.</li>
+          <li><strong>Rebuild the confidence score from evidence.</strong> Today about 60% of the score comes from how complete the form is and the AI's own opinion of itself. The industry standard (FSD, used for property AVMs) expresses confidence as the expected error: "±12%". We can compute that from the spread and number of comparable prices.</li>
+          <li><strong>Compare like with like.</strong> Use the usage tier (new, foreign used, locally used) as a hard filter and value input, adjust for model year with a real depreciation curve, use mileage, and stop measuring the price spread before outliers are removed. These alone would have moved the Corolla from a 121% spread towards the 35% needed for grade B.</li>
+          <li><strong>Learn from our own auctions.</strong> Every sale on the platform tells us what salvage really fetches. Feed hammer prices back into a salvage-to-value ratio per asset class and damage type, the way Copart and IAA predict returns. Nobody in Nigeria publishes this data, so over time it becomes our main advantage.</li>
+          <li><strong>A proper route for each asset class.</strong> Commodity prices for scrap and produce, reinstatement cost for buildings, landed cost (overseas price × exchange rate × duty) for machinery and medical equipment, and specialist appraisal for jewellery and art. Searching Jiji for a warehouse roof or a CT scanner will never be accurate.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="corolla">
+      <h2>Why the Corolla scored 60%</h2>
+      <p>The 2022 Toyota Corolla case shows every weakness in one valuation. Figures are from the saved assessment.</p>
+      <div class="scores">
+        <div class="score low"><b>60%</b><span>Overall confidence, grade C</span></div>
+        <div class="score ok"><b>96%</b><span>Market price confidence</span></div>
+        <div class="score low"><b>121%</b><span>Price spread (limit 55%)</span></div>
+        <div class="score low"><b>72%</b><span>Repair cost that is an AI estimate (limit 60%)</span></div>
+        <div class="score"><b class="num">₦9.38m</b><span>Salvage value (range ₦7.47m–₦11.63m)</span></div>
+      </div>
+      <div class="finding"><span class="pill bad">Cause</span><div><p class="t">The condition is still saved as "good"</p><p>A quality grade does not say whether the car is tokunbo or Nigerian used, so the search compared it with both. Jiji's own data puts average tokunbo listings near ₦45m and Nigerian-used near ₦16m. Mixing them, plus model years 2020–2024, produced the 121% spread. Choosing the usage tier on the approvals page fixes this case.</p></div></div>
+      <div class="finding"><span class="pill bad">Cause</span><div><p class="t">Repairs that are never advertised</p><p>"Front structural components ₦800,000–₦2,500,000" alone is a third of the repair cost, and doors, rocker panel and quarter panel are panel-beating jobs. None of these have online prices. Any part priced by AI caps the whole score at 60%, whatever else is true.</p></div></div>
+      <div class="finding"><span class="pill warn">Noise</span><div><p class="t">The same warning seven times, and two different spreads</p><p>"Usage condition is not established" appears seven times and the notes report both 121% and 88%. The 121% is measured before outliers are dropped and before prices are adjusted to the same year and tier, so it overstates the real disagreement.</p></div></div>
+      <div class="finding"><span class="pill good">Worked</span><div><p class="t">Real adverts from three sites</p><p>Eight Corolla adverts were accepted from Autochek, Cars45 and Jiji, and some part prices came from real listings. The search and extraction fixes are doing their job.</p></div></div>
+    </section>
+
+    <section id="today">
+      <h2>How it works today</h2>
+      <p>A manager's damage check runs these steps in order, within a 250-second budget:</p>
+      <ol>
+        <li><strong>Photos.</strong> Gemini lists damaged parts with a severity, an action (replace, repair, specialist review) and its own confidence. Claude is the backup if Gemini fails.</li>
+        <li><strong>Market price.</strong> First the price cache (recent accepted adverts for the same model), then Tavily searches of Nigerian sites, one Gemini call that copies adverts verbatim from the pages, rules that reject mismatches, and a Google-grounded search if fewer than three adverts survive.</li>
+        <li><strong>Combining prices.</strong> Each advert is adjusted 6% per model year and by a tier factor, outliers beyond ×2.5 are dropped, the median of per-site medians is taken, then multiplied by 0.92 to move from asking to selling price.</li>
+        <li><strong>Repair cost.</strong> Part prices from adverts (plus 18–36% for paint, labour and sundries on replacements) or AI estimates.</li>
+        <li><strong>Salvage value.</strong> The larger of what a rebuilder would pay (0.8 × (value − rebuild cost) − 5%) and what the parts are worth, clamped between 5% and 85% of value. Bulk goods use a separate severity formula.</li>
+        <li><strong>Confidence.</strong> A percentage and a separate A/B/C grade. The reserve price is set at 70% of the salvage value.</li>
+      </ol>
+
+      <h3>What the code audit found</h3>
+      <div class="finding"><span class="pill bad">High</span><div><p class="t">The confidence percentage is not about the evidence</p><p>It is 25% form completeness (is a brand and year filled in), 35% the vision model's opinion of itself, 15% photo count and 25% market evidence. The evidence-based A/B/C grade is computed separately and never feeds into it.</p></div></div>
+      <div class="finding"><span class="pill bad">High</span><div><p class="t">Every valuation is marked "manual review"</p><p>An explanation of the salvage formula is always added as a review reason, and any reason triggers review. A flag that is always on tells the manager nothing.</p></div></div>
+      <div class="finding"><span class="pill bad">High</span><div><p class="t">"Good" becomes tokunbo, then the tier is thrown away</p><p>When a case is loaded, a quality grade is converted to a tier ("good" → foreign used). The research step then removes it again because it came from a grade. Either way the search never knows the real tier.</p></div></div>
+      <div class="finding"><span class="pill bad">High</span><div><p class="t">Sold prices never correct the market value</p><p>Auction results only feed a manual multiplier on the salvage value, which an admin has to apply. Market values and the price cache never learn from what things actually sold for.</p></div></div>
+      <div class="finding"><span class="pill warn">Medium</span><div><p class="t">Mileage is collected and ignored</p><p>Odometer readings are captured on the form and read from adverts, but only appear as text in the search query, which probably reduces search hits. The mileage adjustment code exists but is never called.</p></div></div>
+      <div class="finding"><span class="pill warn">Medium</span><div><p class="t">AI estimates feed themselves</p><p>AI-estimated part prices are stored in the same cache as real adverts and reused on the next case for the same model, so a guess can harden into "evidence".</p></div></div>
+      <div class="finding"><span class="pill warn">Medium</span><div><p class="t">Non-vehicle assets look more certain than they are</p><p>Without a model year, every advert counts as an exact match, and fresh research always counts as zero days old. Phones and machinery reach grade A more easily than cars on weaker evidence.</p></div></div>
+      <div class="finding"><span class="pill warn">Medium</span><div><p class="t">One advert is enough to produce a value</p><p>The error message says three are needed, but a single advert still produces a value (graded C).</p></div></div>
+      <div class="finding"><span class="pill warn">Medium</span><div><p class="t">Gemini does almost everything</p><p>Photo analysis, advert extraction, grounded search and repair estimates all go through Gemini, and Tavily is the only search provider. A Gemini outage or block stops valuations.</p></div></div>
+      <div class="finding"><span class="pill warn">Medium</span><div><p class="t">Some asset classes have no real path</p><p>Property is searched like a consumer product on Jiji, Jumia and Konga. Watches, artwork and "equipment" exist in the AI code but cannot be selected. Documents-complete and drivable deductions exist in the formula but are never asked for.</p></div></div>
+    </section>
+
+    <section id="industry">
+      <h2>How the industry does it</h2>
+      <h3>Pre-loss value: comparables, adjusted and weighted</h3>
+      <p>The large US and UK providers (CCC, Mitchell with J.D. Power, Audatex, Manheim MMR, Cap HPI, Glass's) all follow the same pattern:</p>
+      <ul>
+        <li><strong>Local comparables first,</strong> widening the search area only when needed. Typically 3–10 per report.</li>
+        <li><strong>Itemised adjustments</strong> for mileage, trim and region, then a condition adjustment against a stated baseline, with a separate rating per component (tyres, seats, paint).</li>
+        <li><strong>A weighted average,</strong> not a plain median. CCC weights each comparable by source (inspected vs advertised), similarity and distance.</li>
+        <li><strong>Asking price converted to selling price.</strong> Audatex's "Typical Negotiation Adjustment" was about 5% in a court case. US dealer data shows 8–9% discounts off asking prices. Our 0.92 is in that range but should be learned from our own sales.</li>
+        <li><strong>Recency matters.</strong> Manheim excludes outliers, weights recent sales more heavily and fits a per-model mileage factor nightly.</li>
+        <li><strong>Every adjustment is shown,</strong> because regulators and courts now demand it. Washington State's 2025 rule requires insurers to show evidence of each comparable's condition.</li>
+      </ul>
+
+      <h3>Total loss and salvage value</h3>
+      <ul>
+        <li>Most US states declare a total loss at 70–75% of pre-loss value. UK insurers typically write off at 50–70%. India uses 75% of the insured declared value. Our threshold of 60% is within that range.</li>
+        <li>Salvage is usually estimated as a percentage of pre-loss value from recent auction results. The UK Financial Ombudsman accepts 30–50% for repairable non-structural damage (Cat N). Weaker sources give fire 8–20%, flood 10–25%, structural collision 15–30%, moderate collision 25–40%.</li>
+        <li><strong>Copart ProQuote</strong> and <strong>IAA Loss Advisor</strong> predict the auction return at first notice of loss from their own sale history. Copart's key metric is "gross return" = selling price ÷ pre-loss value.</li>
+        <li>Reserves are set from the predicted return, with the insurer approving bids below it. Auction houses set reserves at or below the low estimate, typically 70–80% of it. Our 70% reserve matches that practice.</li>
+        <li>About two-thirds of US auction vehicles sold abroad go to developing economies, and Nigeria is a major destination. US salvage results are directly relevant for tokunbo cars.</li>
+      </ul>
+
+      <h3>Repair cost</h3>
+      <ul>
+        <li>Estimating systems (Audatex, Mitchell, CCC) combine OEM part prices with standard labour times per operation, measured by stopwatch studies (Thatcham in the UK), and paint formulas.</li>
+        <li>AI photo estimating (Tractable, CCC, Solera Qapter) classifies each panel as repair, replace or leave, then applies rules and a price database. Tractable reports agreeing with human assessors about as often as they agree with each other (75–80%), sends about 8% of cases to humans, and spots 80–90% of total losses at first notice.</li>
+        <li>Photos cannot show hidden damage. In 2019, 82% of US repairs needed at least one supplement after the first estimate. Structural, airbag and flood cases go to a person.</li>
+      </ul>
+
+      <h3>Non-vehicle assets and valuation standards</h3>
+      <ul>
+        <li>International Valuation Standards separate market value (orderly sale) from orderly and forced liquidation value. Insurance salvage is effectively a liquidation value, and the platform should say so on the valuation.</li>
+        <li>Heavy equipment: Ritchie Bros auction prices are labelled forced liquidation value, retail prices fair market value. Forced liquidation is often 40–60% below fair market value.</li>
+        <li>Scrap: yards pay a fixed share of an exchange price (LME, or HMS 1&amp;2 CFR Turkey for ferrous scrap).</li>
+        <li>Cargo and stock: compare the sound arrived value with the damaged value, agreed with a surveyor.</li>
+        <li>Used aviation parts trade around 50% of new list price, depending on certification tags.</li>
+        <li>Jewellery and art: insurance appraisals are replacement cost at retail; auction houses publish low and high estimates.</li>
+      </ul>
+
+      <h3>How confidence is reported</h3>
+      <p>Property valuation models report a <strong>Forecast Standard Deviation (FSD)</strong>: the true value is within ±FSD about 68% of the time. Freddie Mac grades High at FSD ≤ 13%, Medium 13–20%, Low above 20%. Zillow publishes its accuracy openly (median error 1.8% for homes with a live listing, 7.0% without). A US rule in force since October 2025 requires random back-testing of such models. Vehicle providers rarely publish ranges; their confidence comes from the number, source and closeness of comparables.</p>
+    </section>
+
+    <section id="nigeria">
+      <h2>Nigerian price sources</h2>
+      <p>Prices move fast. Jiji's data shows average tokunbo listings rising from about ₦25m to ₦45m in two years, and a Lagos market index rose about 50% in eleven months. Every price needs a date and the exchange rate on that date, and old prices need adjusting before use.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Asset class</th><th>Best sources</th><th>How to use them</th></tr></thead>
+          <tbody>
+            <tr><td class="k">Exchange rate, inflation</td><td>CBN daily official rate (NFEM); abokiFX API for the street rate (about ₦70k/month); NBS monthly CPI</td><td>Record on every price; bring older prices to today; convert foreign prices</td></tr>
+            <tr><td class="k">Vehicles</td><td>Jiji (largest); Autochek and Cars45 (both have B2B valuation engines); cars.ng, carlots; dealer price lists; US Copart/IAA sold prices</td><td>Search now; ask Autochek and Cars45 for valuation API access; landed-cost model for tokunbo when local adverts are thin</td></tr>
+            <tr><td class="k">Vehicle parts</td><td>Jiji parts, Jumia, Konga, Kamsiparts, Mecho Autotech; Ladipo and Nnewi (no online prices); RockAuto/eBay × exchange rate</td><td>Search per part (done); keep a price book by grade (OEM, aftermarket, tokunbo) for the top models and panels</td></tr>
+            <tr><td class="k">Repair labour and paint</td><td>No reliable public source. Partner garages; insurer-approved garages</td><td>Our own labour and paint rate book by city, refreshed quarterly</td></tr>
+            <tr><td class="k">Phones, laptops, TVs</td><td>Slot, Pointek, Jumia, Konga, Kara; Jiji for used</td><td>Match exact model and storage; brand price × exchange rate as a fallback</td></tr>
+            <tr><td class="k">Appliances, furniture</td><td>Jumia and Konga (SKU-level), Fouani, brand stores; Jiji for used</td><td>Search by brand and model; invoice for high-end and office furniture</td></tr>
+            <tr><td class="k">Generators, inverters, solar</td><td>Jumia, Konga, Jiji, installer catalogues; dealers (Mikano and others) quote only</td><td>Search for small units; dealer price book for large gensets</td></tr>
+            <tr><td class="k">Heavy machinery, agricultural</td><td>Truck1, Plant &amp; Equipment, Jiji; Ritchie Bros, MachineryTrader, Mascus, TractorJunction</td><td>Overseas sold price + freight + duty (landed cost)</td></tr>
+            <tr><td class="k">Medical equipment</td><td>Jiji for small items; DOTmed, Bimedis for refurbished imaging</td><td>Landed cost; supplier invoices are the main evidence</td></tr>
+            <tr><td class="k">Aviation</td><td>VREF, Aircraft Bluebook (subscription)</td><td>Specialist appraisal; manual entry</td></tr>
+            <tr><td class="k">Building materials</td><td>Monthly dealer price reports (cement about ₦12,000/bag, rods about ₦1.1m/tonne)</td><td>A monthly price book of about 30 items</td></tr>
+            <tr><td class="k">Stock, goods in transit</td><td>Invoices, bill of lading, Form M, customs assessment</td><td>Invoice or replacement cost; market prices only as a cross-check</td></tr>
+            <tr><td class="k">Scrap metal</td><td>LME and metalsplace benchmarks in USD/tonne</td><td>Benchmark × exchange rate × a local yard discount, checked monthly by phone with 2–3 yards. This also sets the floor for written-off vehicles and machinery.</td></tr>
+            <tr><td class="k">Agricultural produce</td><td>AFEX daily spot prices (via Mansa Markets, which has an API); NBS Food Price Watch</td><td>Daily price × quantity</td></tr>
+            <tr><td class="k">Property</td><td>Nigeria Property Centre median asking prices by area; PropertyPro</td><td>Reinstatement (building) cost per m² for insured buildings; registered valuers for large claims</td></tr>
+            <tr><td class="k">Gold, jewellery, art</td><td>Gold spot × exchange rate × purity; Invaluable, Artnet, Bonhams results</td><td>Compute metal value; specialist appraisal for stones, workmanship and art</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Pitfalls to design for: bait prices and scam adverts, the same car reposted by several dealers, stale adverts bumped to look new, "₦1" or "call for price" placeholders, and prices that include or exclude duty. Cars45 blocks automated access, so a partnership is the only reliable route there. Cheki is largely defunct and Tradeford lists leads rather than prices; both can be dropped.</p>
+      <div class="callout warn"><p>No Nigerian source publishes salvage auction results. i-Naira (AIICO, emPLE) and Ezzybid run insurer salvage sales but keep results private. Our own hammer prices, logged carefully, will become the only salvage dataset in the market.</p></div>
+    </section>
+
+    <section id="classes">
+      <h2>Asset classes, now and next</h2>
+      <p>The platform has 16 asset types. Each needs a stated basis of value and a route to evidence. Classes marked <span class="pill new">New</span> are proposals based on what Nigerian insurers commonly cover.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Class</th><th>Value basis</th><th>Evidence route</th><th>Salvage method</th><th>Today</th></tr></thead>
+          <tbody>
+            <tr><td class="k">Vehicle</td><td>Market value by usage tier</td><td>Adverts + Autochek/Cars45 + landed cost</td><td>Rebuild vs parts-out formula, calibrated by our auctions</td><td><span class="pill good">Works</span></td></tr>
+            <tr><td class="k">Motorcycle, tricycle (keke)</td><td>Market value</td><td>Jiji, dealer price lists (Bajaj, TVS, Qlink)</td><td>Ratio by damage type</td><td><span class="pill new">New</span></td></tr>
+            <tr><td class="k">Trucks, buses</td><td>Market value</td><td>Jiji, Truck1, landed cost</td><td>Rebuild vs parts-out; scrap floor by weight</td><td><span class="pill warn">As vehicle</span></td></tr>
+            <tr><td class="k">Electronics</td><td>Market value, exact model and storage</td><td>Slot, Jumia, Konga, Jiji</td><td>Low recovery ratio (about 10%), higher if working</td><td><span class="pill good">Works</span></td></tr>
+            <tr><td class="k">Appliance</td><td>Market value</td><td>Jumia, Konga, brand stores</td><td>Ratio; scrap floor</td><td><span class="pill good">Works</span></td></tr>
+            <tr><td class="k">Energy equipment</td><td>Replacement cost</td><td>Jumia, installers, dealer quotes</td><td>Ratio; battery and panel resale</td><td><span class="pill warn">Generic</span></td></tr>
+            <tr><td class="k">Machinery</td><td>Fair market value; forced liquidation for salvage</td><td>Landed cost from overseas sold prices</td><td>Liquidation ratio; scrap floor</td><td><span class="pill warn">Weak</span></td></tr>
+            <tr><td class="k">Agricultural equipment</td><td>Market value</td><td>Jiji, TractorJunction, TractorHouse</td><td>Liquidation ratio</td><td><span class="pill warn">As machinery</span></td></tr>
+            <tr><td class="k">Medical equipment</td><td>Replacement cost</td><td>Invoices; DOTmed landed cost</td><td>Refurbisher ratio</td><td><span class="pill warn">Generic</span></td></tr>
+            <tr><td class="k">Aviation equipment</td><td>Specialist appraisal</td><td>VREF, Aircraft Bluebook</td><td>Used parts about 50% of list</td><td><span class="pill bad">No path</span></td></tr>
+            <tr><td class="k">Marine (boats, outboard engines)</td><td>Surveyor's value</td><td>Jiji, surveyor reports</td><td>Surveyor and auction reserve</td><td><span class="pill new">New</span></td></tr>
+            <tr><td class="k">IT and telecom (servers, base-station kit)</td><td>Replacement cost</td><td>Invoices, OEM list price × exchange rate</td><td>Refurbisher ratio</td><td><span class="pill new">New</span></td></tr>
+            <tr><td class="k">Oil and gas, industrial plant</td><td>Specialist appraisal</td><td>Invoices, OEM quotes</td><td>Liquidation ratio; scrap floor</td><td><span class="pill new">New</span></td></tr>
+            <tr><td class="k">Containers</td><td>Market value</td><td>Jiji, shipping-container dealers</td><td>Ratio; scrap floor by weight</td><td><span class="pill new">New</span></td></tr>
+            <tr><td class="k">Furniture</td><td>Market value</td><td>Jumia, Konga, invoices</td><td>Ratio; often no recovery</td><td><span class="pill good">Works</span></td></tr>
+            <tr><td class="k">Property</td><td>Reinstatement cost</td><td>Building-cost book per m²; registered valuers</td><td>Recoverable materials</td><td><span class="pill bad">Wrong method</span></td></tr>
+            <tr><td class="k">Building materials</td><td>Replacement cost</td><td>Monthly price book</td><td>Severity formula × quantity</td><td><span class="pill warn">Search only</span></td></tr>
+            <tr><td class="k">Stock, goods in transit</td><td>Invoice or sound arrived value</td><td>Invoices, Form M, customs</td><td>Damaged vs sound value</td><td><span class="pill warn">Search only</span></td></tr>
+            <tr><td class="k">Scrap</td><td>Commodity price</td><td>LME/HMS × exchange rate × yard factor</td><td>Weight × yard price</td><td><span class="pill warn">Search only</span></td></tr>
+            <tr><td class="k">Agriculture (produce)</td><td>Commodity price</td><td>AFEX, NBS Food Price Watch</td><td>Damaged vs sound value</td><td><span class="pill warn">Search only</span></td></tr>
+            <tr><td class="k">Livestock</td><td>Market value per head</td><td>Market surveys, NBS</td><td>Usually none</td><td><span class="pill new">New</span></td></tr>
+            <tr><td class="k">Jewellery</td><td>Metal value + specialist appraisal</td><td>Gold spot × exchange rate × purity</td><td>Melt value</td><td><span class="pill warn">Refuses luxury</span></td></tr>
+            <tr><td class="k">Watches, artwork</td><td>Specialist appraisal</td><td>Auction results (Invaluable, Artnet)</td><td>Auction estimate</td><td><span class="pill bad">Not selectable</span></td></tr>
+            <tr><td class="k">Other</td><td>Market value</td><td>General search</td><td>Default ratio</td><td><span class="pill warn">Generic</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The design that scales: each class declares its <strong>value basis</strong>, its <strong>evidence providers</strong> in order (price book, commodity feed, partner API, advert search, landed cost, manual appraisal), its <strong>identity fields</strong> and its <strong>salvage method</strong>. Adding a class becomes configuration rather than new code, and the valuation always says which basis it used.</p>
+    </section>
+
+    <section id="methods">
+      <h2>Better methods</h2>
+      <h3>Turning a handful of adverts into one price</h3>
+      <ul>
+        <li><strong>Work in log prices.</strong> Price errors are proportional, so a ₦2m gap on a ₦10m car and a ₦20m gap on a ₦100m car should count the same.</li>
+        <li><strong>Pool adverts, then weight them.</strong> The median of per-site medians wastes information when each site has one or two adverts. Pool them, weight by similarity (exact year, tier, mileage, trim), recency and site quality, and limit any one site's share. The Hodges–Lehmann estimator keeps 95% of the mean's efficiency while still resisting bad adverts.</li>
+        <li><strong>Drop outliers against what we already expect.</strong> Reject adverts far from the expected value (about ×0.4 to ×2.5), then apply a median-absolute-deviation rule. Never apply an interquartile rule to fewer than five adverts.</li>
+        <li><strong>Blend with a prior.</strong> Combine the adverts with an expected value from a depreciation model, weighted by how much each can be trusted. Few or noisy adverts lean on the prior; many consistent adverts dominate it. This is standard empirical Bayes and gives a variance we can turn into confidence.</li>
+      </ul>
+      <div class="formula">value = (prior ÷ τ² + n_eff × advert_centre ÷ σ²) ÷ (1 ÷ τ² + n_eff ÷ σ²)
+variance = 1 ÷ (1 ÷ τ² + n_eff ÷ σ²)        (all in log price)
+τ = how wrong the prior usually is   σ = how much adverts for one model usually differ
+n_eff = adverts, discounted for duplicates and single-site evidence</div>
+
+      <h3>Depreciation, mileage and inflation</h3>
+      <ul>
+        <li>Replace the flat 6% a year with an age curve. US data (J.D. Power via BLS) shows about 24% in the first year, 11–14% a year to age six and 5–10% after. Start from international curves and let our own data adjust them per segment.</li>
+        <li>Use mileage with a weak weight, since odometers on imported cars are often unreliable.</li>
+        <li>Adjust old prices to today: by the exchange rate for imported goods, by CPI for local ones. Drop adverts older than about 90 days, or 30 days for phones and parts.</li>
+        <li>A Nigerian study on about 8,000 scraped car adverts reached R² ≈ 0.86 with gradient boosting on make, model, year, condition, mileage and engine size. A model like this becomes the prior above once we have enough adverts stored.</li>
+      </ul>
+
+      <h3>Finding and checking adverts</h3>
+      <ul>
+        <li>Ask the extraction step for the exact quote behind each price and verify it in code (already partly done). Parse amounts in code, never from the AI.</li>
+        <li>Match adverts to the target with a score, not a pass/fail: rules first (make, model, generation, year), similarity for the rest. Use the score as a weight.</li>
+        <li>Remove the same car posted on several sites (make, model, year, price within 2%, city, first photo). Treat adverts far below market as suspicious rather than as bargains.</li>
+        <li>Google grounding only links a sentence to a URL; it does not prove the price is on the page. Keep Tavily page text as the evidence and use grounding only to discover pages.</li>
+        <li>Add a second search provider so Tavily is not a single point of failure.</li>
+      </ul>
+
+      <h3>Reading damage from photos</h3>
+      <ul>
+        <li>Require evidence: for each damaged part, the photo number and a box around the damage. Drop claims without one.</li>
+        <li>Fixed lists for part, damage type, severity and action, including "cannot see, needs inspection", so the model is not forced to guess hidden structural damage.</li>
+        <li>Run the analysis two or three times (or with two models) and keep parts that appear in most runs. Agreement is a better confidence signal than the model's own number.</li>
+        <li>Combine findings across photos per part, and ask adjusters for a standard photo set: four corners, front, rear, both sides, interior, odometer.</li>
+        <li>Route structural, airbag and flood damage to a person, as Tractable and CCC do.</li>
+      </ul>
+
+      <h3>Repair cost</h3>
+      <ul>
+        <li>A <strong>repair price book</strong>: labour and paint rates by city (Lagos, Abuja, Port Harcourt) and garage tier, plus part prices by grade for the most common models and panels. Partner garages supply and refresh it quarterly; claims invoices keep it current.</li>
+        <li>Mark book prices as "price book", not "AI estimate", so they count as evidence.</li>
+        <li>Keep AI estimates out of the evidence cache so a guess never becomes a "real" price.</li>
+        <li>Add a hidden-damage allowance by damage zone, since photo estimates undershoot.</li>
+      </ul>
+
+      <h3>Salvage value from our own auctions</h3>
+      <ul>
+        <li>Predict the ratio of hammer price to market value, not the naira amount. Ratios are stable across makes and pool well.</li>
+        <li>Start from published ratios by damage type as priors, then fit a simple regression per class once about 50 sales are in, and a gradient-boosted quantile model (P10/P50/P90) at about 500.</li>
+        <li>Record unsold lots with their highest bid: it is a lower bound on the true value, and ignoring it biases the model upwards.</li>
+        <li>Learn the asking-to-selling discount (now a fixed 0.92) from completed sales.</li>
+      </ul>
+    </section>
+
+    <section id="confidence">
+      <h2>A confidence score that means something</h2>
+      <p>Replace the blended percentage with three parts the manager can act on, each shown as a range:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Part</th><th>What it measures</th><th>Shown as</th></tr></thead>
+          <tbody>
+            <tr><td class="k">Market value</td><td>Expected error from the number, spread and closeness of comparables, blended with the prior</td><td><span class="num">₦17.6m ± 11%</span> · High</td></tr>
+            <tr><td class="k">Repair cost</td><td>Share from adverts and price book vs AI estimate; items needing inspection listed separately</td><td><span class="num">₦3.8m</span>, 28% estimated · Medium</td></tr>
+            <tr><td class="k">Damage reading</td><td>Agreement between runs and photo coverage</td><td>9 of 10 parts confirmed twice · High</td></tr>
+            <tr><td class="k">Salvage value</td><td>Combined, and once we have sales, checked against real auction errors</td><td><span class="num">₦7.5m–₦11.6m</span>, 80% range · Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul>
+        <li>Tiers follow the property standard: High when the expected error is 13% or less, Medium up to 20%, Low above that. Calibrate them against our own auction results.</li>
+        <li>Once there are about ten sales per group, widen or narrow the ranges so that, say, 80% of real hammer prices fall inside the 80% range (conformal prediction). Recheck continuously, because naira prices drift.</li>
+        <li>Show one plain sentence per issue, once each, in order of impact: "Choose new, foreign used or locally used", "Front structure needs inspection before the repair cost can be confirmed".</li>
+        <li>Only raise "needs manual review" when something is actually wrong. Track the accuracy behind each grade: error must rise from High to Low, or the grade is not doing its job.</li>
+      </ul>
+    </section>
+
+    <section id="roadmap">
+      <h2>Roadmap</h2>
+      <div class="phases">
+        <article class="phase">
+          <header><h3>Phase 1 · Fix what is misleading</h3><span class="when">About 1 week · no new data needed</span></header>
+          <ul>
+            <li>Measure price spread after outliers are removed and prices are adjusted; count observations consistently.</li>
+            <li>Stop converting "good" to tokunbo. Ask for the usage tier when it is missing, and filter and weight adverts by it.</li>
+            <li>Use mileage. Replace 6% a year with an age curve.</li>
+            <li>Keep AI estimates out of the evidence cache. Require at least three adverts before calling a value "from market data".</li>
+            <li>Deduplicate review notes, and only flag manual review for real problems.</li>
+            <li>Correct the exact-match and age rules for assets without a model year.</li>
+            <li>Ask for documents-complete and drivable on the form, so those deductions work.</li>
+          </ul>
+        </article>
+        <article class="phase">
+          <header><h3>Phase 2 · Honest confidence and better evidence</h3><span class="when">2–3 weeks</span></header>
+          <ul>
+            <li>New confidence model: market, repair, damage and salvage shown as ranges with High, Medium and Low tiers.</li>
+            <li>Pooled, weighted price estimate in log space, blended with a prior.</li>
+            <li>Exchange rate and CPI recorded on every price and used to adjust old prices.</li>
+            <li>Duplicate and scam-advert detection; a second search provider.</li>
+            <li>Photo analysis with evidence boxes, an "inspect" option and a two-run agreement check.</li>
+            <li>Store every valuation's evidence permanently so it can be back-tested.</li>
+          </ul>
+        </article>
+        <article class="phase">
+          <header><h3>Phase 3 · Data the web cannot give us</h3><span class="when">4–8 weeks · needs business input</span></header>
+          <ul>
+            <li>Repair price book: labour, paint and parts by city and grade, from partner garages.</li>
+            <li>Commodity feeds: scrap (LME/HMS) and produce (AFEX), with daily exchange rates.</li>
+            <li>Landed-cost calculator for tokunbo cars, machinery and medical equipment, with configurable duty.</li>
+            <li>Reinstatement cost per m² for buildings; monthly building-materials price book.</li>
+            <li>Per-class valuation routes, as configuration; add motorcycles and tricycles, marine, IT and telecom, containers, watches and art (appraisal route).</li>
+            <li>Partnership requests to Autochek and Cars45 for valuation data.</li>
+          </ul>
+        </article>
+        <article class="phase">
+          <header><h3>Phase 4 · Learn from our own auctions</h3><span class="when">Ongoing · starts paying off at about 50 sales</span></header>
+          <ul>
+            <li>Salvage-to-value ratio model per class and damage type, including unsold lots.</li>
+            <li>Learned asking-to-selling discount and automatic bias correction.</li>
+            <li>Accuracy dashboard: median error, share within ±20%, range coverage, error by confidence tier.</li>
+            <li>Shadow mode: run new methods beside the live one and promote them only when they beat it on real sales.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="needs">
+      <h2>What we need from the business</h2>
+      <ul>
+        <li><strong>5–10 partner garages</strong> (insurer-approved where possible) to supply labour, paint and part rates quarterly, and access to final repair invoices from claims.</li>
+        <li><strong>Introductions to Autochek and Cars45</strong> for valuation data. Both sell valuations to lenders.</li>
+        <li><strong>A decision on paid data:</strong> abokiFX street rates (about ₦70k/month); Tavily pay-as-you-go ($0.008 per search) once checks exceed the free 1,000 a month; optional specialist guides (VREF for aviation, Ritchie Bros data for machinery) case by case.</li>
+        <li><strong>Confirmation of the duty stack</strong> for imported vehicles and equipment from a licensed clearing agent. Published sources conflict after the 2026 duty changes.</li>
+        <li><strong>Agreement that auction results</strong> (including unsold lots and their highest bid) are kept and used to improve valuations.</li>
+        <li><strong>Which new asset classes</strong> the insurers you serve actually cover, so Phase 3 builds the right ones first.</li>
+      </ul>
+    </section>
+
+    <section id="sources">
+      <h2>Sources</h2>
+      <p class="sources">A selection. Figures marked as weak in the research (blogs and calculator sites) are used only as starting assumptions to calibrate.</p>
+      <ul class="sources">
+        <li>CCC Market Valuation report sample and guidelines: https://www.repairerdrivennews.com/wp-content/uploads/2021/06/MVR-redacted.pdf</li>
+        <li>Audatex negotiation adjustment, Clippinger v. State Farm: https://caselaw.findlaw.com/court/us-6th-circuit/117815694.html</li>
+        <li>Washington State comparables rule 2025: https://www.insurance.wa.gov/sites/default/files/2025-10/solera-audatex-r2025-05-2nd-prepub.pdf</li>
+        <li>Manheim Market Report method: https://site.manheim.com/news/unlock-the-full-potential-of-mmr</li>
+        <li>UK Financial Ombudsman salvage decisions: https://www.financial-ombudsman.org.uk/decision/DRN-4470356.pdf</li>
+        <li>ABI salvage categories: https://www.abi.org.uk/globalassets/files/publications/public/motor/2019/codepracticecategorisationmotorisedvehiclesalvagemay2025.pdf</li>
+        <li>Copart ProQuote: https://remarketing.copart.co.uk/?p=1954 · Copart 10-K: https://www.sec.gov/Archives/edgar/data/900075/000162828025042946/cprt-20250731.htm</li>
+        <li>Tractable accuracy reporting: https://www.repairerdrivennews.com/2020/06/09/tractable-ai-much-better-than-humans-at-flagging-total-losses-immediately/</li>
+        <li>IVS bases of value: https://ivsc.org/standards-glossary/ · Rouse/RB Global: https://rbglobal.com/insights/rouse-equipment-insights/</li>
+        <li>FSD confidence standard: https://www.clearcapital.com/resources/glossary-of-terms/fsd-forecast-standard-deviation/ · Zillow accuracy: https://www.zillow.com/zestimate</li>
+        <li>CBN exchange rates: https://www.cbn.gov.ng/rates/ExchRateByCurrency.html · abokiFX API: https://abokiforex.app/api</li>
+        <li>Jiji car price trends (BusinessDay): https://businessday.ng/news/article/nigerians-shift-to-locally-used-cars-as-prices-soar-on-volatile-naira/</li>
+        <li>Nigeria Property Centre prices: https://nigeriapropertycentre.com/market-trends/average-prices</li>
+        <li>AFEX prices via Mansa Markets: https://www.mansamarkets.com/commodities/maize/nigeria</li>
+        <li>NIIRA 2025: https://blog.lawpavilion.com/niira-2025-the-law-that-rewrites-nigerias-entire-insurance-landscape</li>
+        <li>BLS vehicle depreciation: https://www.bls.gov/opub/mlr/2024/highcharts/data/autos-chart-1.stm</li>
+        <li>Nigerian car price model study (UNILAG): https://jer.unilag.edu.ng/article/view/2884</li>
+        <li>Empirical Bayes: https://nejsds.nestat.org/journal/NEJSDS/article/116/read · Conformal prediction: https://arxiv.org/pdf/2107.07511</li>
+        <li>Car damage datasets (CarDD): https://arxiv.org/pdf/2211.00945 · Hallucination in vision models (POPE): https://arxiv.org/abs/2305.10355</li>
+        <li>Gemini search grounding: https://ai.google.dev/gemini-api/docs/generate-content/google-search</li>
+      </ul>
+    </section>
+
+    <footer>Research for the salvage management platform. The code findings refer to the current main branch; figures from the Corolla case come from the saved assessment for case 4ed37041.</footer>
+  </main>
+</div>
+
+</body></html>
